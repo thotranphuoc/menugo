@@ -11,4 +11,8 @@ export class HomePage {
 
   }
 
+  go2MapPage(){
+    this.navCtrl.push('MapPage')
+  }
+
 }

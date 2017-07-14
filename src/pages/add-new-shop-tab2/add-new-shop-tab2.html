@@ -1,0 +1,18 @@
+
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Photo</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <div text-center>
+    <ion-icon name="ios-camera-outline" (click)="takePhoto()"></ion-icon>
+  </div>
+  <!--<button (click)="takePhoto()">Take Photo</button>-->
+  <img src="{{base64Image}}" alt="">
+  <input type="file" (change)="takePictureAndResizeByBrowser($event)" hidden accept="image/*" id="inputFile">
+</ion-content>

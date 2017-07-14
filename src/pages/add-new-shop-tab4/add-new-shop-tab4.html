@@ -1,0 +1,38 @@
+
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Preview</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-card>
+    <div *ngIf="SHOP_IMAGE"><img src="{{SHOP_IMAGE}}" alt=""></div>
+    <div padding *ngIf="!SHOP_IMAGE" text-center><ion-icon name="md-images" style="font-size: 5em"></ion-icon></div>
+  </ion-card>
+  <ion-list>
+    <ion-item>
+      <ion-icon name="md-restaurant" item-start></ion-icon>
+      {{shop.NAME}}
+    </ion-item>
+    <ion-item>
+      <ion-icon name="ios-call-outline" item-start></ion-icon>
+      {{shop.PHONE}}
+    </ion-item>
+    <ion-item>
+      <ion-icon name="md-apps" item-start></ion-icon>
+      {{shop.KIND}}
+    </ion-item>
+    <ion-item>
+      <ion-icon name="ios-home-outline" item-start></ion-icon>
+      {{shop.ADDRESS}}
+    </ion-item>
+  </ion-list>
+  <ion-card>
+    <div #mapreview id="mapreview"></div>
+  </ion-card>
+  <button ion-button block (click)="createShop()" [disabled]="hasPosted">Create</button>
+</ion-content>
