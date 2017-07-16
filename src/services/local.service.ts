@@ -7,6 +7,8 @@ import { DbService } from './db.service';
 // import { iProfile } from '../interfaces/profile.interface';
 import { iShop } from '../interfaces/shop.interface';
 import { iSetting } from '../interfaces/setting.interface';
+import { iItem } from '../interfaces/item.interface';
+
 @Injectable()
 
 export class LocalService {
@@ -19,7 +21,7 @@ export class LocalService {
         NAME: null,
         KIND: null,
         ADDRESS: null,
-        IMAGE: null,
+        IMAGES: null,
         PHONE: null,
         isCREDIT: false,
         isMOTO_PARK_FREE: false,
@@ -36,7 +38,7 @@ export class LocalService {
         NAME: null,
         KIND: null,
         ADDRESS: null,
-        IMAGE: null,
+        IMAGES: null,
         PHONE: null,
         isCREDIT: false,
         isMOTO_PARK_FREE: false,
@@ -45,7 +47,32 @@ export class LocalService {
         isVISIBLE: true
     }
 
-    DEFAULT_SETTING: iSetting = {
+    ITEM_DEFAULT: iItem = {
+        NAME_LOCAL: null,
+        NAME_EN: null,
+        IMAGES: [], 
+        PRICE: null,
+        SIZE: null,
+        DATE_CREATE: null,
+        SHOP_ID: null
+    }
+
+    ITEM: iItem = {
+        NAME_LOCAL: null,
+        NAME_EN: null,
+        IMAGES: [], 
+        PRICE: null,
+        SIZE: null,
+        DATE_CREATE: null,
+        SHOP_ID: null
+    }
+
+    ITEM_IMG64s_DEFAULT: string[] = null;
+    ITEM_IMG64s: string[] = null;
+
+    DEFAULT
+
+    SETTING_DEFAULT: iSetting = {
         setCafe: true,
         setRestaurant: true,
         setTakeAway: true,
@@ -64,6 +91,7 @@ export class LocalService {
     }
 
     SHOP_IMAGE: string;
+    SHOP_IMAGES: string[];
 
     itemAction: string = 'add-new';  // add-new, item-update
     existingImageUrls: string[] = [];

@@ -18,7 +18,7 @@ declare var google: any;
   templateUrl: 'add-new-shop-tab4.html',
 })
 export class AddNewShopTab4Page {
-  SHOP_IMAGE: string = null;
+  SHOP_IMAGES: string[] = null;
   shop: iShop;
   mapreview: any;
   mapElement: any;
@@ -53,7 +53,7 @@ export class AddNewShopTab4Page {
   }
 
   ionViewWillEnter() {
-    this.SHOP_IMAGE = this.localService.SHOP_IMAGE;
+    this.SHOP_IMAGES = this.localService.SHOP_IMAGES;
     this.shop = this.localService.getShop();
     console.log(this.localService.SHOP.LOCATION);
 
@@ -102,9 +102,9 @@ export class AddNewShopTab4Page {
               console.log(res);
               console.log(res.key);
               let name = new Date().getTime().toString();
-              this.dbService.uploadBase64Image2FBReturnPromiseWithURL('ShopImages/' + res.key, this.SHOP_IMAGE, name)
-                .then((url) => {
-                  this.afService.updateObjectData('Shops/' + res.key, { IMAGE: url })
+              this.dbService.uploadBase64Images2FBReturnPromiseWithArrayOfURL('ShopImages/' + res.key, this.SHOP_IMAGES, name)
+                .then((urls) => {
+                  this.afService.updateObjectData('Shops/' + res.key + '/IMAGES', urls)
                     .then(() => {
                       this.hideLoading();
                       this.resetShop();
@@ -130,6 +130,8 @@ export class AddNewShopTab4Page {
         this.hasPosted = false;
         this.alertMsgWithConfirmationToGoToPage();
       }
+    } else{
+      this.appService.alertMsg('Error', 'info not full filled')
     }
   }
 
@@ -167,7 +169,7 @@ export class AddNewShopTab4Page {
       console.log(this.shop.ADDRESS, ' is missed');
     }
 
-    if (this.SHOP_IMAGE == null){
+    if (this.SHOP_IMAGES == null){
       this.isInfoFullFilled = false;
       console.log(this.shop.NAME, 'image is missed');
     }

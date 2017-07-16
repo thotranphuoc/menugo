@@ -47,6 +47,97 @@ export class DbService {
                     console.log(res);
                     resolve(res.downloadURL);
                 })
+                .catch((err) => {
+                    reject(err);
+                })
+        })
+    }
+
+    // VERIFIED
+    getListReturnPromise_ArrayOfData(dbURL) {
+        return new Promise((resolve, reject) => {
+            let items = [];
+            let db = firebase.database().ref(dbURL);
+            db.once('value', (_snapShot) => {
+                _snapShot.forEach(_childSnap => {
+                    let item = _childSnap.val();
+                    items.push(item);
+                    return false;
+                })
+                resolve(items);
+            })
+            // .then(() => {
+            //     resolve(items)
+            // })
+            // .catch((err) => {
+            //     reject(err);
+            // })
+        })
+    }
+
+    // VERIFIED
+    getListReturnPromise_ArrayOfKey(dBName) {
+        return new Promise((resolve, reject) => {
+            let items = [];
+            let db = firebase.database().ref(dBName);
+            db.once('value', (_snapShot) => {
+                _snapShot.forEach(_childSnap => {
+                    let item = _childSnap.key;
+                    items.push(item);
+                    return false;
+                })
+                resolve(items);
+            })
+            // .then(() => {
+            //     resolve(items)
+            // })
+            // .catch((err) => {
+            //     reject(err);
+            // })
+        })
+    }
+
+    // VERIFIED
+    getListReturnPromise_ArrayOfObjectWithKey_Data(dBName) {
+        return new Promise((resolve, reject) => {
+            let items = [];
+            let db = firebase.database().ref(dBName);
+            db.once('value', (_snapShot) => {
+                _snapShot.forEach(_childSnap => {
+                    let key = _childSnap.key;
+                    let data = _childSnap.val();
+                    let item = {
+                        key: key,
+                        data: data
+                    }
+                    // console.log(key, data)
+                    // console.log(item)
+                    items.push(item);
+                    return false;
+                })
+                resolve(items);
+            })
+            // .then(() => {
+            //     resolve(items)
+            // })
+            // .catch((err) => {
+            //     reject(err);
+            // })
+        })
+    }
+
+    getOneItemReturnPromise(dbURL) {
+        return new Promise((resolve, reject) => {
+            let db = firebase.database().ref(dbURL);
+            db.once('value')
+                .then((data) => {
+                    // console.log(data.val());
+                    resolve(data.val())
+                })
+                .catch(err => {
+                    console.log(err)
+                    reject(err);
+                })
         })
     }
 

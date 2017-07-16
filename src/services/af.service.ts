@@ -75,7 +75,8 @@ export class AngularFireService {
     // const itemObservable = db.object('/item');
     // itemObservable.update({ age: newAge });
     updateObjectData(URL: string, data: any) {
-        return this.db.object(URL).update(data);
+        return this.db.object(URL).set(data)
+        // return this.db.object(URL).update(data);
     }
 
     getObjectSnapshot(URL: string) {

@@ -7,8 +7,8 @@ export interface iShop {
     LOCATION: iPosition,
     NAME: string,
     KIND: string,
-    ADDRESS: string
-    IMAGE: string,
+    ADDRESS: string,
+    IMAGES: string[],
     PHONE?: string,
     isCREDIT: boolean,
     isMOTO_PARK_FREE: boolean,

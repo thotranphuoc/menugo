@@ -29,7 +29,7 @@ export class SettingPage {
     private afAuth: AngularFireAuth
   ) {
     
-    this.mySettings = this.localService.DEFAULT_SETTING;
+    this.mySettings = this.localService.SETTING_DEFAULT;
     console.log('constructor inside')
     this.isSigned = this.afAuth.auth.currentUser;
     if (this.isSigned) {

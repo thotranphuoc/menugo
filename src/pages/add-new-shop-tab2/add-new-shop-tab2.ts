@@ -14,6 +14,7 @@ import { iShop } from '../../interfaces/shop.interface';
 export class AddNewShopTab2Page {
   shop: iShop;
   base64Image: string;
+  base64Images: string[] = [];
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
@@ -26,7 +27,7 @@ export class AddNewShopTab2Page {
   }
 
   ionViewWillLeave(){
-    this.localService.SHOP_IMAGE = this.base64Image;
+    this.localService.SHOP_IMAGES = this.base64Images;
   }
 
   takePhoto(){
@@ -40,12 +41,10 @@ export class AddNewShopTab2Page {
 
   takePictureAndResizeByBrowser(event) {
     this.imageService.resizeImagesFromChoosenFilesReturnPromiseWithArrayOfImageDataUrls(event)
-      .then((imgDataUrl: string[]) => {
+      .then((imgDataUrls: string[]) => {
         setTimeout(() => {
-          console.log(imgDataUrl);
-          this.base64Image = imgDataUrl[0];
-          // this.hasNewAvatar = true;
-          // console.log(this.hasNewAvatar);
+          console.log(imgDataUrls);
+          this.base64Images = imgDataUrls;
         }, 1000);
       })
   }

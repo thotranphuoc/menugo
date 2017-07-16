@@ -10,10 +10,30 @@
 <ion-content>
   <ion-item>
     <ion-avatar item-start>
-      <img src="{{shop.IMAGE}}">
+      <img src="{{shop.IMAGES[0]}}">
     </ion-avatar>
     <h2>{{shop.ADDRESS}}</h2>
     <p>{{shop.PHONE}}</p>
   </ion-item>
+
+  <ion-list>
+    <ion-item *ngFor="let item of items" text-wrap>
+      <!--{{item | json}}-->
+      <img src="{{item.IMAGES[0]}}" alt="">
+      <h3>{{item.NAME_LOCAL}}</h3>
+      <h3>{{item.NAME_EN}}</h3>
+      <p>{{item.PRICE}}</p>
+    </ion-item>
+  </ion-list>
+
+  <ion-fab left bottom>
+    <button ion-fab color="danger" mini><ion-icon name="add"></ion-icon></button>
+    <ion-fab-list side="top">
+      <button ion-fab><ion-icon name="logo-facebook"></ion-icon></button>
+      <button ion-fab><ion-icon name="logo-twitter"></ion-icon></button>
+      <button ion-fab><ion-icon name="logo-vimeo"></ion-icon></button>
+      <button ion-fab (click)="go2MenuItemAdd()"><ion-icon name="md-checkmark"></ion-icon></button>
+    </ion-fab-list>
+  </ion-fab>
 
 </ion-content>
