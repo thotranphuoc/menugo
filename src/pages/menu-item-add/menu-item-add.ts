@@ -81,7 +81,6 @@ export class MenuItemAddPage {
   }
 
   createItem() {
-    this.test();
     this.checkInfoFullFilled();
     console.log(this.base64Images);
     if (this.isInfoFullFilled) {
@@ -119,20 +118,11 @@ export class MenuItemAddPage {
                     .then(() => {
                       console.log('update item image successs');
                       this.hideLoading();
-                      // this.resetItem();
-                      this.go2Page('MapPage');
+                      this.resetItem();
+                      // this.go2Page('MapPage');
+                      this.navCtrl.pop();
                     }, err => this.showErr1(err))
-                    // .catch((err) => {
-                    //   console.log(err);
-                    //   this.appService.alertError('Error', err.toString())
-                      
-                    // })
                 }, err=> this.showErr1(err))
-                // .catch((err) => {
-                //   console.log(err);
-                //   this.appService.alertError('Error', err.toString())
-                //   this.hasPosted = false;
-                // })
             }, (err) => this.showErr(err))
         } else {
           // UPDATE
@@ -195,11 +185,12 @@ export class MenuItemAddPage {
     this.loading.dismiss();
   }
 
-  private hideLoadingWithMessage(message: string) {
-    this.loading.dismiss();
-    this.appService.alertMsg('Alert', message);
-    this.go2Page('MapPage')
-  }
+  // private hideLoadingWithMessage(message: string) {
+  //   this.loading.dismiss();
+  //   this.appService.alertMsg('Alert', message);
+  //   // this.go2Page('MapPage')
+  //   this.navCtrl.pop();
+  // }
 
   go2Page(page: string) {
     const root = this.app.getRootNav();
@@ -239,10 +230,10 @@ export class MenuItemAddPage {
     this.item = this.localService.ITEM;
   }
 
-  ionViewWillLeave() {
-    this.localService.ITEM = this.item;
-    this.localService.ITEM_IMG64s = this.base64Images;
-  }
+  // ionViewWillLeave() {
+  //   this.localService.ITEM = this.item;
+  //   this.localService.ITEM_IMG64s = this.base64Images;
+  // }
 
   // test() {
   //   // console.log(this.base64Images)

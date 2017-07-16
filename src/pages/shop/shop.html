@@ -16,15 +16,57 @@
     <p>{{shop.PHONE}}</p>
   </ion-item>
 
-  <ion-list>
-    <ion-item *ngFor="let item of items" text-wrap>
-      <!--{{item | json}}-->
+  <!--<ion-list>
+    <ion-item *ngFor="let item of items">
       <img src="{{item.IMAGES[0]}}" alt="">
       <h3>{{item.NAME_LOCAL}}</h3>
       <h3>{{item.NAME_EN}}</h3>
       <p>{{item.PRICE}}</p>
     </ion-item>
-  </ion-list>
+  </ion-list>-->
+
+  <ion-card *ngFor="let item of items">
+    <div>
+      <img src="{{item.IMAGES[0]}}" alt="">
+    </div>
+    <div class="info"></div>
+    <div class="name_local">{{item.NAME_LOCAL}}</div>
+    <div class="name_en">{{item.NAME_EN}}</div>
+    <div class="price">{{item.PRICE}} KVND</div>
+  </ion-card>
+  <!--<ion-grid>
+    <ion-row *ngFor="let item of items">
+      <ion-col>
+        <div>
+          <img src="{{item.IMAGES[0]}}" alt="">
+        </div>
+      </ion-col>
+      <ion-col col-6>
+        <div>
+          <h3>{{item.NAME_LOCAL}}</h3>
+          <p>{{item.NAME_EN}}</p>
+          <h4>{{item.PRICE}}</h4>
+        </div>
+      </ion-col>
+      <ion-col>
+        <div>
+          M
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-4>
+        <div> 4 col</div>
+      </ion-col>
+      <ion-col col-6>
+        <div>6 col</div>
+      </ion-col>
+      <ion-col>
+        <div>2 col</div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>-->
+
 
   <ion-fab left bottom>
     <button ion-fab color="danger" mini><ion-icon name="add"></ion-icon></button>
