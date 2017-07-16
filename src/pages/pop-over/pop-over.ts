@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ViewController, App } from 'ionic-angular';
 
 import { iShop } from '../../interfaces/shop.interface';
 
@@ -13,6 +13,7 @@ export class PopOverPage {
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
+    private app: App,
     private viewCtrl: ViewController) {
     this.shop = this.navParams.data;
     console.log(this.shop);
@@ -28,7 +29,8 @@ export class PopOverPage {
 
   go2Shop() {
     console.log('go to detailed page');
-    this.navCtrl.push('ShopPage', this.shop)
+    this.app.getRootNav().setRoot('ShopPage', this.shop)
+    // this.navCtrl.setRoot('ShopPage', this.shop)
   }
 
 }

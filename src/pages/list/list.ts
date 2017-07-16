@@ -25,7 +25,7 @@ export class ListPage {
   }
 
   go2Shop(shop: iShop){
-    this.navCtrl.push('ShopPage', shop);
+    this.navCtrl.setRoot('ShopPage', shop);
   }
 
 }
