@@ -5,5 +5,6 @@ export interface iItem {
     PRICE: number,
     SIZE: string,
     DATE_CREATE: string,
-    SHOP_ID: string
+    SHOP_ID: string,
+    ITEM_ID: string
 }

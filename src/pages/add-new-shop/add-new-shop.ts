@@ -35,14 +35,14 @@ export class AddNewShopPage {
     console.log('ionViewDidLoad AddNewShopPage');
   }
 
-  onAddShop(){
-    this.addShop(this.shop);
-  }
+  // onAddShop(){
+  //   this.addShop(this.shop);
+  // }
 
-  addShop(shop: iShop){
-    this.afService.addItem2List('Shops', shop).then((res)=>{
-      console.log(res);
-    })
-  }
+  // addShop(shop: iShop){
+  //   this.afService.addItem2List('Shops', shop).then((res)=>{
+  //     console.log(res);
+  //   })
+  // }
 
 }

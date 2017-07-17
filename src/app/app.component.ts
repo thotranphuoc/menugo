@@ -24,6 +24,7 @@ export class MyApp {
       { title: 'Home', component: 'MapPage' },
       { title: 'List', component: 'ListPage' },
       { title: 'Setting', component: 'SettingPage' },
+      { title: 'Admin', component: 'AdminPage' },
       { title: 'About', component: 'AboutPage' }
     ];
 

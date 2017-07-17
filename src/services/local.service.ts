@@ -54,7 +54,8 @@ export class LocalService {
         PRICE: null,
         SIZE: null,
         DATE_CREATE: null,
-        SHOP_ID: null
+        SHOP_ID: null,
+        ITEM_ID: null
     }
 
     ITEM: iItem = {
@@ -64,7 +65,8 @@ export class LocalService {
         PRICE: null,
         SIZE: null,
         DATE_CREATE: null,
-        SHOP_ID: null
+        SHOP_ID: null,
+        ITEM_ID: null
     }
 
     ITEM_IMG64s_DEFAULT: string[] = null;
@@ -92,6 +94,14 @@ export class LocalService {
 
     SHOP_IMAGE: string;
     SHOP_IMAGES: string[];
+
+    //ShopMenuPage, ShopOrderPage
+    ITEM_INDEX_DEFAULT: any = null;
+    ITEM_INDEX: any = null;
+
+    ITEMS_DEFAULT: iItem[] = null;
+    ITEMS: iItem[] = null;
+
 
     itemAction: string = 'add-new';  // add-new, item-update
     existingImageUrls: string[] = [];

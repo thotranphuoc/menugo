@@ -1,0 +1,53 @@
+<!--
+  Generated template for the ShopMenuPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>shop-menu</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+</ion-content>
+
+
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{shop.NAME | uppercase}}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <ion-card *ngFor="let item of items; let i = index" (click)="selectItem(i)">
+    <div>
+      <img src="{{item.IMAGES[0]}}" alt="">
+    </div>
+    <div class="info"></div>
+    <div class="name_local">{{item.NAME_LOCAL}}</div>
+    <div class="name_en">{{item.NAME_EN}}</div>
+    <div class="price">{{item.PRICE}} KVND</div>
+    <div class="count"> 
+    </div>
+    <div class="number">{{itemIndex[i].count}}</div>
+  </ion-card>
+  <ion-fab left bottom>
+    <button ion-fab color="danger" mini><ion-icon name="add"></ion-icon></button>
+    <ion-fab-list side="top">
+      <button ion-fab><ion-icon name="logo-facebook"></ion-icon></button>
+      <button ion-fab><ion-icon name="logo-twitter"></ion-icon></button>
+      <button ion-fab><ion-icon name="logo-vimeo"></ion-icon></button>
+      <button ion-fab (click)="go2MenuItemAdd()"><ion-icon name="md-checkmark"></ion-icon></button>
+    </ion-fab-list>
+  </ion-fab>
+
+</ion-content>

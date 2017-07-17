@@ -1,0 +1,51 @@
+page-shop-order {
+    ion-row.row_main.row{
+        padding-top: 2px;
+    }
+    .row_main{
+        background-color: lightgray;
+        // margin: 1px;
+        border-bottom: solid 0.5px white;
+        // border-bottom-color: white;
+    }
+
+    .adjust{
+        text-align: center
+    }
+
+    .name_local{
+        font-size: 1em;
+        // font-style: italic;
+        color: black;
+    }
+    .name_en {
+        font-size: 0.8em;
+        font-style: italic;
+        color: black;
+    }
+
+    .number {
+        font-size: 1em;
+        // font-style: italic;
+        color: white;
+        background-color: grey;
+        margin: 1px;
+    }
+
+    .add {
+        font-size: 1em;
+        // font-style: italic;
+        color: white;
+        background-color: green;
+        margin: 1px;
+    }
+
+    .subtract {
+        font-size: 1em;
+        // font-style: italic;
+        color: white;
+        background-color: orangered;
+        margin: 1px;
+    }
+
+}

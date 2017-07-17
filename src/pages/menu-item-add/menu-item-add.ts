@@ -99,22 +99,27 @@ export class MenuItemAddPage {
           this.afService.addItem2List('Items', this.item)
             .then((res) => {
               console.log(res);
-              let ITEM_KEY = res.key;
-              console.log(ITEM_KEY);
-              // update shop's item
+              let ITEM_ID = res.key;
+              console.log(ITEM_ID);
+              // update shop's item /Shop_Items
               this.dbService.getListReturnPromise_ArrayOfData('Shop_Items/' + this.SHOP_ID)
                 .then((ITEMS_KEY: string[]) => {
                   let items = ITEMS_KEY;
-                  items.push(ITEM_KEY);
+                  items.push(ITEM_ID);
                   this.afService.updateObjectData('Shop_Items/' + this.SHOP_ID, items);
                 }, err => this.showErr(err))
+              
+              // update ITEM_ID
+              this.afService.updateObjectData('Items/' + ITEM_ID + '/ITEM_ID', ITEM_ID);
+              
+              // upload Item image and update Item/IMAGES
               let name = new Date().getTime().toString();
               console.log(this.base64Images);
-              this.dbService.uploadBase64Images2FBReturnPromiseWithArrayOfURL('ItemImages/' + ITEM_KEY, this.base64Images, name)
+              this.dbService.uploadBase64Images2FBReturnPromiseWithArrayOfURL('ItemImages/' + ITEM_ID, this.base64Images, name)
                 .then((urls) => {
                   console.log('upload item images --> done');
                   console.log(urls);
-                  this.afService.updateObjectData('Items/' + ITEM_KEY + '/IMAGES', urls)
+                  this.afService.updateObjectData('Items/' + ITEM_ID + '/IMAGES', urls)
                     .then(() => {
                       console.log('update item image successs');
                       this.hideLoading();

@@ -1,0 +1,28 @@
+
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>ORDER</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <ion-grid>
+    <ion-row *ngFor="let item of items; let i = index" class="row_main">
+      <ion-col *ngIf="itemIndex[i].count>0">
+        <ion-row class="name_local">{{item.NAME_LOCAL}}</ion-row>
+        <ion-row class="name_en">{{item.NAME_EN}}</ion-row>
+      </ion-col>
+      <ion-col class="adjust" *ngIf="itemIndex[i].count>0">
+        <ion-row>
+          <ion-col class="subtract" (click)="subtract(i)"><ion-icon name="md-remove"></ion-icon></ion-col>
+          <ion-col class="number">{{itemIndex[i].count}}</ion-col>
+          <ion-col class="add" (click)="add(i)"><ion-icon name="md-add"></ion-icon></ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <button ion-button secondary (click)="sendOrder()">Send Order</button>
+</ion-content>
