@@ -48,8 +48,8 @@ export class AddNewShopTab3Page {
     this.startLoading()
     if (this.localService.getIsUserChosenPositionSet()) {
       console.log('user location set');
-      console.log(this.localService.SHOP.LOCATION)
-      this.showMap(this.localService.SHOP.LOCATION, mapElement);
+      console.log(this.localService.SHOP.SHOP_LOCATION)
+      this.showMap(this.localService.SHOP.SHOP_LOCATION, mapElement);
     } else {
       console.log('user location not set yet');
       this.geolocation.getCurrentPosition()
@@ -59,7 +59,7 @@ export class AddNewShopTab3Page {
             lng: position.coords.longitude
           }
           this.showMap(pos, mapElement);
-          this.localService.SHOP.LOCATION = pos;
+          this.localService.SHOP.SHOP_LOCATION = pos;
           this.localService.isUserChosenPositionSet = true;
         })
     }
@@ -97,7 +97,7 @@ export class AddNewShopTab3Page {
   }
 
   setUserChoosenPosition(position: iPosition) {
-    this.localService.SHOP.LOCATION= position;
+    this.localService.SHOP.SHOP_LOCATION= position;
     // this.soldItem.POSITION = position;
     this.localService.isUserChosenPositionSet = true;
   }

@@ -14,59 +14,65 @@ import { iItem } from '../interfaces/item.interface';
 export class LocalService {
 
     SHOP_DEFAULT: iShop = {
-        ID: null,
-        OWNER: null,
-        DATE_CREATE: null,
-        LOCATION: null,
-        NAME: null,
-        KIND: null,
-        ADDRESS: null,
-        IMAGES: null,
-        PHONE: null,
-        isCREDIT: false,
-        isMOTO_PARK_FREE: false,
-        isCAR_PARK_FREE: false,
-        isMEMBERSHIP: false,
-        isVISIBLE: true
+        SHOP_ID: null,
+        SHOP_OWNER: null,
+        SHOP_DATE_CREATE: null,
+        SHOP_LOCATION: null,
+        SHOP_NAME: null,
+        SHOP_KIND: null,
+        SHOP_ADDRESS: null,
+        SHOP_IMAGES: null,
+        SHOP_PHONE: null,
+        SHOP_isCREDIT: false,
+        SHOP_isMOTO_PARK_FREE: false,
+        SHOP_isCAR_PARK_FREE: false,
+        SHOP_isMEMBERSHIP: false,
+        SHOP_isVISIBLE: true
     }
 
     SHOP: iShop = {
-        ID: null,
-        OWNER: null,
-        DATE_CREATE: null,
-        LOCATION: null,
-        NAME: null,
-        KIND: null,
-        ADDRESS: null,
-        IMAGES: null,
-        PHONE: null,
-        isCREDIT: false,
-        isMOTO_PARK_FREE: false,
-        isCAR_PARK_FREE: false,
-        isMEMBERSHIP: false,
-        isVISIBLE: true
+        SHOP_ID: null,
+        SHOP_OWNER: null,
+        SHOP_DATE_CREATE: null,
+        SHOP_LOCATION: null,
+        SHOP_NAME: null,
+        SHOP_KIND: null,
+        SHOP_ADDRESS: null,
+        SHOP_IMAGES: null,
+        SHOP_PHONE: null,
+        SHOP_isCREDIT: false,
+        SHOP_isMOTO_PARK_FREE: false,
+        SHOP_isCAR_PARK_FREE: false,
+        SHOP_isMEMBERSHIP: false,
+        SHOP_isVISIBLE: true
     }
 
     ITEM_DEFAULT: iItem = {
-        NAME_LOCAL: null,
-        NAME_EN: null,
-        IMAGES: [], 
-        PRICE: null,
-        SIZE: null,
-        DATE_CREATE: null,
-        SHOP_ID: null,
-        ITEM_ID: null
+        ITEM_ID: null,
+        ITEM_NAME_LOCAL: null,
+        ITEM_NAME_EN: null,
+        ITEM_IMAGES: [], 
+        ITEM_PRICE: null,
+        ITEM_SIZE: null,
+        ITEM_DATE_CREATE: null,
+        ITEM_SHOP_ID: null,
+        ITEM_ON_SALE: false,
+        ITEM_NEW: true,
+        ITEM_VISIBLE: true
     }
 
     ITEM: iItem = {
-        NAME_LOCAL: null,
-        NAME_EN: null,
-        IMAGES: [], 
-        PRICE: null,
-        SIZE: null,
-        DATE_CREATE: null,
-        SHOP_ID: null,
-        ITEM_ID: null
+        ITEM_ID: null,
+        ITEM_NAME_LOCAL: null,
+        ITEM_NAME_EN: null,
+        ITEM_IMAGES: [], 
+        ITEM_PRICE: null,
+        ITEM_SIZE: null,
+        ITEM_DATE_CREATE: null,
+        ITEM_SHOP_ID: null,
+        ITEM_ON_SALE: false,
+        ITEM_NEW: true,
+        ITEM_VISIBLE: true
     }
 
     ITEM_IMG64s_DEFAULT: string[] = null;

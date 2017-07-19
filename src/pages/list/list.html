@@ -13,10 +13,10 @@
 
     <ion-item *ngFor="let shop of shopList | async" (click)="go2Shop(shop)">
       <ion-avatar item-start>
-        <img src="{{shop.IMAGES[0]}}">
+        <img src="{{shop.SHOP_IMAGES[0]}}">
       </ion-avatar>
-      <h2>{{shop.NAME}}</h2>
-      <p>{{shop.KIND}}</p>
+      <h2>{{shop.SHOP_NAME}}</h2>
+      <p>{{shop.SHOP_KIND}}</p>
     </ion-item>
   </ion-list>
 

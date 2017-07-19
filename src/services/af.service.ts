@@ -87,7 +87,7 @@ export class AngularFireService {
     }
 
     getList(URL: string) {
-        return this.db.list(URL);
+        return this.db.list(URL)
     }
 
     addItem2List(URLofList: string, value: any) {

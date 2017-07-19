@@ -126,6 +126,7 @@ export class DbService {
         })
     }
 
+    // VERIFIED: get an item object from url
     getOneItemReturnPromise(dbURL) {
         return new Promise((resolve, reject) => {
             let db = firebase.database().ref(dbURL);
@@ -140,6 +141,28 @@ export class DbService {
                 })
         })
     }
+
+    // insert 1 value into current array
+
+    insertValueIntoArray(dbURL, value: any) {
+        return new Promise((resolve, reject) => {
+            this.getListReturnPromise_ArrayOfData(dbURL).then((array: any[]) => {
+                let items = array;
+                items.push(value);
+                firebase.database().ref(dbURL).set(items)
+                    .then((res) => {
+                        console.log('insert success');
+                        resolve(res);
+                    })
+                    .catch((err) => {
+                        console.log('Error:', err)
+                        reject(err);
+                    })
+            })
+        })
+    }
+
+
 
 
 }

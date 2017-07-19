@@ -1,19 +1,19 @@
 import { iPosition } from './position.interface';
 
 export interface iShop {
-    ID: string,
-    OWNER: string,
-    DATE_CREATE: string,
-    LOCATION: iPosition,
-    NAME: string,
-    KIND: string,
-    ADDRESS: string,
-    IMAGES: string[],
-    PHONE?: string,
-    isCREDIT: boolean,
-    isMOTO_PARK_FREE: boolean,
-    isCAR_PARK_FREE: boolean,
-    isMEMBERSHIP: boolean,
-    isVISIBLE: boolean
+    SHOP_ID: string,
+    SHOP_OWNER: string,
+    SHOP_DATE_CREATE: string,
+    SHOP_LOCATION: iPosition,
+    SHOP_NAME: string,
+    SHOP_KIND: string,
+    SHOP_ADDRESS: string,
+    SHOP_IMAGES: string[],
+    SHOP_PHONE?: string,
+    SHOP_isCREDIT: boolean,
+    SHOP_isMOTO_PARK_FREE: boolean,
+    SHOP_isCAR_PARK_FREE: boolean,
+    SHOP_isMEMBERSHIP: boolean,
+    SHOP_isVISIBLE: boolean
 
 }

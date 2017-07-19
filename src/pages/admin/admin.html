@@ -7,31 +7,61 @@
 </ion-header>
 
 
-<ion-content padding>
-  <ion-card *ngFor="let order of orders">
-    {{order.ORDER_ID}}
-    <p>{{order.ORDER_STATUS}}</p>
-    <div></div>
+<ion-content>
+  <!-- <ion-card *ngFor="let order of orders_new; let ind = index" (click)="go2OrderDetail(order,ind)">
     <ion-grid>
-      <ion-row *ngFor="let order of order.ORDER_LIST; let i = index" class="row_main">
-        {{order.item}} - {{ order.amount}}
-        <!--<ion-col *ngIf="itemIndex[i].count>0">
-          <ion-row class="name_local">{{item.i}}</ion-row>
-          <ion-row class="name_en">{{item.NAME_EN}}</ion-row>
-        </ion-col>
-        <ion-col class="adjust" *ngIf="itemIndex[i].count>0">
-          <ion-row>
-            <ion-col class="subtract" (click)="subtract(i)">
-              <ion-icon name="md-remove"></ion-icon>
-            </ion-col>
-            <ion-col class="number">{{itemIndex[i].count}}</ion-col>
-            <ion-col class="add" (click)="add(i)">
-              <ion-icon name="md-add"></ion-icon>
-            </ion-col>
-          </ion-row>
-        </ion-col>-->
+      <ion-row style="background-color: lightgrey">
+        <ion-col>{{order.ORDER_DATE_CREATE}}</ion-col>
+        <ion-col>{{order.ORDER_STATUS}}</ion-col>
       </ion-row>
+       <ion-row *ngFor="let orderz of order.ORDER_LIST_NEW; let i = index" class="row_main">
+        <ion-col col-7>
+          <ion-row class="name_local">{{orderz.item.ITEM_NAME_LOCAL}}</ion-row>
+           
+        </ion-col>
+        <ion-col col-2>
+          <ion-row>{{orderz.amount}}</ion-row>
+        </ion-col>
+        <ion-col>
+          <ion-row >STHG</ion-row>
+        </ion-col>
+      </ion-row> 
     </ion-grid>
+    
+  </ion-card>
+
+  <ion-item *ngFor="let item of test ">
+    {{item}}
+  </ion-item>
+
+  item-amount 
+  <ion-item *ngFor="let amount of amounts">
+    {{amount.item}} - {{amount.amount}}
+  </ion-item>
+
+
+  ASYNC -->
+
+  <ion-card *ngFor="let order of ORDERs_NEW; let ind = index" (click)="go2OrderDetail(order,ind)">
+    <ion-grid>
+      <ion-row style="background-color: lightgrey">
+        <ion-col>{{order.ORDER_DATE_CREATE}}</ion-col>
+        <ion-col>{{order.ORDER_STATUS}}</ion-col>
+      </ion-row>
+       <ion-row *ngFor="let orderz of order.ORDER_LIST_NEW; let i = index" class="row_main">
+        <ion-col col-7>
+          <ion-row class="name_local">{{orderz.item.ITEM_NAME_LOCAL}}</ion-row>
+           
+        </ion-col>
+        <ion-col col-2>
+          <ion-row>{{orderz.amount}}</ion-row>
+        </ion-col>
+        <ion-col>
+          <ion-row >STHG</ion-row>
+        </ion-col>
+      </ion-row> 
+    </ion-grid>
+    
   </ion-card>
 
 </ion-content>

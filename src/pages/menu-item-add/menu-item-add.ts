@@ -88,8 +88,8 @@ export class MenuItemAddPage {
       if (this.afService.getAuth().auth.currentUser) {
         // user signed in
         // this.startLoading();
-        this.item.DATE_CREATE = this.appService.getCurrentDataAndTime().toString();
-        this.item.SHOP_ID = this.SHOP_ID;
+        this.item.ITEM_DATE_CREATE = this.appService.getCurrentDataAndTime().toString();
+        this.item.ITEM_SHOP_ID = this.SHOP_ID;
         console.log(this.item);
         console.log(this.base64Images);
         // ADD NEW
@@ -119,7 +119,7 @@ export class MenuItemAddPage {
                 .then((urls) => {
                   console.log('upload item images --> done');
                   console.log(urls);
-                  this.afService.updateObjectData('Items/' + ITEM_ID + '/IMAGES', urls)
+                  this.afService.updateObjectData('Items/' + ITEM_ID + '/ITEM_IMAGES', urls)
                     .then(() => {
                       console.log('update item image successs');
                       this.hideLoading();
@@ -147,21 +147,21 @@ export class MenuItemAddPage {
 
   checkInfoFullFilled() {
     this.isInfoFullFilled = true;
-    if (this.item.NAME_LOCAL == null || this.item.NAME_LOCAL == '') {
+    if (this.item.ITEM_NAME_LOCAL == null || this.item.ITEM_NAME_LOCAL == '') {
       this.isInfoFullFilled = false;
-      console.log(this.item.NAME_LOCAL, 'NAME_LOCAL is missed');
+      console.log(this.item.ITEM_NAME_LOCAL, 'NAME_LOCAL is missed');
     }
-    if (this.item.NAME_EN == null || this.item.NAME_EN == '') {
+    if (this.item.ITEM_NAME_EN == null || this.item.ITEM_NAME_EN== '') {
       this.isInfoFullFilled = false;
-      console.log(this.item.NAME_EN, 'NAME_EN is missed');
+      console.log(this.item.ITEM_NAME_EN, 'NAME_EN is missed');
     }
-    if (this.item.PRICE == null) {
+    if (this.item.ITEM_PRICE == null) {
       this.isInfoFullFilled = false;
-      console.log(this.item.PRICE, 'PRICE is missed');
+      console.log(this.item.ITEM_PRICE, 'PRICE is missed');
     }
-    if (this.item.SIZE == null || this.item.SIZE == '') {
+    if (this.item.ITEM_SIZE == null || this.item.ITEM_SIZE == '') {
       this.isInfoFullFilled = false;
-      console.log(this.item.SIZE, 'size is missed');
+      console.log(this.item.ITEM_SIZE, 'size is missed');
     }
 
     // DONT KNOW WHY BELOW SET this.base64Images = null

@@ -1,10 +1,13 @@
 export interface iItem {
-    NAME_LOCAL: string,
-    NAME_EN: string,
-    IMAGES: string[], 
-    PRICE: number,
-    SIZE: string,
-    DATE_CREATE: string,
-    SHOP_ID: string,
-    ITEM_ID: string
+    ITEM_ID: string,
+    ITEM_NAME_LOCAL: string,
+    ITEM_NAME_EN: string,
+    ITEM_IMAGES: string[], 
+    ITEM_PRICE: number,
+    ITEM_SIZE: string,
+    ITEM_DATE_CREATE: string,
+    ITEM_SHOP_ID: string,
+    ITEM_ON_SALE: boolean,
+    ITEM_NEW: boolean,
+    ITEM_VISIBLE: boolean
 }

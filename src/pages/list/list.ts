@@ -18,6 +18,7 @@ export class ListPage {
     public navParams: NavParams,
     private afService: AngularFireService) {
       this.shopList = this.afService.getList('Shops');
+      console.log(this.shopList)
   }
 
   ionViewDidLoad() {

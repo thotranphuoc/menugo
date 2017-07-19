@@ -55,11 +55,11 @@ export class AddNewShopTab4Page {
   ionViewWillEnter() {
     this.SHOP_IMAGES = this.localService.SHOP_IMAGES;
     this.shop = this.localService.getShop();
-    console.log(this.localService.SHOP.LOCATION);
+    console.log(this.localService.SHOP.SHOP_LOCATION);
 
     setTimeout(() => {
-      if (this.shop.LOCATION) {
-        this.initMap(this.shop.LOCATION)
+      if (this.shop.SHOP_LOCATION) {
+        this.initMap(this.shop.SHOP_LOCATION)
       } else {
         this.initMap({ lat: 0, lng: 0 })
       }
@@ -91,8 +91,8 @@ export class AddNewShopTab4Page {
       if (this.afService.getAuth().auth.currentUser) {
         // user signed in
         // this.startLoading();
-        this.shop.OWNER = this.afService.getAuth().auth.currentUser.uid;
-        this.shop.DATE_CREATE = this.appService.getCurrentDataAndTime().toString();
+        this.shop.SHOP_OWNER = this.afService.getAuth().auth.currentUser.uid;
+        this.shop.SHOP_DATE_CREATE = this.appService.getCurrentDataAndTime().toString();
         console.log(this.shop);
         // ADD NEW
         if (this.action === 'add-new') {
@@ -160,22 +160,22 @@ export class AddNewShopTab4Page {
 
   checkInfoFullFilled() {
     this.isInfoFullFilled = true;
-    if (this.shop.NAME == null || this.shop.NAME == '') {
+    if (this.shop.SHOP_NAME == null || this.shop.SHOP_NAME == '') {
       this.isInfoFullFilled = false;
-      console.log(this.shop.NAME, ' is missed');
+      console.log(this.shop.SHOP_NAME, ' is missed');
     }
-    if (this.shop.ADDRESS == null || this.shop.ADDRESS == '') {
+    if (this.shop.SHOP_ADDRESS == null || this.shop.SHOP_ADDRESS == '') {
       this.isInfoFullFilled = false;
-      console.log(this.shop.ADDRESS, ' is missed');
+      console.log(this.shop.SHOP_ADDRESS, ' is missed');
     }
 
     if (this.SHOP_IMAGES == null){
       this.isInfoFullFilled = false;
-      console.log(this.shop.NAME, 'image is missed');
+      console.log(this.shop.SHOP_NAME, 'image is missed');
     }
 
-    console.log(this.shop.NAME);
-    console.log(this.shop.ADDRESS);
+    console.log(this.shop.SHOP_NAME);
+    console.log(this.shop.SHOP_ADDRESS);
     console.log(this.isInfoFullFilled, '<--isInfoFullfilled?');
   }
 

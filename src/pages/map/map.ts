@@ -112,8 +112,8 @@ export class MapPage {
     this.gmapService.removeMarkersFromMap(this.gmapService.getMarkers());
 
     this.shops.forEach(shop=>{
-      if(this.gmapService.isPositionInsideMap(shop.LOCATION,this.map)){
-        this.gmapService.addMarkerToMapWithIDReturnPromiseWithMarker(this.map,shop.LOCATION, shop);
+      if(this.gmapService.isPositionInsideMap(shop.SHOP_LOCATION,this.map)){
+        this.gmapService.addMarkerToMapWithIDReturnPromiseWithMarker(this.map,shop.SHOP_LOCATION, shop);
       }
     })
   }
