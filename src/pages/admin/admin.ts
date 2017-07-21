@@ -18,12 +18,11 @@ export class AdminPage {
   SHOP_ITEMS_ID: string[] = null;
   orders: iOrder[] = [];
   orders_new: any = [];
-  test: any[];
-  amounts: any[] = [];
+  ORDERs_NEW: any[] =[];
 
   // for unsubcribe
   subscription: Subscription
-  ORDERs_NEW: any[] =[];
+  
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -35,13 +34,11 @@ export class AdminPage {
     console.log('constructor');
     this.getShopItems()
       .then(() => {
-        // this.getOrderDetail().then((res) => {
-        //   console.log(res);
-        //   this.orders_new = res;
-        // })
         this.getOrderDetailAsync();
       })
-
+    
+    this.dbService.getAnObjectAtNode('ActiveOrdersOfUser/1TS0NVs0ElX86MGAmHOKol9PFC82');
+    this.dbService.moveObjectFromURL2URL('ActiveOrdersOfUser/1TS0NVs0ElX86MGAmHOKol9PFC82','ActiveOrdersOfUserBK/1TS0NVs0ElX86MGAmHOKol9PFC82','-KpV8YMw1WU4CiXLxnoo');
   }
 
   ionViewDidLoad() {
@@ -75,45 +72,6 @@ export class AdminPage {
         })
     })
   }
-
-  getShopItemAsync() {
-    this.SHOP_ITEMS = [];
-    this.SHOP_ITEMS_ID = [];
-    let SHOP_ID = '-Kp98d8gamYNpWHiDAVf';
-    this.afService.getObject('Shop_Items/' + SHOP_ID).subscribe((data) => {
-      this.test = data;
-    })
-    // .subscribe((res)=>{
-    //   console.log(res);
-    //   // console.log(res.json())
-    // })
-  }
-
-  getOrders() {
-    this.amounts = [];
-    let orderIDs = [];
-    let SHOP_ID = '-Kp98d8gamYNpWHiDAVf';
-    // let DATE = this.appService.getCurrentDate();
-    let DATE = '2017/07/18';
-    let URL = 'OrdersOfShop/' + SHOP_ID + '/' + DATE;
-
-    // get all order of shop within today.
-    this.afService.getList(URL).subscribe((ORDER_LIST: any[]) => {
-      console.log(ORDER_LIST);
-      ORDER_LIST.forEach((ORDER) => {
-        // console.log(ORDER);
-        ORDER.ORDER_LIST.forEach(item => {
-          console.log(item);
-          this.amounts.push(item);
-        })
-
-        // this.afService.getObject('Items/'+ORDER.ORDER_LISitem).subscribe(item=>{
-        //   console.log(item);
-        // })
-      })
-    })
-  }
-
 
   getShopOrders() {
     return new Promise((resolve, reject) => {
@@ -167,7 +125,6 @@ export class AdminPage {
       // let DATE = this.appService.getCurrentDate();
       let DATE = '2017/07/18';
       let URL = 'OrdersOfShop/' + SHOP_ID + '/' + DATE;
-
       // get array of order of shop
       this.dbService.getListReturnPromise_ArrayOfData(URL)
         .then((datas: any[]) => {
@@ -188,24 +145,10 @@ export class AdminPage {
           // resolve
           resolve(ORDERs_NEW)
         })
-
-      // this.afService.getList(URL).subscribe((datas)=>{
-      //   // console.log(datas);
-      //     ORDERs_NEW = [];
-      //     datas.forEach((data: iOrder) => {
-      //       let ORDER_LIST_NEW = [];
-      //       data.ORDER_LIST.forEach(item => {
-      //         // console.log(item);
-      //         let index = this.SHOP_ITEMS_ID.indexOf(item.item);
-      //         ORDER_LIST_NEW.push({ item: this.SHOP_ITEMS[index], amount: item.amount });
-      //       })
-      //       data['ORDER_LIST_NEW'] = ORDER_LIST_NEW;
-      //       ORDERs_NEW.push(data)
-      //     })
-      // })
     })
   }
 
+  // VERIFIED: get array of orders detail of show, async
   getOrderDetailAsync(){
     this.ORDERs_NEW = [];
       let SHOP_ID = '-Kp98d8gamYNpWHiDAVf';

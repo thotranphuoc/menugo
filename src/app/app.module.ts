@@ -21,7 +21,6 @@ import { AppService } from '../services/app.service';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuthModule } from 'angularfire2/auth';
-// import { Subscription } from 'rxjs';
 
 export const firebaseConfig = {
     apiKey: "AIzaSyC4NxrYYEzopXAcKvDQFE0vqlIY17w2YMg",
@@ -63,8 +62,7 @@ export const firebaseConfig = {
     ImageService,
     LocalService,
     AuthService,
-    AppService,
-    // Subscription
+    AppService
   ]
 })
 export class AppModule {}

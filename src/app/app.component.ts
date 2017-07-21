@@ -26,7 +26,8 @@ export class MyApp {
       { title: 'Setting', component: 'SettingPage' },
       { title: 'Admin', component: 'AdminPage' },
       { title: 'About', component: 'AboutPage' },
-      { title: 'AngularFire2', component: 'Angularfire2Page' }
+      { title: 'AngularFire2', component: 'Angularfire2Page' },
+      { title: 'Your Orders', component: 'YourOrdersPage' }
     ];
 
   }

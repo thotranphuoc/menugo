@@ -29,17 +29,17 @@
 
   <hr>
 
-  <p>EXISTING ORDERS</p>
-  <ion-card *ngFor="let order of ORDERS; let ind = index" (click)="go2OrderDetail(order,ind)">
-    <ion-grid *ngIf="order.ORDER_STATUS !=='CLOSED'">
+  <p>ACTIVE ORDER</p>
+  <ion-card *ngFor="let order of ORDERs_NEW; let ind = index" (click)="go2OrderDetail(order,ind)">
+    <ion-grid>
       <ion-row style="background-color: lightgrey">
         <ion-col>{{order.ORDER_DATE_CREATE}}</ion-col>
         <ion-col>{{order.ORDER_STATUS}}</ion-col>
       </ion-row>
-      <ion-row *ngFor="let orderz of order.ORDER_LIST_NEW; let i = index" class="row_main1">
+       <ion-row *ngFor="let orderz of order.ORDER_LIST_NEW; let i = index" class="row_main">
         <ion-col col-7>
-          <ion-row class="name_local1">{{orderz.item.ITEM_NAME_LOCAL}}</ion-row>
-           <!-- <ion-row class="name_en">{{orderz.item.ITEM_NAME_EN}}</ion-row>  -->
+          <ion-row class="name_local">{{orderz.item.ITEM_NAME_LOCAL}}</ion-row>
+           
         </ion-col>
         <ion-col col-2>
           <ion-row>{{orderz.amount}}</ion-row>
@@ -47,14 +47,9 @@
         <ion-col>
           <ion-row >STHG</ion-row>
         </ion-col>
-      </ion-row>
+      </ion-row> 
     </ion-grid>
+    
   </ion-card>
-
-  <ion-list>
-    <ion-item *ngFor="let item of test">
-      {{item | json}}
-    </ion-item>
-  </ion-list>
     
 </ion-content>

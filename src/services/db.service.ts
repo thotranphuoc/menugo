@@ -18,6 +18,7 @@ export class DbService {
         private afAuth: AngularFireAuth) {
     }
 
+    // VERIFIED: create new key and insert object
     insertOneNewItemReturnPromise(item, dbName) {
         let db = firebase.database().ref(dbName);
         return db.push(item);
@@ -142,8 +143,7 @@ export class DbService {
         })
     }
 
-    // insert 1 value into current array
-
+    //VERIFIED: insert 1 value into current array
     insertValueIntoArray(dbURL, value: any) {
         return new Promise((resolve, reject) => {
             this.getListReturnPromise_ArrayOfData(dbURL).then((array: any[]) => {
@@ -162,8 +162,61 @@ export class DbService {
         })
     }
 
+    // VERIFIED: insert an object at specific node such as ActiveOrdersOfUser/USER_ID/ORDER_ID {}
+    insertAnObjectAtNode(dbURL, value) {
+        let db = firebase.database().ref(dbURL);
+        return db.set(value);
+    }
+
+    // VERIFIED: remove an object (including all its children) from this node
+    removeAnObjectAtNode(dbURL) {
+        let db = firebase.database().ref(dbURL);
+        return db.remove();
+    }
+
+    getAnObjectAtNode(dbURL) {
+        let db = firebase.database().ref(dbURL);
+        db.once('value').then((res) => {
+            console.log(res.val());
+            console.log(res.key);
+        })
+    }
+
+    copyObjectFromURL2URL(url1, url2, node_key) {
+        return new Promise((resolve, reject) => {
+            let db1 = firebase.database().ref(url1 + '/' + node_key);
+            db1.once('value').then((res) => {
+                console.log(res.val());
+                console.log(res.key);
+                let db2 = firebase.database().ref(url2 + '/' + node_key);
+                db2.set(res.val()).then((res) => {
+                    console.log(res);
+                    console.log('copy success')
+                    resolve();
+                }, err => {
+                    console.log(err);
+                    reject(err);
+                })
+            }, err => {
+                console.log(err);
+                reject(err);
+            });
+        })
+    }
+
+    moveObjectFromURL2URL(url1,url2,node_key){
+        this.copyObjectFromURL2URL(url1,url2,node_key)
+        .then(()=>{
+            // remove url1/node_key
+            this.removeAnObjectAtNode(url1+'/'+node_key).then(()=>{
+                console.log('move success')
+            })
+        })
+    }
+
+
+
 
 
 
 }
-
