@@ -8,6 +8,7 @@ import { DbService } from './db.service';
 import { iShop } from '../interfaces/shop.interface';
 import { iSetting } from '../interfaces/setting.interface';
 import { iItem } from '../interfaces/item.interface';
+import { iOrder } from '../interfaces/order.interface';
 
 @Injectable()
 
@@ -51,7 +52,7 @@ export class LocalService {
         ITEM_ID: null,
         ITEM_NAME_LOCAL: null,
         ITEM_NAME_EN: null,
-        ITEM_IMAGES: [], 
+        ITEM_IMAGES: [],
         ITEM_PRICE: null,
         ITEM_SIZE: null,
         ITEM_DATE_CREATE: null,
@@ -65,7 +66,7 @@ export class LocalService {
         ITEM_ID: null,
         ITEM_NAME_LOCAL: null,
         ITEM_NAME_EN: null,
-        ITEM_IMAGES: [], 
+        ITEM_IMAGES: [],
         ITEM_PRICE: null,
         ITEM_SIZE: null,
         ITEM_DATE_CREATE: null,
@@ -102,11 +103,15 @@ export class LocalService {
     SHOP_IMAGES: string[];
 
     //ShopMenuPage, ShopOrderPage
-    ITEM_INDEX_DEFAULT: any = null;
-    ITEM_INDEX: any = null;
+    ITEM_INDEX_DEFAULT: any = [];
+    ITEM_INDEX: any = [];
 
-    ITEMS_DEFAULT: iItem[] = null;
-    ITEMS: iItem[] = null;
+    ITEMS_DEFAULT: iItem[] = [];
+    ITEMS: iItem[] = [];
+
+    SHOP_ITEMS = [];
+    SHOP_ITEMS_ID = [];
+    SHOP_ITEMS_INDEX = [];
 
 
     itemAction: string = 'add-new';  // add-new, item-update
@@ -209,6 +214,87 @@ export class LocalService {
     //         }
     //     })
     // }
+
+    setNewStatusForOrder(SHOP_ID, USER_ID, NEW_STATUS, ORDER_ID, DATE) {
+
+        
+
+        if (NEW_STATUS === 'CLOSED') {
+            this.dbService.removeAnObjectAtNode('ActiveOrdersOfUser/' + USER_ID + '/' + ORDER_ID);
+            // update OrdersOfShop
+            this.afService.updateObjectData('OrdersOfShop/' + SHOP_ID + '/' + DATE + '/' + ORDER_ID + '/ORDER_STATUS', NEW_STATUS);
+        } else {
+            // update OrdersOfShop
+            this.afService.updateObjectData('OrdersOfShop/' + SHOP_ID + '/' + DATE + '/' + ORDER_ID + '/ORDER_STATUS', NEW_STATUS);
+            // this.afService.updateObjectData('ActiveOrdersOfUser/' + USER_ID + '/' + ORDER_ID + '/ORDER_STATUS', NEW_STATUS);
+            this.dbService.copyObjectFromURL2URL('OrdersOfShop/' + SHOP_ID + '/' + DATE, 'ActiveOrdersOfUser/' + USER_ID, ORDER_ID)
+        }
+    }
+
+    sendNewOrder(ORDER: iOrder, SHOP_ID, USER_ID, DATE) {
+        return new Promise((resolve, reject) => {
+            this.afService.addItem2List('OrdersOfShop/' + SHOP_ID + '/' + DATE, ORDER)
+                .then((res) => {
+                    // update ITEM_ID
+                    let ORDER_ID = res.key;
+                    this.afService.updateObjectData('OrdersOfShop/' + SHOP_ID + '/' + DATE + '/' + ORDER_ID + '/ORDER_ID', ORDER_ID)
+                        .then((resp) => {
+                            console.log('Order sending success');
+                            // this.isOrderSent = true;
+                            // this.isNew = false;
+                            // this.isItemNew = false;
+                            // this.Order2Update = ORDER;
+                            // update OrderOfUser
+                            this.dbService.insertValueIntoArray('OrdersOfUser/' + USER_ID + '/' + DATE, 'OrdersOfShop/' + SHOP_ID + '/' + DATE + '/' + ORDER_ID);
+
+                        })
+
+                    // insert ActiveOrdersOfUser
+                    let ActiveORDER = ORDER
+                    ActiveORDER['ORDER_ID'] = ORDER_ID;
+                    this.dbService.insertAnObjectAtNode('ActiveOrdersOfUser/' + USER_ID + '/' + ORDER_ID, ActiveORDER).then((res) => console.log('active orders of user updated'));
+                })
+        })
+    }
+
+    updateOrder(ORDER_LIST, Order2Update) {
+        console.log(ORDER_LIST);
+        console.log(Order2Update);
+        Order2Update.ORDER_LIST = ORDER_LIST;
+        Order2Update.ORDER_STATUS = 'UPDATED';
+        let DATE = Order2Update.ORDER_DATE_CREATE.substr(0, 10);
+        // update OrdersOfShop
+        this.afService.updateObjectData('OrdersOfShop/' + Order2Update.ORDER_SHOP_ID + '/' + DATE + '/' + Order2Update.ORDER_ID, Order2Update)
+        // update ActiveOrdersOfUser
+        this.afService.updateObjectData('ActiveOrdersOfUser/' + Order2Update.ORDER_USER_ID + '/' + Order2Update.ORDER_ID, Order2Update)
+    }
+
+    getShopItems_ID(SHOP_ID: string) {
+        return this.dbService.getListReturnPromise_ArrayOfData('Shop_Items/' + SHOP_ID)
+        // .then((items_id)=>{
+        //     console.log(items_id)
+        // })
+    }
+
+    getItemDateFromListOfItems_ID(ITEMS_ID: string[]) {
+        return new Promise((resolve, reject) => {
+            let SHOP_ITEMS = [];
+            let SHOP_ITEMS_ID = [];
+            let length = ITEMS_ID.length;
+            let n = 0;
+            ITEMS_ID.forEach(ITEM_ID => {
+                this.dbService.getOneItemReturnPromise('Items/' + ITEM_ID)
+                    .then((item: iItem) => {
+                        SHOP_ITEMS.push(item);
+                        SHOP_ITEMS_ID.push(item.ITEM_ID);
+                        n++;
+                        if (n == length) {
+                            resolve({ SHOP_ITEMS: SHOP_ITEMS, SHOP_ITEMS_ID: SHOP_ITEMS_ID });
+                        }
+                    })
+            })
+        })
+    }
 }
 
 export interface iPhoto {

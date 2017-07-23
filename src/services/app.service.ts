@@ -343,6 +343,12 @@ export class AppService {
         return diff;
     }
 
+    // combineArray1IntoArray2(arr1: any[], arr2: any[]){
+    //     arr1.forEach(item=>{
+    //         arr2.indexOf()
+    //     })
+    // }
+
     
 
     

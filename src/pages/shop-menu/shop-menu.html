@@ -2,7 +2,10 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>shop-menu</ion-title>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Menu</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -16,14 +19,14 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>{{shop.NAME | uppercase}}</ion-title>
+    <ion-title>{{shop.SHOP_NAME | uppercase}}</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content>
-  <ion-card *ngFor="let item of items; let i = index" (click)="selectItem(i)">
+  <!-- <ion-card *ngFor="let item of items; let i = index" (click)="selectItem(i)">
     <div>
       <img src="{{item.ITEM_IMAGES[0]}}" alt="">
     </div>
@@ -34,7 +37,21 @@
     <div class="count"> 
     </div>
     <div class="number">{{itemIndex[i].count}}</div>
+  </ion-card> -->
+
+  <ion-card *ngFor="let item of SHOP_ITEMS; let i = index" (click)="selectITEM(i)">
+    <div>
+      <img src="{{item.ITEM_IMAGES[0]}}" alt="">
+    </div>
+    <div class="info"></div>
+    <div class="name_local">{{item.ITEM_NAME_LOCAL}}</div>
+    <div class="name_en">{{item.ITEM_NAME_EN}}</div>
+    <div class="price">{{item.ITEM_PRICE}} KVND</div>
+    <div class="count"> 
+    </div>
+    <div class="number">{{SHOP_ITEMS_INDEX[i].count}}</div>
   </ion-card>
+
   <ion-fab left bottom>
     <button ion-fab color="danger" mini><ion-icon name="add"></ion-icon></button>
     <ion-fab-list side="top">

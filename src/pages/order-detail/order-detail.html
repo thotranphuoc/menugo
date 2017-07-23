@@ -1,0 +1,61 @@
+<!--
+  Generated template for the OrderDetailPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>order-detail</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+
+  <ion-card>
+    <ion-grid>
+      <ion-row style="background-color: lightgrey">
+        <ion-col>{{order.ORDER_DATE_CREATE}}</ion-col>
+        <ion-col>{{order.ORDER_STATUS}}</ion-col>
+      </ion-row>
+      <ion-row *ngFor="let orderz of order.ORDER_LIST_NEW; let i = index" class="row_main">
+        <ion-col col-7>
+          <ion-row class="name_local">{{orderz.item.ITEM_NAME_LOCAL}}</ion-row>
+          <ion-row class="name_local">{{orderz.item.ITEM_NAME_EN}}</ion-row>
+        </ion-col>
+        <ion-col col-2>
+          <ion-row>{{orderz.amount}}x {{orderz.item.ITEM_PRICE}}</ion-row>
+        </ion-col>
+        <ion-col>
+          <ion-row><div class="total-price">{{orderz.amount*orderz.item.ITEM_PRICE}}</div></ion-row>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+  </ion-card>
+
+
+
+  <div style="padding: 12px; text-align: center">
+    <button ion-button color="primary" small (click)="setOrderStatus('ACCEPTED')">ACCEPTED</button>
+    <button ion-button color="dark" small (click)="setOrderStatus('DELIVERED')">DELIVERED</button>
+    <button ion-button color="secondary" small (click)="setOrderStatus('PAID')">PAID</button>
+    <button ion-button color="light" small (click)="setOrderStatus('CLOSED')">CLOSED</button>
+    <button ion-button color="danger" small (click)="setOrderStatus('CANCELED')">CANCELED</button>
+  </div>
+  <hr>
+  <p>TABLE: {{order.ORDER_TABLE}}</p>
+  <p>USER: {{order.ORDER_USER_ID}}</p>
+  <!-- <ion-grid>
+    <ion-row>
+      <ion-col><button ion-button primary (click)="setOrderStatus('ACCEPTED')">ACCEPTED</button></ion-col>
+      <ion-col><button ion-button primary (click)="setOrderStatus('DELIVERED')">DELIVERED</button></ion-col>
+      <ion-col><button ion-button primary (click)="setOrderStatus('PAID')">PAID</button></ion-col>
+      <ion-col><button ion-button primary (click)="setOrderStatus('CLOSED')">CLOSED</button></ion-col>
+    </ion-row>
+  </ion-grid> -->
+
+</ion-content>

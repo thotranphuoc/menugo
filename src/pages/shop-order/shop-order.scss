@@ -1,12 +1,16 @@
 page-shop-order {
     ion-row.row_main.row{
-        padding-top: 2px;
+        // padding-top: 2px;
+        // margin-left: 12px;
+        // margin-right: 12px;
     }
     .row_main{
         background-color: lightgray;
         // margin: 1px;
-        border-bottom: solid 0.5px white;
+        // border-bottom: solid 0.5px white;
+        border-top: solid 0.5px white;
         // border-bottom-color: white;
+        
     }
 
     .adjust{
@@ -47,5 +51,21 @@ page-shop-order {
         background-color: orangered;
         margin: 1px;
     }
+
+    .text-center {
+        text-align: center;
+        font-size: 1.3em;
+        background-color: #12d1a4;
+        padding: 2.5px;
+        margin-left: 12px;
+        margin-right: 12px;
+    }
+
+    .total-price {
+        width: 100%;
+        text-align: right;
+    }
+
+
 
 }

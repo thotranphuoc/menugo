@@ -19,6 +19,9 @@ export class YourOrdersPage {
   SHOP_ITEMS_ID: string[] = null;
   ORDERs_DETAIL: any[] = [];
 
+  DATE: any = '2017/07/23';
+  selectedDate: string = null;
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -27,7 +30,12 @@ export class YourOrdersPage {
     private dbService: DbService,
     private afService: AngularFireService
   ) {
-    
+    this.DATE = this.appService.getCurrentDate();
+    this.getHistory();
+
+  }
+
+  getHistory() {
     this.getShopItems().then(() => {
       console.log(this.SHOP_ITEMS, this.SHOP_ITEMS_ID);
       this.getOrdersOfUser().then((ORDERs_ID: string[]) => {
@@ -35,7 +43,6 @@ export class YourOrdersPage {
         this.getOrderDetailFromId(ORDERs_ID);
       })
     })
-    
   }
 
   ionViewDidLoad() {
@@ -70,8 +77,8 @@ export class YourOrdersPage {
   getOrdersOfUser() {
     return new Promise((resolve, reject) => {
       let USER_ID = this.afService.getAuth().auth.currentUser.uid;
-      // let DATE = this.appService.getCurrentDate();
-      let DATE = '2017/07/18';
+      let DATE = this.DATE;
+      // let DATE = '2017/07/18';
       let URL = 'OrdersOfUser/' + USER_ID + '/' + DATE;
       this.dbService.getListReturnPromise_ArrayOfData(URL).then((ORDER_IDs) => {
         // console.log(ORDER_IDs);
@@ -87,17 +94,37 @@ export class YourOrdersPage {
     ORDER_IDs.forEach(ORDER_ID => {
       this.dbService.getOneItemReturnPromise(ORDER_ID).then((orderDetail: iOrder) => {
         let ORDER_LIST_NEW = [];
+        let TOTAL_PRICE = 0;
         orderDetail.ORDER_LIST.forEach(ORDER => {
           let index = this.SHOP_ITEMS_ID.indexOf(ORDER.item);
           ORDER_LIST_NEW.push({ item: this.SHOP_ITEMS[index], amount: ORDER.amount });
+          let PRICE = ORDER.amount * this.SHOP_ITEMS[index].ITEM_PRICE;
+          TOTAL_PRICE += PRICE;
         })
 
         orderDetail['ORDER_LIST_NEW'] = ORDER_LIST_NEW;
+        orderDetail['TOTAL_PRICE'] = TOTAL_PRICE;
         this.ORDERs_DETAIL.push(orderDetail);
       })
     })
     console.log(this.ORDERs_DETAIL);
 
+  }
+
+  go2OrderDetail(order, i) {
+    console.log(order, i);
+    this.navCtrl.push('OrderDetailPage', order);
+  }
+
+  selectDate() {
+    console.log(this.selectedDate);
+    if (this.selectedDate != null) {
+      this.DATE = this.selectedDate.substr(0, 4) + '/' + this.selectedDate.substr(5, 2) + '/' + this.selectedDate.substr(8, 2);
+    } else {
+      this.appService.alertMsg('Alert', 'Choose date to show');
+    }
+    console.log(this.DATE);
+    this.getHistory();
   }
 
 }
