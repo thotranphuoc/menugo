@@ -5,23 +5,22 @@ import { LocalService } from '../../services/local.service';
 import { AngularFireService } from '../../services/af.service';
 import { AppService } from '../../services/app.service';
 import { DbService } from '../../services/db.service';
-import { iItem } from '../../interfaces/item.interface';
-import { iOrderList } from '../../interfaces/order-list.interface';
-import { iOrder } from '../../interfaces/order.interface';
 
+import { iOrder } from '../../interfaces/order.interface';
+import { iShop } from '../../interfaces/shop.interface';
 @IonicPage()
 @Component({
   selector: 'page-your-orders',
   templateUrl: 'your-orders.html',
 })
 export class YourOrdersPage {
-  SHOP_ITEMS: iItem[] = null;
-  SHOP_ITEMS_ID: string[] = null;
-  ORDERs_DETAIL: any[] = [];
-
   DATE: any = '2017/07/23';
   selectedDate: string = null;
-
+  SHOPs: iShop[] =[];
+  USER_ID: string ;
+  SHOPS_ITEMS: any[] = [];
+  SHOPS_ITEMS_ID : any[]= [];
+  SHOPS_ORDERS: any[] =[];
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -30,90 +29,80 @@ export class YourOrdersPage {
     private dbService: DbService,
     private afService: AngularFireService
   ) {
+    
+    if(this.afService.getAuth().auth.currentUser !=null){
+      this.USER_ID = this.afService.getAuth().auth.currentUser.uid;
+    }else{;
+      this.navCtrl.setRoot('MapPage');
+    }
     this.DATE = this.appService.getCurrentDate();
-    this.getHistory();
-
+    this.initGetYourOrder();
   }
 
-  getHistory() {
-    this.getShopItems().then(() => {
-      console.log(this.SHOP_ITEMS, this.SHOP_ITEMS_ID);
-      this.getOrdersOfUser().then((ORDERs_ID: string[]) => {
-        console.log(ORDERs_ID);
-        this.getOrderDetailFromId(ORDERs_ID);
-      })
+  initGetYourOrder(){  
+      this.localService.getSHOPs_ID(this.USER_ID, this.DATE).then((shop_id_list: string[])=>{
+        console.log(shop_id_list);
+        this.SHOPS_ITEMS = [];
+        this.SHOPS_ITEMS_ID = [];
+        shop_id_list.forEach(shop_id => {
+          this.localService.getSHOP_ITEMSnSHOP_ITEMS_ID(shop_id).then((data: any)=>{
+            console.log(data);
+            this.SHOPS_ITEMS = this.SHOPS_ITEMS.concat(data.SHOP_ITEMS);
+            this.SHOPS_ITEMS_ID = this.SHOPS_ITEMS_ID.concat(data.SHOP_ITEMS_ID);
+          })
+          .then(()=>{
+            console.log(this.SHOPS_ITEMS);
+            console.log(this.SHOPS_ITEMS_ID);
+          })
+          .then(()=>{
+            this.getOrderDetail();
+          })
+
+          this.SHOPs = [];
+          this.dbService.getOneItemReturnPromise('Shops/'+shop_id).then((shop: iShop)=>{
+            this.SHOPs.push(shop);
+          })
+        });
+        console.log(this.SHOPs);
     })
+  }
+
+  getOrderDetail(){
+    console.log('Done init');
+      this.localService.getORDERS_IDOfUser(this.USER_ID, this.DATE).then((data: any[])=>{
+        console.log(data);
+        this.SHOPS_ORDERS = [];
+        data.forEach(orderID => {
+          this.dbService.getOneItemReturnPromise(orderID).then((orderDetail: iOrder)=>{
+            console.log(orderDetail);
+            let ORDER_LIST_NEW = []
+            orderDetail.ORDER_LIST.forEach((item: any) =>{
+              let index = this.SHOPS_ITEMS_ID.indexOf(item.item);
+              ORDER_LIST_NEW.push({item: this.SHOPS_ITEMS[index], amount: item.amount});
+            })
+            orderDetail['ORDER_LIST_NEW'] = ORDER_LIST_NEW;
+            this.SHOPS_ORDERS.push(orderDetail);
+          })
+        });
+        console.log(this.SHOPS_ORDERS);
+      })
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad YourOrdersPage');
   }
 
-  // VERIFIED: get array of item_id & array of item-data
-  getShopItems() {
-    return new Promise((resolve, reject) => {
-      this.SHOP_ITEMS = [];
-      this.SHOP_ITEMS_ID = [];
-      let SHOP_ID = '-Kp98d8gamYNpWHiDAVf';
-      // get all item_id of user on today
-      this.dbService.getListReturnPromise_ArrayOfData('Shop_Items/' + SHOP_ID)
-        .then((item_keys: string[]) => {
-          console.log(item_keys);
-          item_keys.forEach(item_key => {
-            // from key, get item detail
-            this.dbService.getOneItemReturnPromise('Items/' + item_key)
-              .then((item: iItem) => {
-                // console.log(item);
-                this.SHOP_ITEMS.push(item);
-                this.SHOP_ITEMS_ID.push(item.ITEM_ID)
-                resolve();
-              })
-          })
-        })
-    })
-  }
-
-  // VERIFIED: Get oder Ids of users
-  getOrdersOfUser() {
-    return new Promise((resolve, reject) => {
-      let USER_ID = this.afService.getAuth().auth.currentUser.uid;
-      let DATE = this.DATE;
-      // let DATE = '2017/07/18';
-      let URL = 'OrdersOfUser/' + USER_ID + '/' + DATE;
-      this.dbService.getListReturnPromise_ArrayOfData(URL).then((ORDER_IDs) => {
-        // console.log(ORDER_IDs);
-        resolve(ORDER_IDs)
-      })
-    })
-  }
-
-  // VERIFIED: get array of Order detail from array of Order IDs
-  getOrderDetailFromId(ORDER_IDs: string[]) {
-    this.ORDERs_DETAIL = [];
-    // console.log('ORDER_IDs',ORDER_IDs)
-    ORDER_IDs.forEach(ORDER_ID => {
-      this.dbService.getOneItemReturnPromise(ORDER_ID).then((orderDetail: iOrder) => {
-        let ORDER_LIST_NEW = [];
-        let TOTAL_PRICE = 0;
-        orderDetail.ORDER_LIST.forEach(ORDER => {
-          let index = this.SHOP_ITEMS_ID.indexOf(ORDER.item);
-          ORDER_LIST_NEW.push({ item: this.SHOP_ITEMS[index], amount: ORDER.amount });
-          let PRICE = ORDER.amount * this.SHOP_ITEMS[index].ITEM_PRICE;
-          TOTAL_PRICE += PRICE;
-        })
-
-        orderDetail['ORDER_LIST_NEW'] = ORDER_LIST_NEW;
-        orderDetail['TOTAL_PRICE'] = TOTAL_PRICE;
-        this.ORDERs_DETAIL.push(orderDetail);
-      })
-    })
-    console.log(this.ORDERs_DETAIL);
-
-  }
-
-  go2OrderDetail(order, i) {
+  go2OrderDetail(order: iOrder, i) {
     console.log(order, i);
-    this.navCtrl.push('OrderDetailPage', order);
+    console.log(this.SHOPs);
+    let res = null;
+    this.SHOPs.forEach((SHOP)=>{
+      if(SHOP.SHOP_ID=== order.ORDER_SHOP_ID){
+        res = SHOP
+      }
+    })
+    console.log(res);
+    this.navCtrl.push('OrderDetailPage', {ORDER: order, SHOP: res });
   }
 
   selectDate() {
@@ -124,7 +113,6 @@ export class YourOrdersPage {
       this.appService.alertMsg('Alert', 'Choose date to show');
     }
     console.log(this.DATE);
-    this.getHistory();
+    this.initGetYourOrder();
   }
-
 }

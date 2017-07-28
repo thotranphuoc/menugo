@@ -19,7 +19,7 @@ declare var google: any;
 })
 export class AddNewShopTab4Page {
   SHOP_IMAGES: string[] = null;
-  shop: iShop;
+  SHOP: iShop;
   mapreview: any;
   mapElement: any;
   loading: any;
@@ -41,7 +41,7 @@ export class AddNewShopTab4Page {
     private gmapService: GmapService,
     private localService: LocalService,
     private dbService: DbService) {
-    this.shop = this.localService.getShop();
+    this.SHOP = this.localService.getShop();
     this.loading = this.loadingCtrl.create({
       content: 'Please wait....',
       spinner: 'crescent'
@@ -54,12 +54,12 @@ export class AddNewShopTab4Page {
 
   ionViewWillEnter() {
     this.SHOP_IMAGES = this.localService.SHOP_IMAGES;
-    this.shop = this.localService.getShop();
+    this.SHOP = this.localService.getShop();
     console.log(this.localService.SHOP.SHOP_LOCATION);
 
     setTimeout(() => {
-      if (this.shop.SHOP_LOCATION) {
-        this.initMap(this.shop.SHOP_LOCATION)
+      if (this.SHOP.SHOP_LOCATION) {
+        this.initMap(this.SHOP.SHOP_LOCATION)
       } else {
         this.initMap({ lat: 0, lng: 0 })
       }
@@ -85,26 +85,27 @@ export class AddNewShopTab4Page {
 
   createShop() {
     this.hasPosted = true;
-    console.log(this.shop);
+    console.log(this.SHOP);
     this.checkInfoFullFilled();
     if (this.isInfoFullFilled) {
       if (this.afService.getAuth().auth.currentUser) {
         // user signed in
         // this.startLoading();
-        this.shop.SHOP_OWNER = this.afService.getAuth().auth.currentUser.uid;
-        this.shop.SHOP_DATE_CREATE = this.appService.getCurrentDataAndTime().toString();
-        console.log(this.shop);
+        this.SHOP.SHOP_OWNER = this.afService.getAuth().auth.currentUser.uid;
+        this.SHOP.SHOP_DATE_CREATE = this.appService.getCurrentDataAndTime().toString();
+        console.log(this.SHOP);
         // ADD NEW
         if (this.action === 'add-new') {
-          console.log(this.shop);
-          this.afService.addItem2List('Shops', this.shop)
+          console.log(this.SHOP);
+          this.afService.addItem2List('Shops', this.SHOP)
             .then((res) => {
               console.log(res);
               console.log(res.key);
+              this.afService.updateObjectData('Shops/' + res.key + '/SHOP_ID', res.key)
               let name = new Date().getTime().toString();
               this.dbService.uploadBase64Images2FBReturnPromiseWithArrayOfURL('ShopImages/' + res.key, this.SHOP_IMAGES, name)
                 .then((urls) => {
-                  this.afService.updateObjectData('Shops/' + res.key + '/IMAGES', urls)
+                  this.afService.updateObjectData('Shops/' + res.key + '/SHOP_IMAGES', urls)
                     .then(() => {
                       this.hideLoading();
                       this.resetShop();
@@ -160,22 +161,22 @@ export class AddNewShopTab4Page {
 
   checkInfoFullFilled() {
     this.isInfoFullFilled = true;
-    if (this.shop.SHOP_NAME == null || this.shop.SHOP_NAME == '') {
+    if (this.SHOP.SHOP_NAME == null || this.SHOP.SHOP_NAME == '') {
       this.isInfoFullFilled = false;
-      console.log(this.shop.SHOP_NAME, ' is missed');
+      console.log(this.SHOP.SHOP_NAME, ' is missed');
     }
-    if (this.shop.SHOP_ADDRESS == null || this.shop.SHOP_ADDRESS == '') {
+    if (this.SHOP.SHOP_ADDRESS == null || this.SHOP.SHOP_ADDRESS == '') {
       this.isInfoFullFilled = false;
-      console.log(this.shop.SHOP_ADDRESS, ' is missed');
+      console.log(this.SHOP.SHOP_ADDRESS, ' is missed');
     }
 
     if (this.SHOP_IMAGES == null){
       this.isInfoFullFilled = false;
-      console.log(this.shop.SHOP_NAME, 'image is missed');
+      console.log(this.SHOP.SHOP_NAME, 'image is missed');
     }
 
-    console.log(this.shop.SHOP_NAME);
-    console.log(this.shop.SHOP_ADDRESS);
+    console.log(this.SHOP.SHOP_NAME);
+    console.log(this.SHOP.SHOP_ADDRESS);
     console.log(this.isInfoFullFilled, '<--isInfoFullfilled?');
   }
 

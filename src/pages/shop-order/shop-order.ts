@@ -8,6 +8,7 @@ import { DbService } from '../../services/db.service';
 import { iItem } from '../../interfaces/item.interface';
 import { iOrderList } from '../../interfaces/order-list.interface';
 import { iOrder } from '../../interfaces/order.interface';
+import { iShop } from '../../interfaces/shop.interface';
 import { Subscription } from 'rxjs/Subscription';
 @IonicPage()
 @Component({
@@ -15,24 +16,17 @@ import { Subscription } from 'rxjs/Subscription';
   templateUrl: 'shop-order.html',
 })
 export class ShopOrderPage {
-  itemIndex: any[] = ['test'];
-  items: iItem[];
-  orders: any[] = [];
-  ORDERS: any[] = [];
+  SHOP: iShop = null;
+  USER_ID: string = null;
+
   SHOP_ITEMS: iItem[] = [];
   SHOP_ITEMS_ID: string[] = [];
   SHOP_ITEMS_INDEX: any[] = [];
-  // isNEW: boolean = false;
   isItemUPDATE: boolean = false;
   isItemNEW: boolean = false;
-  // ORDERs_DETAIL: any[] = [];
   ORDERs_NEW = [];
   // for unsubcribe
   subscription: Subscription;
-  isNew: boolean = true;
-  isItemNew: boolean = false;
-  isItemUpdate: boolean = false;
-  isOrderSent: boolean = false;
   Order2Update: iOrder = null;
   constructor(
     public navCtrl: NavController,
@@ -42,17 +36,25 @@ export class ShopOrderPage {
     private dbService: DbService,
     private afService: AngularFireService
   ) {
-    // this.checkItemNewOrUpdate();
-    
-    this.getShopITEMS();
+    this.SHOP = this.localService.SHOP;
+    if (this.localService.USER_ID != null) {
+      this.USER_ID = this.localService.USER_ID;
+    } else {
+      this.USER_ID = this.afService.getAuth().auth.currentUser.uid;
+    }
 
-    // this.getShopItems()
-    // .then(() => {
-    //   console.log(this.SHOP_ITEMS, this.SHOP_ITEMS_ID);
-    //   // get active order detail async
-    //   this.getActiveOrderAsync();
-    //   this.checkItemNewOrUpdate();
-    // })
+    // 1. getShopITEMS. If ITEM already get, go ahead. If not, start getting
+    this.getShopITEMS();
+    if (this.SHOP_ITEMS.length < 0) {
+      // start get ShopITEM
+      this.localService.getSHOP_ITEMSnSHOP_ITEMS_ID(this.SHOP.SHOP_ID).then((data: any) => {
+        this.SHOP_ITEMS = data.SHOP_ITEMS;
+        this.SHOP_ITEMS_ID = data.SHOP_ITEMS_ID;
+      })
+    }
+
+    // 2. getActiveOrderAsync();
+    this.getActiveOrderAsync();
   }
 
   ionViewDidLoad() {
@@ -62,21 +64,11 @@ export class ShopOrderPage {
   ionViewWillEnter() {
     console.log('ionViewWillEnter ShopOrderPage');
     this.getShopITEMS();
-    this.itemIndex = this.localService.ITEM_INDEX;
-    this.items = this.localService.ITEMS;
-    console.log(this.itemIndex, this.items);
-    // TODO: remove item that have itemIndex.count = 0;
-    // Enable button if count >0
-    // this.checkIfItemAdded();
-    // this.checkItemNewOrUpdate();
-
     this.checkItemNEWorUPDATE();
-    this.getActiveOrderAsync();
   }
 
   ionViewWillLeave() {
-    this.localService.ITEM_INDEX = this.itemIndex;
-    this.subscription.unsubscribe();
+    
   }
 
   checkItemNEWorUPDATE() {
@@ -93,125 +85,20 @@ export class ShopOrderPage {
     console.log(this.isItemNEW, this.isItemUPDATE);
   }
 
-  // checkItemNewOrUpdate() {
-  //   console.log(this.itemIndex);
-  //   if (this.itemIndex.length > 0) {
-  //     let count = this.countItems();
-  //     if (count > 0) {
-  //       if (this.isItemUpdate) {
-  //         this.isItemNew = false;
-  //       } else {
-  //         this.isItemNew = true;
-  //       }
-  //       // if (this.itemIndex.length > 0 && !this.isItemUpdate) {
-  //       //   this.isItemNew = true;
-  //       // } else {
-  //       //   this.isItemNew = false;
-  //       // }
-
-  //       // if (this.itemIndex.length > 0 && this.isItemUpdate) {
-  //       //   this.isItemNew = false;
-  //       //   this.isItemUpdate = true;
-  //       // } else {
-  //       //   // this.isItemNew = true;
-  //       //   this.isItemUpdate = false;
-  //       // }
-  //     } else {
-  //       this.isItemNew = false;
-  //       this.isItemUpdate = false;
-  //     }
-  //   } else {
-  //     this.isItemNew = false;
-  //     this.isItemUpdate = false;
-  //   }
-
-  //   console.log(this.isItemNew, this.isItemUpdate);
-  // }
-
-  countItems() {
-    let count = 0;
-    if (this.itemIndex.length > 0) {
-      this.itemIndex.forEach(item => {
-        count += item.count;
-      })
-    }
-    return count;
-  }
-
   subtract(i: number) {
-    if (this.itemIndex[i].count > 0) {
-      this.itemIndex[i].count--;
-    }
     if (this.SHOP_ITEMS_INDEX[i]) {
       this.SHOP_ITEMS_INDEX[i].count--;
     }
-    // this.checkItemNewOrUpdate();
     this.checkItemNEWorUPDATE()
-    // if (!this.isNew) {
-    //   this.isItemNew = false;
-    //   this.isItemUpdate = true;
-    // }
   }
 
   add(i: number) {
-    this.itemIndex[i].count++;
+    // this.itemIndex[i].count++;
     this.SHOP_ITEMS_INDEX[i].count++;
-    // this.checkItemNewOrUpdate();
     this.checkItemNEWorUPDATE();
-    // if (!this.isNew) {
-    //   this.isItemNew = false;
-    //   this.isItemUpdate = true;
-    // }
   }
 
-  // sendOrder() {
-  //   let ORDER_LIST: iOrderList[] = [];
-  //   this.itemIndex.forEach((element, index: number, array) => {
-  //     if (element.count > 0) {
-  //       ORDER_LIST.push({ item: this.items[index].ITEM_ID, amount: element.count });
-  //     }
-  //   });
-  //   console.log(ORDER_LIST);
-  //   let SHOP_ID = this.items[0].ITEM_SHOP_ID;
-  //   let USER_ID = this.afService.getAuth().auth.currentUser.uid;
-  //   let DATETIME = this.appService.getCurrentDataAndTime();
-  //   let TABLE = 'T01';
-  //   let ORDER: iOrder = {
-  //     ORDER_ID: null,
-  //     ORDER_SHOP_ID: SHOP_ID,
-  //     ORDER_USER_ID: USER_ID,
-  //     ORDER_STAFT_ID: USER_ID,
-  //     ORDER_STATUS: 'SENDING',
-  //     ORDER_DATE_CREATE: DATETIME,
-  //     ORDER_DATE_CLOSE: null,
-  //     ORDER_TABLE: TABLE,
-  //     ORDER_LIST: ORDER_LIST,
-  //   };
-  //   let DATE = this.appService.getCurrentDate();
-  //   this.afService.addItem2List('OrdersOfShop/' + SHOP_ID + '/' + DATE, ORDER)
-  //     .then((res) => {
-  //       // update ITEM_ID
-  //       let ORDER_ID = res.key;
-  //       this.afService.updateObjectData('OrdersOfShop/' + SHOP_ID + '/' + DATE + '/' + ORDER_ID + '/ORDER_ID', ORDER_ID)
-  //         .then((resp) => {
-  //           console.log('Order sending success');
-  //           this.isOrderSent = true;
-  //           this.isNew = false;
-  //           this.isItemNew = false;
-  //           this.Order2Update = ORDER;
-  //           // update OrderOfUser
-  //           this.dbService.insertValueIntoArray('OrdersOfUser/' + USER_ID + '/' + DATE, 'OrdersOfShop/' + SHOP_ID + '/' + DATE + '/' + ORDER_ID)
-  //         })
-
-  //       // insert ActiveOrdersOfUser
-  //       let ActiveORDER = ORDER
-  //       ActiveORDER['ORDER_ID'] = ORDER_ID;
-  //       this.dbService.insertAnObjectAtNode('ActiveOrdersOfUser/' + USER_ID + '/' + ORDER_ID, ActiveORDER).then((res) => console.log('active orders of user updated'));
-  //     })
-  // }
-
   sendORDER() {
-    
     let ORDER_LIST: iOrderList[] = [];
     this.SHOP_ITEMS_INDEX.forEach((element, index: number, array) => {
       if (element.count > 0) {
@@ -237,42 +124,12 @@ export class ShopOrderPage {
     let DATE = this.appService.getCurrentDate();
     this.localService.sendNewOrder(ORDER, SHOP_ID, USER_ID, DATE);
     this.Order2Update = ORDER;
+    
     this.resetIndex();
   }
 
-  resetIndex(){
-    this.SHOP_ITEMS_INDEX.forEach(item=>{
-      item.count = 0;
-    })
-    this.localService.SHOP_ITEMS_INDEX = this.SHOP_ITEMS_INDEX;
-    this.setAction('init-load');
-  }
-
-  // updateOrder() {
-  //   this.isItemNew = false;
-  //   this.isItemUpdate = false;
-
-  //   let ORDER_LIST: iOrderList[] = [];
-  //   this.itemIndex.forEach((element, index: number, array) => {
-  //     if (element.count > 0) {
-  //       ORDER_LIST.push({ item: this.items[index].ITEM_ID, amount: element.count });
-  //     }
-  //   });
-  //   console.log(ORDER_LIST);
-  //   console.log(this.Order2Update);
-
-  //   this.Order2Update.ORDER_LIST = ORDER_LIST;
-  //   this.Order2Update.ORDER_STATUS = 'UPDATED';
-  //   let DATE = this.Order2Update.ORDER_DATE_CREATE.substr(0, 10);
-  //   // update OrdersOfShop
-  //   this.afService.updateObjectData('OrdersOfShop/' + this.Order2Update.ORDER_SHOP_ID + '/' + DATE + '/' + this.Order2Update.ORDER_ID, this.Order2Update)
-  //   // update ActiveOrdersOfUser
-  //   this.afService.updateObjectData('ActiveOrdersOfUser/' + this.Order2Update.ORDER_USER_ID + '/' + this.Order2Update.ORDER_ID, this.Order2Update)
-  // }
-
   updateORDER() {
     this.setAction('init-load');
-
     let ORDER_LIST: iOrderList[] = [];
     this.SHOP_ITEMS_INDEX.forEach((element, index: number, array) => {
       if (element.count > 0) {
@@ -282,33 +139,18 @@ export class ShopOrderPage {
     console.log(ORDER_LIST);
     console.log(this.Order2Update);
     this.localService.updateOrder(ORDER_LIST, this.Order2Update);
-    
+
     this.resetIndex();
   }
 
-  // // VERIFIED: get array of item_id & array of item-data
-  // getShopItems() {
-  //   return new Promise((resolve, reject) => {
-  //     this.SHOP_ITEMS = [];
-  //     this.SHOP_ITEMS_ID = [];
-  //     let SHOP_ID = '-Kp98d8gamYNpWHiDAVf';
-  //     // get all item_id of user on today
-  //     this.dbService.getListReturnPromise_ArrayOfData('Shop_Items/' + SHOP_ID)
-  //       .then((item_keys: string[]) => {
-  //         console.log(item_keys);
-  //         item_keys.forEach(item_key => {
-  //           // from key, get item detail
-  //           this.dbService.getOneItemReturnPromise('Items/' + item_key)
-  //             .then((item: iItem) => {
-  //               // console.log(item);
-  //               this.SHOP_ITEMS.push(item);
-  //               this.SHOP_ITEMS_ID.push(item.ITEM_ID)
-  //               resolve();
-  //             })
-  //         })
-  //       })
-  //   })
-  // }
+
+  resetIndex() {
+    this.SHOP_ITEMS_INDEX.forEach(item => {
+      item.count = 0;
+    })
+    this.localService.SHOP_ITEMS_INDEX = this.SHOP_ITEMS_INDEX;
+    this.setAction('init-load');
+  }
 
   getShopITEMS() {
     this.SHOP_ITEMS = this.localService.SHOP_ITEMS;
@@ -319,8 +161,9 @@ export class ShopOrderPage {
 
   // VERIFIED: get Active orders of user
   getActiveOrderAsync() {
-    let USER_ID = this.afService.getAuth().auth.currentUser.uid;
-    let URL = 'ActiveOrdersOfUser/' + USER_ID
+    let USER_ID = this.USER_ID;
+    let SHOP_ID = this.SHOP.SHOP_ID;
+    let URL = 'ActiveOrdersOfUser/' + USER_ID + '/' + SHOP_ID;
     this.subscription = this.afService.getList(URL).subscribe((ORDERS: iOrder[]) => {
       console.log(ORDERS);
       if (ORDERS.length > 0) {
@@ -332,8 +175,8 @@ export class ShopOrderPage {
             ORDER.ORDER_LIST.forEach(item => {
               let index = this.SHOP_ITEMS_ID.indexOf(item.item);
               ORDER_LIST_NEW.push({ item: this.SHOP_ITEMS[index], amount: item.amount });
-              let PRICE = item.amount*this.SHOP_ITEMS[index].ITEM_PRICE;
-              TOTAL_PRICE +=PRICE;
+              let PRICE = item.amount * this.SHOP_ITEMS[index].ITEM_PRICE;
+              TOTAL_PRICE += PRICE;
             })
           }
           setTimeout(() => {
@@ -346,9 +189,8 @@ export class ShopOrderPage {
     })
   }
 
-  go2OrderUpdate(order, ind) {
+  updateSelectedORDER(order, ind) {
     this.setAction('update');
-    // this.navCtrl.push('ShopOrderUpdatePage', order);
     console.log(this.SHOP_ITEMS_ID, this.SHOP_ITEMS_INDEX);
     this.updateIndexCount(order).then((res: any[]) => {
       console.log(res)
@@ -357,7 +199,7 @@ export class ShopOrderPage {
     })
     delete order.ORDER_LIST_NEW;
     this.Order2Update = order;
-    
+
   }
 
   updateIndexCount(order: iOrder) {
@@ -373,13 +215,13 @@ export class ShopOrderPage {
           shop_items_index.push({ count: order.ORDER_LIST[ind].amount });
         }
       })
-      console.log(shop_items_index);
+      // console.log(shop_items_index);
       resolve(shop_items_index);
     })
 
   }
 
-  setAction(action: string){
+  setAction(action: string) {
     switch (action) {
       case 'new':
         this.isItemNEW = true;
@@ -398,7 +240,4 @@ export class ShopOrderPage {
 
     console.log(this.isItemNEW, this.isItemUPDATE);
   }
-
-  
-
 }

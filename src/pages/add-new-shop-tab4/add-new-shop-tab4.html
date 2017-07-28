@@ -2,6 +2,9 @@
 <ion-header>
 
   <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
     <ion-title>Preview</ion-title>
   </ion-navbar>
 
@@ -22,19 +25,19 @@
   <ion-list>
     <ion-item>
       <ion-icon name="md-restaurant" item-start></ion-icon>
-      {{shop.NAME}}
+      {{SHOP.SHOP_NAME}}
     </ion-item>
     <ion-item>
       <ion-icon name="ios-call-outline" item-start></ion-icon>
-      {{shop.PHONE}}
+      {{SHOP.SHOP_PHONE}}
     </ion-item>
     <ion-item>
       <ion-icon name="md-apps" item-start></ion-icon>
-      {{shop.KIND}}
+      {{SHOP.SHOP_KIND}}
     </ion-item>
     <ion-item>
       <ion-icon name="ios-home-outline" item-start></ion-icon>
-      {{shop.ADDRESS}}
+      {{SHOP.SHOP_ADDRESS}}
     </ion-item>
   </ion-list>
   <ion-card>

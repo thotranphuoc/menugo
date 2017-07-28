@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 // import { Camera, CameraOptions } from '@ionic-native/camera';
 import { AngularFireService } from './af.service';
 import { DbService } from './db.service';
+import { AppService } from './app.service';
 
 // import { iProfile } from '../interfaces/profile.interface';
 import { iShop } from '../interfaces/shop.interface';
@@ -100,7 +101,9 @@ export class LocalService {
     }
 
     SHOP_IMAGE: string;
-    SHOP_IMAGES: string[];
+
+    SHOP_IMAGES_DEFAULT: string[] = [];
+    SHOP_IMAGES: string[] = [];
 
     //ShopMenuPage, ShopOrderPage
     ITEM_INDEX_DEFAULT: any = [];
@@ -124,11 +127,13 @@ export class LocalService {
 
     NO_AVATAR: string = 'https://firebasestorage.googleapis.com/v0/b/auth-38cb7.appspot.com/o/App_images%2Favatar.png?alt=media&token=27b34944-943d-49f8-a204-419980813db4';
     USER_AVATAR: string = null;
+    USER_ID: string = null;
     isProfileLoaded: boolean = false;
 
     constructor(
         private afService: AngularFireService,
-        private dbService: DbService
+        private dbService: DbService,
+        private appService: AppService
     ) { }
 
     getShop() {
@@ -216,43 +221,37 @@ export class LocalService {
     // }
 
     setNewStatusForOrder(SHOP_ID, USER_ID, NEW_STATUS, ORDER_ID, DATE) {
-
-        
-
         if (NEW_STATUS === 'CLOSED') {
-            this.dbService.removeAnObjectAtNode('ActiveOrdersOfUser/' + USER_ID + '/' + ORDER_ID);
+            this.dbService.removeAnObjectAtNode('ActiveOrdersOfUser/' + USER_ID + '/' + SHOP_ID + '/' + ORDER_ID);
             // update OrdersOfShop
             this.afService.updateObjectData('OrdersOfShop/' + SHOP_ID + '/' + DATE + '/' + ORDER_ID + '/ORDER_STATUS', NEW_STATUS);
         } else {
             // update OrdersOfShop
             this.afService.updateObjectData('OrdersOfShop/' + SHOP_ID + '/' + DATE + '/' + ORDER_ID + '/ORDER_STATUS', NEW_STATUS);
             // this.afService.updateObjectData('ActiveOrdersOfUser/' + USER_ID + '/' + ORDER_ID + '/ORDER_STATUS', NEW_STATUS);
-            this.dbService.copyObjectFromURL2URL('OrdersOfShop/' + SHOP_ID + '/' + DATE, 'ActiveOrdersOfUser/' + USER_ID, ORDER_ID)
+            this.dbService.copyObjectFromURL2URL('OrdersOfShop/' + SHOP_ID + '/' + DATE, 'ActiveOrdersOfUser/' + USER_ID + '/' + SHOP_ID, ORDER_ID)
         }
     }
 
     sendNewOrder(ORDER: iOrder, SHOP_ID, USER_ID, DATE) {
         return new Promise((resolve, reject) => {
+            // 1. Insert item to OrdersOfShop
             this.afService.addItem2List('OrdersOfShop/' + SHOP_ID + '/' + DATE, ORDER)
                 .then((res) => {
-                    // update ITEM_ID
+                    // 2. update ITEM_ID into OrdersOfShop/SHOP_ID/ITEM_ID
                     let ORDER_ID = res.key;
                     this.afService.updateObjectData('OrdersOfShop/' + SHOP_ID + '/' + DATE + '/' + ORDER_ID + '/ORDER_ID', ORDER_ID)
                         .then((resp) => {
                             console.log('Order sending success');
-                            // this.isOrderSent = true;
-                            // this.isNew = false;
-                            // this.isItemNew = false;
-                            // this.Order2Update = ORDER;
-                            // update OrderOfUser
+                            // 3. add to array of Orders of user
                             this.dbService.insertValueIntoArray('OrdersOfUser/' + USER_ID + '/' + DATE, 'OrdersOfShop/' + SHOP_ID + '/' + DATE + '/' + ORDER_ID);
 
                         })
 
-                    // insert ActiveOrdersOfUser
+                    //4. insert ActiveOrdersOfUser/USER_ID/SHOP_ID
                     let ActiveORDER = ORDER
                     ActiveORDER['ORDER_ID'] = ORDER_ID;
-                    this.dbService.insertAnObjectAtNode('ActiveOrdersOfUser/' + USER_ID + '/' + ORDER_ID, ActiveORDER).then((res) => console.log('active orders of user updated'));
+                    this.dbService.insertAnObjectAtNode('ActiveOrdersOfUser/' + USER_ID + '/' + SHOP_ID + '/' + ORDER_ID, ActiveORDER).then((res) => console.log('active orders of user updated'));
                 })
         })
     }
@@ -266,7 +265,7 @@ export class LocalService {
         // update OrdersOfShop
         this.afService.updateObjectData('OrdersOfShop/' + Order2Update.ORDER_SHOP_ID + '/' + DATE + '/' + Order2Update.ORDER_ID, Order2Update)
         // update ActiveOrdersOfUser
-        this.afService.updateObjectData('ActiveOrdersOfUser/' + Order2Update.ORDER_USER_ID + '/' + Order2Update.ORDER_ID, Order2Update)
+        this.afService.updateObjectData('ActiveOrdersOfUser/' + Order2Update.ORDER_USER_ID + '/' + Order2Update.ORDER_SHOP_ID + '/' + Order2Update.ORDER_ID, Order2Update)
     }
 
     getShopItems_ID(SHOP_ID: string) {
@@ -276,7 +275,8 @@ export class LocalService {
         // })
     }
 
-    getItemDateFromListOfItems_ID(ITEMS_ID: string[]) {
+    // get Array of SHOP_ITEMS and array of SHOP_ITEMS_ID
+    getItemDataFromListOfItems_ID(ITEMS_ID: string[]) {
         return new Promise((resolve, reject) => {
             let SHOP_ITEMS = [];
             let SHOP_ITEMS_ID = [];
@@ -294,6 +294,61 @@ export class LocalService {
                     })
             })
         })
+    }
+
+    getSHOP_ITEMSnSHOP_ITEMS_ID(SHOP_ID) {
+        return new Promise((resolve, reject) => {
+            this.getShopItems_ID(SHOP_ID).then((ITEMs_ID: string[]) => {
+                console.log(ITEMs_ID);
+                this.getItemDataFromListOfItems_ID(ITEMs_ID).then((data: any) => {
+                    // console.log(data);
+                    // console.log(data.SHOP_ITEMS);
+                    // console.log(data.SHOP_ITEMS_ID);
+                    resolve(data);
+                })
+            })
+        })
+    }
+
+    getSHOPs_ID(USER_ID: string, DATE: string) {
+        return new Promise((resolve, reject) => {
+            let SHOP_IDs = [];
+            let uniquArr = [];
+            this.dbService.getListReturnPromise_ArrayOfData('OrdersOfUser/' + USER_ID + '/' + DATE).then((data: any[]) => {
+                console.log(data);
+                SHOP_IDs = [];
+                // Array.from(new Set(ORDERs_ID.map((item)=> item.app)))
+                data.forEach(ORDER_ID => {
+                    console.log(ORDER_ID);
+                    let length = 'OrdersOfShop/'.length;
+                    let ShopID = ORDER_ID.toString().substr(length, 20);
+                    // console.log(ShopID);
+                    SHOP_IDs.push(ShopID);
+                })
+                console.log(SHOP_IDs);
+                if (SHOP_IDs.length > 0) {
+                    uniquArr = this.appService.removeDuplicate(SHOP_IDs);
+                    console.log(uniquArr);
+                      resolve(uniquArr);
+                }
+            })
+        })
+
+    }
+
+    getORDERS_IDOfUser(USER_ID: string, DATE: string){
+        let URL = 'OrdersOfUser/' + USER_ID + '/' + DATE;
+        return this.dbService.getListReturnPromise_ArrayOfData(URL)
+        // .then((ORDERs_ID)=>{
+        //     console.log(ORDERs_ID);
+        // })
+    }
+
+    getOrderDetailFromOrderIdURL(ORDER_URL){
+        this.dbService.getOneItemReturnPromise(ORDER_URL)
+        // .then((orderDetail: iOrder)=>{
+        //     console.log(orderDetail);
+        // })
     }
 }
 

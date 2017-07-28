@@ -31,6 +31,7 @@ export class ShopPage {
   ) {
     this.shop = navParams.data;
     console.log(this.shop);
+    this.localService.SHOP = this.shop;
     // this.SHOP_ID = navParams.data.$key;
     // this.getShopItems().then(()=>{
     //   this.localService.SHOP_ITEMS = this.SHOP_ITEMS;

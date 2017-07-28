@@ -11,8 +11,11 @@
 
 
 <ion-content>
+  <ion-card *ngFor="let SHOP of SHOPs" (click)="getOrders()">
+    {{SHOP.SHOP_NAME}}
+  </ion-card>
 
-  <ion-card *ngFor="let order of ORDERs_DETAIL; let ind = index" (click)="go2OrderDetail(order,ind)">
+  <ion-card *ngFor="let order of SHOPS_ORDERS; let ind = index" (click)="go2OrderDetail(order,ind)">
     
     <!-- <ion-grid *ngIf="order.ORDER_STATUS !=='CLOSED'"> -->
     <ion-grid>
@@ -47,6 +50,7 @@
       </ion-row>
     </ion-grid>
   </ion-card>
+
  <hr>
   <div style="padding: 12px; text-align: center">
     <input type="date" [(ngModel)]="selectedDate" name="selectedDate" placeholder="{{DATE}}"> <button small ion-button outline (click)="selectDate()">Select</button>

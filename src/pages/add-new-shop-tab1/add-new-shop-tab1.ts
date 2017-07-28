@@ -10,15 +10,27 @@ import { iShop } from '../../interfaces/shop.interface';
   templateUrl: 'add-new-shop-tab1.html',
 })
 export class AddNewShopTab1Page {
-  shop: iShop;
+  SHOP: iShop;
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
     private localService: LocalService) {
-    this.shop = this.localService.getShop();
+    this.SHOP = this.localService.getShop();
+    console.log(this.SHOP);
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad AddNewShopTab1Page');
   }
+
+  ionViewWillLeave(){
+    console.log(this.SHOP);
+    this.localService.SHOP = this.SHOP;
+  }
+
+  ionViewWillEnter(){
+    this.SHOP = this.localService.SHOP;
+    console.log(this.SHOP);
+  }
+
 }

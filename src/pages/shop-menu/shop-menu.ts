@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, App } from 'ionic-angular';
 
 import { AngularFireService } from '../../services/af.service';
 import { DbService } from '../../services/db.service';
@@ -24,6 +24,7 @@ export class ShopMenuPage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
+    private app: App,
     private dbService: DbService,
     private afService: AngularFireService,
     private localService: LocalService
@@ -97,7 +98,8 @@ export class ShopMenuPage {
 
   go2MenuItemAdd() {
     console.log(this.SHOP_ID);
-    this.navCtrl.push('MenuItemAddPage', { SHOP_ID: this.SHOP_ID });
+    this.app.getRootNav().push('MenuItemAddPage', { SHOP_ID: this.SHOP_ID });
+    // this.navCtrl.push('MenuItemAddPage', { SHOP_ID: this.SHOP_ID });
   }
 
   selectItem(i) {

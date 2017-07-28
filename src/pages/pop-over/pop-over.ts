@@ -29,7 +29,8 @@ export class PopOverPage {
 
   go2Shop() {
     console.log('go to detailed page');
-    this.app.getRootNav().setRoot('ShopPage', this.shop)
+    this.app.getRootNav().setRoot('ShopPage', this.shop);
+    this.closePopover();
     // this.navCtrl.setRoot('ShopPage', this.shop)
   }
 

@@ -46,7 +46,7 @@ export class AddNewShopTab3Page {
 
   initMap(mapElement) {
     this.startLoading()
-    if (this.localService.getIsUserChosenPositionSet()) {
+    if (this.localService.isUserChosenPositionSet) {
       console.log('user location set');
       console.log(this.localService.SHOP.SHOP_LOCATION)
       this.showMap(this.localService.SHOP.SHOP_LOCATION, mapElement);

@@ -10,15 +10,18 @@ import { iOrder } from '../../interfaces/order.interface';
   templateUrl: 'order-detail.html',
 })
 export class OrderDetailPage {
-  order: any;
+  ORDER: any;
+  SHOP: any;
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
     private localService: LocalService,
     private appService: AppService
   ) {
-    this.order = this.navParams.data;
-    console.log(this.order);
+    this.ORDER = this.navParams.get('ORDER');
+    console.log(this.ORDER);
+    this.SHOP = this.navParams.get('SHOP');
+    console.log(this.SHOP);
   }
 
   ionViewDidLoad() {
@@ -26,11 +29,10 @@ export class OrderDetailPage {
   }
 
   setOrderStatus(NEW_STATUS){
-    let ORDER: iOrder = this.order;
-    // let DATE = this.appService.getCurrentDate();
+    let ORDER: iOrder = this.ORDER;
     let DATE = ORDER.ORDER_DATE_CREATE.substr(0,10);
     this.localService.setNewStatusForOrder(ORDER.ORDER_SHOP_ID, ORDER.ORDER_USER_ID, NEW_STATUS, ORDER.ORDER_ID, DATE);
-    this.order.ORDER_STATUS = NEW_STATUS;
+    this.ORDER.ORDER_STATUS = NEW_STATUS;
   }
 
 }

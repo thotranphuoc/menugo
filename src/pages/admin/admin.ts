@@ -7,6 +7,7 @@ import { LocalService } from '../../services/local.service';
 import { AngularFireService } from '../../services/af.service';
 import { iOrder } from '../../interfaces/order.interface';
 import { iItem } from '../../interfaces/item.interface';
+import { iShop } from '../../interfaces/shop.interface';
 
 import { Subscription } from 'rxjs/Subscription';
 @IonicPage()
@@ -15,10 +16,10 @@ import { Subscription } from 'rxjs/Subscription';
   templateUrl: 'admin.html',
 })
 export class AdminPage {
+  SHOP: iShop = null;
+  SHOP_ID: string = '-KpxM-lgwzEKCrqU0Cp9'
   SHOP_ITEMS: iItem[] = [];
   SHOP_ITEMS_ID: string[] = [];
-  // orders: iOrder[] = [];
-  // orders_new: any = [];
   ORDERs_NEW: any[] = [];
 
   // for unsubcribe
@@ -35,17 +36,20 @@ export class AdminPage {
     private localService: LocalService
   ) {
     this.DATE = this.appService.getCurrentDate();
-    // this.getShopItems()
-    //   .then(() => {
-    //     this.getOrderDetailAsync();
-    //   })
-
-    this.getShopItems().then(() => {
+    if(this.localService.SHOP.SHOP_ID !=null){
+      this.SHOP = this.localService.SHOP;
+    }else{
+      this.dbService.getOneItemReturnPromise('Shops/'+ this.SHOP_ID).then((data: iShop)=>{
+        this.SHOP = data;
+        console.log(this.SHOP);
+      })
+    }
+    this.localService.getSHOP_ITEMSnSHOP_ITEMS_ID(this.SHOP_ID).then((data: any)=>{
+      this.SHOP_ITEMS = data.SHOP_ITEMS;
+      this.SHOP_ITEMS_ID = data.SHOP_ITEMS_ID;
+      console.log(this.SHOP_ITEMS, this.SHOP_ITEMS_ID);
       this.getOrderDetailAsync();
     })
-
-    // this.dbService.getAnObjectAtNode('ActiveOrdersOfUser/1TS0NVs0ElX86MGAmHOKol9PFC82');
-    // this.dbService.moveObjectFromURL2URL('ActiveOrdersOfUser/1TS0NVs0ElX86MGAmHOKol9PFC82','ActiveOrdersOfUserBK/1TS0NVs0ElX86MGAmHOKol9PFC82','-KpV8YMw1WU4CiXLxnoo');
   }
 
   ionViewDidLoad() {
@@ -57,61 +61,17 @@ export class AdminPage {
 
   }
 
-  // // VERIFIED: get array of item_id & array of item_data
-  // getShopItems() {
-  //   return new Promise((resolve, reject) => {
-  //     this.SHOP_ITEMS = [];
-  //     this.SHOP_ITEMS_ID = [];
-  //     let SHOP_ID = '-Kp98d8gamYNpWHiDAVf';
-  //     // get all item_id of shop
-  //     this.dbService.getListReturnPromise_ArrayOfData('Shop_Items/' + SHOP_ID)
-  //       .then((item_keys: string[]) => {
-  //         console.log(item_keys);
-  //         item_keys.forEach(item_key => {
-  //           // from key, get item detail
-  //           this.dbService.getOneItemReturnPromise('Items/' + item_key)
-  //             .then((item: iItem) => {
-  //               // console.log(item);
-  //               this.SHOP_ITEMS.push(item);
-  //               this.SHOP_ITEMS_ID.push(item.ITEM_ID)
-  //               resolve();
-  //             })
-  //         })
-  //       })
-  //   })
-  // }
-
-  getShopItems() {
-    return new Promise((resolve, reject) => {
-      let SHOP_ID = '-Kp98d8gamYNpWHiDAVf';
-      this.localService.getShopItems_ID(SHOP_ID).then((items_id: string[]) => {
-        console.log(items_id);
-        this.localService.getItemDateFromListOfItems_ID(items_id).then((res: any) => {
-          console.log(res);
-          this.SHOP_ITEMS = res.SHOP_ITEMS;
-          this.SHOP_ITEMS_ID = res.SHOP_ITEMS_ID;
-          resolve();
-        })
-      })
-    })
-  }
-
   go2OrderDetail(order: iOrder, i) {
     console.log(order, i);
-    let SHOP_ID = '-Kp98d8gamYNpWHiDAVf';
-    let DATE = this.appService.getCurrentDate();
-    // let DATE = '2017/07/18';
-    let URL = 'OrdersOfShop/' + SHOP_ID + '/' + DATE;
-    this.navCtrl.push('OrderDetailPage', order);
+    this.navCtrl.push('OrderDetailPage', {ORDER: order, SHOP: this.SHOP });
   }
 
 
   // VERIFIED: get array of orders detail of show, async
   getOrderDetailAsync() {
     this.ORDERs_NEW = [];
-    let SHOP_ID = '-Kp98d8gamYNpWHiDAVf';
+    let SHOP_ID = this.SHOP_ID;
     let DATE = this.DATE;
-    // let DATE = '2017/07/21';
     let URL = 'OrdersOfShop/' + SHOP_ID + '/' + DATE;
 
     this.subscription = this.afService.getList(URL).subscribe((ORDERS: any[]) => {
@@ -121,8 +81,9 @@ export class AdminPage {
         let ORDER_LIST_NEW = [];
         let TOTAL_PRICE = 0;
         ORDER.ORDER_LIST.forEach((item: any) => {
-          // console.log(item);
+          console.log(item);
           let index = this.SHOP_ITEMS_ID.indexOf(item.item);
+          console.log(index);
           ORDER_LIST_NEW.push({ item: this.SHOP_ITEMS[index], amount: item.amount });
           let PRICE = item.amount*this.SHOP_ITEMS[index].ITEM_PRICE;
           TOTAL_PRICE +=PRICE;

@@ -331,6 +331,18 @@ export class AppService {
         return commons;
     }
 
+    removeDuplicate(arr1: any[]){
+        let array = [];
+        array.push(arr1[0]);
+        arr1.forEach(item =>{
+            let index = array.indexOf(item);
+            if(index<0){
+                array.push(item);
+            }
+        })
+        return array;
+    }
+
     // Find elements that array1 has while array2 does not;
     diffArray1FromArray2(arr1: any[], arr2: any[]){
         let diff: any[] = [];

@@ -2,6 +2,9 @@
 <ion-header>
 
   <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
     <ion-title>Information</ion-title>
   </ion-navbar>
 
@@ -14,17 +17,17 @@
     <ion-item>
       <!--<ion-label stacked>Shop Name:</ion-label>-->
       
-      <ion-input required [(ngModel)]="shop.NAME" name="NAME" type="text" id="name" placeholder="Enter the name of shop"></ion-input>
+      <ion-input required [(ngModel)]="SHOP.SHOP_NAME" name="SHOP_NAME" type="text" id="name" placeholder="Enter the name of shop"></ion-input>
     </ion-item>
     <ion-icon name="ios-call-outline"></ion-icon>
     <ion-item>
       <!--<ion-label stacked>Telephone:</ion-label>-->
-      <ion-input [(ngModel)]="shop.PHONE" name="PHONE" type="text" placeholder="Enter phone number"></ion-input>
+      <ion-input [(ngModel)]="SHOP.SHOP_PHONE" name="SHOP_PHONE" type="text" placeholder="Enter phone number"></ion-input>
     </ion-item>
     <ion-icon name="md-apps"></ion-icon>
     <ion-item>
       <!--<ion-label stacked>Kinds of Shop:</ion-label>-->
-      <ion-select required [(ngModel)]="shop.KIND" name="KIND" placeholder="Choose kind of shop">
+      <ion-select required [(ngModel)]="SHOP.SHOP_KIND" name="SHOP_KIND" placeholder="Choose kind of shop">
         <ion-option value="cafe" selected="true">Cafe</ion-option>
         <ion-option value="restaurant">Restaurant</ion-option>
         <ion-option value="takeaway">Take Away</ion-option>
@@ -36,7 +39,7 @@
     <ion-item>
       <!--<ion-label stacked>Address:</ion-label>-->
       <ion-icon name="home"></ion-icon>
-      <ion-input required [(ngModel)]="shop.ADDRESS" name="ADDRESS" type="text" placeholder="Enter address"></ion-input>
+      <ion-input required [(ngModel)]="SHOP.SHOP_ADDRESS" name="SHOP_ADDRESS" type="text" placeholder="Enter address"></ion-input>
     </ion-item>
   </form>
 </ion-content>

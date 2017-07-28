@@ -12,7 +12,7 @@ import { iShop } from '../../interfaces/shop.interface';
   templateUrl: 'add-new-shop-tab2.html',
 })
 export class AddNewShopTab2Page {
-  shop: iShop;
+  SHOP: iShop;
   base64Image: string;
   base64Images: string[] = [];
   constructor(
@@ -28,6 +28,10 @@ export class AddNewShopTab2Page {
 
   ionViewWillLeave(){
     this.localService.SHOP_IMAGES = this.base64Images;
+  }
+
+  ionViewWillEnter(){
+    this.base64Images = this.localService.SHOP_IMAGES;
   }
 
   takePhoto(){
