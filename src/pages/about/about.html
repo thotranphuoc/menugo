@@ -23,48 +23,15 @@
         <ion-row>Location</ion-row>
       </ion-col>
     </ion-row>
-    <ion-row>
+    <ion-row *ngFor="let version of versions">
       <ion-col>
-        <ion-row>0.2</ion-row>
+        <ion-row>{{version.VERSION}}</ion-row>
       </ion-col>
       <ion-col>
-        <ion-row>2017/07/15</ion-row>
+        <ion-row>{{version.DATE}}</ion-row>
       </ion-col>
       <ion-col>
-        <ion-row>Vientiane</ion-row>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col>
-        <ion-row>0.4</ion-row>
-      </ion-col>
-      <ion-col>
-        <ion-row>2017/07/23</ion-row>
-      </ion-col>
-      <ion-col>
-        <ion-row>Saigon</ion-row>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col>
-        <ion-row>0.5</ion-row>
-      </ion-col>
-      <ion-col>
-        <ion-row>2017/07/27</ion-row>
-      </ion-col>
-      <ion-col>
-        <ion-row>Vientiane</ion-row>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col>
-        <ion-row>0.5.1</ion-row>
-      </ion-col>
-      <ion-col>
-        <ion-row>2017/07/28</ion-row>
-      </ion-col>
-      <ion-col>
-        <ion-row>Vientiane</ion-row>
+        <ion-row>{{version.LOCATION}}</ion-row>
       </ion-col>
     </ion-row>
   </ion-grid>

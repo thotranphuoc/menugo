@@ -96,7 +96,7 @@
       <ion-grid>
         <ion-row style="background-color: lightgrey">
           <ion-col>{{order.ORDER_DATE_CREATE}}</ion-col>
-          <ion-col>{{order.ORDER_STATUS}}</ion-col>
+          <ion-col [ngClass]="order.ORDER_STATUS">{{order.ORDER_STATUS}}</ion-col>
         </ion-row>
         <ion-row *ngFor="let orderz of order.ORDER_LIST_NEW; let i = index" class="row_main">
           <ion-col col-7>

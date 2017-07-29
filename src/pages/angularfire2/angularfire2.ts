@@ -10,6 +10,10 @@ import { AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable }
 export class Angularfire2Page {
   items: any;
   data: any;
+  COLOR_NAME: string = 'yellow';
+  SIZE: number = 20;
+  SIZE_Str: string =  '20px';
+  ACTION: string = 'SENDING';
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
@@ -24,6 +28,16 @@ export class Angularfire2Page {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad Angularfire2Page');
+  }
+
+  increase(){
+    this.SIZE ++;
+    this.SIZE_Str = this.SIZE.toString() + 'px';
+  }
+
+  decrease(){
+    this.SIZE --;
+    this.SIZE_Str = this.SIZE.toString() + 'px';
   }
 
 }

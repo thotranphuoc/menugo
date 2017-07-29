@@ -63,7 +63,7 @@ export class AdminPage {
 
   go2OrderDetail(order: iOrder, i) {
     console.log(order, i);
-    this.navCtrl.push('OrderDetailPage', {ORDER: order, SHOP: this.SHOP });
+    this.navCtrl.push('OrderDetailPage', {ORDER: order, SHOP: this.SHOP, SENDER: 'ADMIN' });
   }
 
 

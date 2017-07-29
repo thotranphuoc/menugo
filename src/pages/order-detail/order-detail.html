@@ -1,7 +1,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>order-detail</ion-title>
+    <ion-title>ORDER DETAIL</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -40,7 +40,7 @@
 
 
  
-  <div style="padding: 12px; text-align: center">
+  <div style="padding: 12px; text-align: center" *ngIf="SENDER ==='ADMIN'">
     <button ion-button color="primary" small (click)="setOrderStatus('ACCEPTED')">ACCEPTED</button>
     <button ion-button color="dark" small (click)="setOrderStatus('DELIVERED')">DELIVERED</button>
     <button ion-button color="secondary" small (click)="setOrderStatus('PAID')">PAID</button>

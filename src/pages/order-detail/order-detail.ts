@@ -12,16 +12,19 @@ import { iOrder } from '../../interfaces/order.interface';
 export class OrderDetailPage {
   ORDER: any;
   SHOP: any;
+  SENDER: string = 'USER';
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
     private localService: LocalService,
     private appService: AppService
   ) {
+
     this.ORDER = this.navParams.get('ORDER');
     console.log(this.ORDER);
     this.SHOP = this.navParams.get('SHOP');
     console.log(this.SHOP);
+    this.SENDER = this.navParams.get('SENDER');
   }
 
   ionViewDidLoad() {
