@@ -11,6 +11,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { GmapService } from '../services/gmap.service';
+import { GchartService } from '../services/gchart.service';
 import { AngularFireService } from '../services/af.service';
 import { DbService } from '../services/db.service';
 import { ImageService } from '../services/image.service';
@@ -57,6 +58,7 @@ export const firebaseConfig = {
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     Geolocation,
     GmapService,
+    GchartService,
     AngularFireService,
     DbService,
     ImageService,

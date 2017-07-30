@@ -40,7 +40,9 @@ export class ShopOrderPage {
     if (this.localService.USER_ID != null) {
       this.USER_ID = this.localService.USER_ID;
     } else {
-      this.USER_ID = this.afService.getAuth().auth.currentUser.uid;
+      // this.USER_ID = this.afService.getAuth().auth.currentUser.uid;
+      this.appService.alertMsg('', 'Login first to continue your order');
+      this.navCtrl.push('AccountPage')
     }
 
     // 1. getShopITEMS. If ITEM already get, go ahead. If not, start getting

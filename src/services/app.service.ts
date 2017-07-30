@@ -361,6 +361,12 @@ export class AppService {
     //     })
     // }
 
+
+    covertObjectArray2ArrayArray( arr1:any[]){
+        let arr2 : any[] = [];
+        
+    }
+
     
 
     
