@@ -12,7 +12,8 @@ export class AboutPage {
     { VERSION: '0.4', DATE: '2017/07/23', LOCATION: 'Saigon' },
     { VERSION: '0.5', DATE: '2017/07/27', LOCATION: 'Vientiane' },
     { VERSION: '0.5.1', DATE: '2017/07/28', LOCATION: 'Vientiane' },
-    { VERSION: '0.5.2', DATE: '2017/07/29', LOCATION: 'Vientiane' }
+    { VERSION: '0.5.2', DATE: '2017/07/29', LOCATION: 'Vientiane' },
+    { VERSION: '0.6', DATE: '2017/07/30', LOCATION: 'Vientiane' }
   ]
   constructor(
     public navCtrl: NavController, 
