@@ -4,7 +4,7 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>order-statistic</ion-title>
+    <ion-title>Daily Stat</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -13,10 +13,10 @@
 <ion-content>
   <ion-grid style="padding: 12px; text-align: center">
     <ion-row>
-      <ion-col>
+      <ion-col text-right style="padding-top: 10px">
         <input type="date" [(ngModel)]="selectedDate" name="selectedDate">
       </ion-col>
-      <ion-col>
+      <ion-col text-left>
         <button small ion-button outline (click)="selectDate()">Select</button>
       </ion-col>
     </ion-row>
@@ -49,14 +49,10 @@
 </ion-grid>
 
 <hr>
+<div id="chart_div1"></div>
+<hr>
 <div id="chart_div2"></div>
 <hr>
-<div id="chart_div3"></div>
-<hr>
-<div id="chart_div4"></div>
-<hr>
-<div id="chart_div5"></div>
-<hr>
-<div id="chart_div6"></div>
+
 </ion-content>
 

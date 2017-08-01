@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 
 import { LocalService } from '../../services/local.service';
 import { AngularFireService } from '../../services/af.service';
@@ -24,22 +24,27 @@ export class YourOrdersPage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
+    private alertCtrl: AlertController,
     private localService: LocalService,
     private appService: AppService,
     private dbService: DbService,
     private afService: AngularFireService
   ) {
-    
-    if(this.afService.getAuth().auth.currentUser !=null){
-      this.USER_ID = this.afService.getAuth().auth.currentUser.uid;
-    }else{;
-      this.navCtrl.setRoot('MapPage');
+
+    this.USER_ID = this.localService.USER_ID;
+    if(this.USER_ID == null) {
+      if(this.afService.getAuth().auth.currentUser){
+        this.USER_ID = this.afService.getAuth().auth.currentUser.uid;
+      } else{
+        this.showConfirm();
+      }
     }
     this.DATE = this.appService.getCurrentDate();
     this.initGetYourOrder();
   }
 
-  initGetYourOrder(){  
+  initGetYourOrder(){ 
+    console.log(this.USER_ID, this.DATE); 
       this.localService.getSHOPs_ID(this.USER_ID, this.DATE).then((shop_id_list: string[])=>{
         console.log(shop_id_list);
         this.SHOPS_ITEMS = [];
@@ -92,6 +97,11 @@ export class YourOrdersPage {
     console.log('ionViewDidLoad YourOrdersPage');
   }
 
+  ionViewWillEnter(){
+    this.selectedDate = this.appService.convertDateFormat1(this.DATE);
+    this.initGetYourOrder();
+  }
+
   go2OrderDetail(order: iOrder, i) {
     console.log(order, i);
     console.log(this.SHOPs);
@@ -114,5 +124,27 @@ export class YourOrdersPage {
     }
     console.log(this.DATE);
     this.initGetYourOrder();
+  }
+
+  showConfirm() {
+    let confirm = this.alertCtrl.create({
+      title: 'Alert!',
+      message: 'Please login to use this feature',
+      buttons: [
+        {
+          text: 'Cancel',
+          handler: () => {
+            console.log('Disagree clicked');
+          }
+        },
+        {
+          text: 'OK',
+          handler: () => {
+            this.navCtrl.push('AccountPage', {action: 'request-login'});
+          }
+        }
+      ]
+    });
+    confirm.present();
   }
 }

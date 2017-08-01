@@ -15,10 +15,25 @@
   <ion-grid>
     <ion-row>
       <ion-col>
-        <button ion-button (click)="go2OrderManager()">Order Manager</button>
+        <ion-icon class="icon-big" name="restaurant" (click)="go2OrderManager()"></ion-icon>
+        <div class="icon-name">Order Manager</div>
+        <!-- <button ion-button (click)="go2OrderManager()">Order Manager</button> -->
       </ion-col>
       <ion-col>
-        <button ion-button (click)="go2Statistic()">Statistic</button>
+        <!-- <button ion-button (click)="go2Statistic()">Statistic</button> -->
+      </ion-col>
+    </ion-row>
+    
+    <ion-row style="padding-top: 40px">
+      <ion-col>
+        <ion-icon class="icon-big" ios="ios-pie" md="md-pie" (click)="go2DailyStatistic()"></ion-icon>
+        <div class="icon-name">Daily Statistic</div>
+        <!-- <button ion-button (click)="go2RangeStatistic()">Range Statistic</button> -->
+      </ion-col>
+      <ion-col>
+        <!-- <button ion-button (click)="go2DailyStatistic()"> Daily Statistic</button> -->
+        <ion-icon class="icon-big" name="stats" (click)="go2RangeStatistic()"></ion-icon>
+        <div class="icon-name">Range Statistic</div>
       </ion-col>
     </ion-row>
   </ion-grid>

@@ -94,18 +94,18 @@ export class AppService {
     getCurrentDate(): string {
         let today = new Date();
         let realMonth = today.getMonth() + 1;
-        let month = realMonth <10 ? '0'+ realMonth : realMonth;
-        let date = today.getDate() < 10 ? '0'+today.getDate() : today.getDate()
+        let month = realMonth < 10 ? '0' + realMonth : realMonth;
+        let date = today.getDate() < 10 ? '0' + today.getDate() : today.getDate()
         return today.getUTCFullYear().toString() + '/' + month.toString() + '/' + date.toString();
     }
 
     // return format: '12:30:15'
     getCurrentTime(): string {
         let today = new Date();
-        let hour = today.getHours() <10 ? '0'+today.getHours() : today.getHours();
-        let minute = today.getMinutes() <10 ? '0'+today.getMinutes() : today.getMinutes();
-        let second = today.getSeconds() <10 ? '0'+today.getSeconds() : today.getSeconds();
-        
+        let hour = today.getHours() < 10 ? '0' + today.getHours() : today.getHours();
+        let minute = today.getMinutes() < 10 ? '0' + today.getMinutes() : today.getMinutes();
+        let second = today.getSeconds() < 10 ? '0' + today.getSeconds() : today.getSeconds();
+
         return hour.toString() + ':' + minute.toString() + ':' + second.toString();
     }
 
@@ -113,15 +113,36 @@ export class AppService {
         return this.getCurrentDate() + ' ' + this.getCurrentTime();
     }
 
-    convertDateFormat1(DATE1: string){
+    convertDateFormat1(DATE1: string) {
         return DATE1.substr(0, 4) + '-' + DATE1.substr(5, 2) + '-' + DATE1.substr(8, 2);
-        
+
     }
 
-    convertDateFormat2(DATE1: string){
+    convertDateFormat2(DATE1: string) {
         return DATE1.substr(0, 4) + '/' + DATE1.substr(5, 2) + '/' + DATE1.substr(8, 2);
     }
-    
+
+
+    getDateArrayFromDate1toDate2(DATE1: string, DATE2: string) {
+        let date1 = new Date(DATE1).getTime(); // in milisec
+        let date2 = new Date(DATE2).getTime();
+        let nDAY = (date2 - date1) / 86400000;
+        console.log(nDAY);
+        let DATE_ARRAY = [];
+        for (var index = 0; index < nDAY + 1; index++) {
+            let nMilSec = date1 + index * 86400000;
+            let date = new Date(nMilSec);
+            let YEAR = date.getFullYear();
+            let month = date.getMonth() + 1;
+            let day = date.getDate();
+            let MONTH = month < 10 ? '0' + month : month
+            let DAY = day < 10 ? '0' + day : day;
+            let dateString = YEAR + '/' + MONTH + '/' + DAY;
+            DATE_ARRAY.push(dateString);
+        }
+        console.log(DATE_ARRAY);
+        return DATE_ARRAY;
+    }
 
     convertCodeToDetail(code: string): string {
         switch (code) {
@@ -186,7 +207,7 @@ export class AppService {
             });
     }
 
-    removeFavorite(uid: string, itemId: string){
+    removeFavorite(uid: string, itemId: string) {
         let data = null
         // remove from FavoriteOfUserForItems
         this.afService.setObjectData('FavoriteOfUserForItems/' + uid + '/' + itemId, data)
@@ -211,7 +232,7 @@ export class AppService {
             .then(() => {
                 console.log(uid, itemId, data);
             });
-        
+
         // update table Feedback/itemID/ Array
     }
 
@@ -226,7 +247,7 @@ export class AppService {
         })
     }
 
-   
+
     // // Delete item from firebase storage
     // deleteItemImageFromStorage(httpURL: string){
     //     this.dbService.deleteFileFromFireStorageWithHttpsURL(httpURL);
@@ -251,7 +272,7 @@ export class AppService {
     //     })
     // }
 
-    updateObject(ObjURL: string, data){
+    updateObject(ObjURL: string, data) {
         return this.afService.updateObjectData(ObjURL, data);
     }
 
@@ -279,7 +300,7 @@ export class AppService {
     //         if(user.AVATAR_URL !=='' && user.AVATAR_URL !=null && user.AVATAR_URL!=='https://firebasestorage.googleapis.com/v0/b/auth-38cb7.appspot.com/o/App_images%2Favatar.png?alt=media&token=27b34944-943d-49f8-a204-419980813db4'){
     //             this.deletePhoto(user.AVATAR_URL);
     //         }
-            
+
     //     })
 
     //     // delete user from usersProfile
@@ -312,11 +333,11 @@ export class AppService {
     // }
 
     // Delete soldItem from firebase db
-    deleteItemWithURL(userId, itemId){
+    deleteItemWithURL(userId, itemId) {
         // delete from soldItems/itemId
         this.afService.deleteItemFromList('soldItems', itemId);
         // delete from UserSoldItems/UserID/itemId
-        this.afService.deleteItemFromList('UserSoldItems/'+userId, itemId);
+        this.afService.deleteItemFromList('UserSoldItems/' + userId, itemId);
         // delete from FavoriteOfItemFromUsers/itemID
         this.afService.deleteItemFromList('FavoriteOfItemFromUsers', itemId);
         // delete from FeedbackOfItemFromUsers
@@ -324,23 +345,23 @@ export class AppService {
     }
 
     // Find commons elements from 2 arrays
-    commonOf2Arrays(arr1: any[], arr2: any[]){
+    commonOf2Arrays(arr1: any[], arr2: any[]) {
         let commons: any[] = [];
-        arr1.forEach(item=>{
+        arr1.forEach(item => {
             let index = arr2.indexOf(item)
-            if(index>-1){
+            if (index > -1) {
                 commons.push(item)
             }
         })
         return commons;
     }
 
-    removeDuplicate(arr1: any[]){
+    removeDuplicate(arr1: any[]) {
         let array = [];
         array.push(arr1[0]);
-        arr1.forEach(item =>{
+        arr1.forEach(item => {
             let index = array.indexOf(item);
-            if(index<0){
+            if (index < 0) {
                 array.push(item);
             }
         })
@@ -348,11 +369,11 @@ export class AppService {
     }
 
     // Find elements that array1 has while array2 does not;
-    diffArray1FromArray2(arr1: any[], arr2: any[]){
+    diffArray1FromArray2(arr1: any[], arr2: any[]) {
         let diff: any[] = [];
-        arr1.forEach(item=>{
+        arr1.forEach(item => {
             let index = arr2.indexOf(item);
-            if(index<0){
+            if (index < 0) {
                 diff.push(item);
             }
         })
@@ -366,14 +387,14 @@ export class AppService {
     // }
 
 
-    covertObjectArray2ArrayArray( arr1:any[]){
-        let arr2 : any[] = [];
-        
+    covertObjectArray2ArrayArray(arr1: any[]) {
+        let arr2: any[] = [];
+
     }
 
-    
 
-    
+
+
 
 
 }

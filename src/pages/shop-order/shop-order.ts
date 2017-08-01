@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 
 import { LocalService } from '../../services/local.service';
 import { AngularFireService } from '../../services/af.service';
@@ -31,6 +31,7 @@ export class ShopOrderPage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
+    private alertCtrl: AlertController,
     private localService: LocalService,
     private appService: AppService,
     private dbService: DbService,
@@ -42,8 +43,7 @@ export class ShopOrderPage {
       if(this.afService.getAuth().auth.currentUser){
         this.USER_ID = this.afService.getAuth().auth.currentUser.uid;
       } else{
-        this.appService.alertMsg('', 'Login first to continue your order');
-        this.navCtrl.push('AccountPage', { action: 'request-login'})
+        this.showConfirm();
       }
     }
 
@@ -244,5 +244,27 @@ export class ShopOrderPage {
     }
 
     console.log(this.isItemNEW, this.isItemUPDATE);
+  }
+
+  showConfirm() {
+    let confirm = this.alertCtrl.create({
+      title: 'Alert!',
+      message: 'Please login to use this feature',
+      buttons: [
+        {
+          text: 'Cancel',
+          handler: () => {
+            console.log('Disagree clicked');
+          }
+        },
+        {
+          text: 'OK',
+          handler: () => {
+            this.navCtrl.push('AccountPage', {action: 'request-login'});
+          }
+        }
+      ]
+    });
+    confirm.present();
   }
 }

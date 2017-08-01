@@ -11,12 +11,24 @@
 
 
 <ion-content>
-  <ion-card *ngFor="let SHOP of SHOPs" (click)="getOrders()">
+
+  <ion-grid style="padding: 12px; text-align: center">
+    <ion-row>
+      <ion-col text-right style="padding-top: 10px">
+        <input type="date" [(ngModel)]="selectedDate" name="selectedDate">
+      </ion-col>
+      <ion-col text-left>
+        <button small ion-button outline (click)="selectDate()">Select</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <hr>
+  <!-- <ion-card *ngFor="let SHOP of SHOPs" (click)="getOrders()">
     {{SHOP.SHOP_NAME}}
-  </ion-card>
+  </ion-card> -->
 
   <ion-card *ngFor="let order of SHOPS_ORDERS; let ind = index" (click)="go2OrderDetail(order,ind)">
-    
+
     <!-- <ion-grid *ngIf="order.ORDER_STATUS !=='CLOSED'"> -->
     <ion-grid>
       <ion-row style="background-color: lightgrey">
@@ -29,10 +41,14 @@
           <!-- <ion-row class="name_en">{{orderz.item.ITEM_NAME_EN}}</ion-row>   -->
         </ion-col>
         <ion-col col-2>
-          <ion-row><div class="total-price">{{orderz.amount}}<span style="font-size:10px">x {{orderz.item.ITEM_PRICE}}</span></div></ion-row>
+          <ion-row>
+            <div class="total-price">{{orderz.amount}}<span style="font-size:10px">x {{orderz.item.ITEM_PRICE}}</span></div>
+          </ion-row>
         </ion-col>
         <ion-col>
-          <ion-row><div class="total-price">{{orderz.amount*orderz.item.ITEM_PRICE}}</div></ion-row>
+          <ion-row>
+            <div class="total-price">{{orderz.amount*orderz.item.ITEM_PRICE}}</div>
+          </ion-row>
         </ion-col>
       </ion-row>
       <ion-row>
@@ -40,7 +56,9 @@
           <ion-row></ion-row>
         </ion-col>
         <ion-col col-2>
-          <ion-row><div class="total-price">Total</div></ion-row>
+          <ion-row>
+            <div class="total-price">Total</div>
+          </ion-row>
         </ion-col>
         <ion-col>
           <ion-row>
@@ -51,8 +69,9 @@
     </ion-grid>
   </ion-card>
 
- <hr>
+  <!-- <hr>
   <div style="padding: 12px; text-align: center">
-    <input type="date" [(ngModel)]="selectedDate" name="selectedDate" placeholder="{{DATE}}"> <button small ion-button outline (click)="selectDate()">Select</button>
-  </div>
+    <input type="date" [(ngModel)]="selectedDate" name="selectedDate" placeholder="{{DATE}}"> <button small ion-button outline
+      (click)="selectDate()">Select</button>
+  </div> -->
 </ion-content>
