@@ -24,6 +24,21 @@
     <button ion-button block (click)="onSignIn(myForm)" [disabled]="!myForm.valid">Sign In</button>
     <p (click)="go2SignUp()">Don't have account? Register <span style="color:blue">HERE</span></p>
   </div>
+  <div *ngIf="action==='request-login'">
+    <form #myForm="ngForm">
+      <ion-item>
+        <ion-label floating>Email</ion-label>
+        <ion-input type="email" [(ngModel)]="signIn.email" name="email" required></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label floating>Password</ion-label>
+        <ion-input type="password" [(ngModel)]="signIn.password" name="password" required></ion-input>
+      </ion-item>
+    </form>
+    <button ion-button block (click)="onSignInOnRequest(myForm)" [disabled]="!myForm.valid">Sign In</button>
+    <p (click)="go2SignUp()">Don't have account? Register <span style="color:blue">HERE</span></p>
+  </div>
   <div *ngIf="action==='sign-up'">
     <form #myForm1="ngForm">
       <ion-item>

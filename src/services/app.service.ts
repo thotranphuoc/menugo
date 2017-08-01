@@ -113,10 +113,14 @@ export class AppService {
         return this.getCurrentDate() + ' ' + this.getCurrentTime();
     }
 
-    // stopLoadingCtrl(){
-    //     this.loadCtrl.dismiss();
-    // }
+    convertDateFormat1(DATE1: string){
+        return DATE1.substr(0, 4) + '-' + DATE1.substr(5, 2) + '-' + DATE1.substr(8, 2);
+        
+    }
 
+    convertDateFormat2(DATE1: string){
+        return DATE1.substr(0, 4) + '/' + DATE1.substr(5, 2) + '/' + DATE1.substr(8, 2);
+    }
     
 
     convertCodeToDetail(code: string): string {

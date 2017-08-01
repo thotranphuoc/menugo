@@ -42,6 +42,19 @@ export class AccountPage {
       })
   }
 
+  onSignInOnRequest(form) {
+    console.log(form.value);
+    this.authService.signIn(this.signIn.email, this.signIn.password)
+      .then(() => {
+        console.log('Login success');
+        this.navCtrl.pop();
+      })
+      .catch((err) => {
+        console.log('Error when loggin');
+        this.appService.alertError('Error',err.message)
+      })
+  }
+
   onSignUp(form) {
     console.log(form.value);
     if (this.signUp.password1 === this.signUp.password2){

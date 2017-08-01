@@ -37,13 +37,16 @@ export class ShopOrderPage {
     private afService: AngularFireService
   ) {
     this.SHOP = this.localService.SHOP;
-    if (this.localService.USER_ID != null) {
-      this.USER_ID = this.localService.USER_ID;
-    } else {
-      // this.USER_ID = this.afService.getAuth().auth.currentUser.uid;
-      this.appService.alertMsg('', 'Login first to continue your order');
-      this.navCtrl.push('AccountPage')
+    this.USER_ID = this.localService.USER_ID;
+    if(this.USER_ID == null) {
+      if(this.afService.getAuth().auth.currentUser){
+        this.USER_ID = this.afService.getAuth().auth.currentUser.uid;
+      } else{
+        this.appService.alertMsg('', 'Login first to continue your order');
+        this.navCtrl.push('AccountPage', { action: 'request-login'})
+      }
     }
+
 
     // 1. getShopITEMS. If ITEM already get, go ahead. If not, start getting
     this.getShopITEMS();
