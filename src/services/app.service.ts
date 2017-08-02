@@ -392,6 +392,13 @@ export class AppService {
 
     }
 
+    ObjecthasAnyChanged(obj1: any, obj2: any) {
+    let OB1 = JSON.stringify(obj1);
+    let OB2 = JSON.stringify(obj2);
+    let changed = OB1 === OB2 ? false : true;
+    return changed;
+  }
+
 
 
 

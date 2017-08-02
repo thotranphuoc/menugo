@@ -10,6 +10,7 @@ import { iShop } from '../interfaces/shop.interface';
 import { iSetting } from '../interfaces/setting.interface';
 import { iItem } from '../interfaces/item.interface';
 import { iOrder } from '../interfaces/order.interface';
+import { iProfile } from '../interfaces/profile.interface';
 
 @Injectable()
 
@@ -115,6 +116,39 @@ export class LocalService {
     SHOP_ITEMS = [];
     SHOP_ITEMS_ID = [];
     SHOP_ITEMS_INDEX = [];
+
+    PROFILE_DEFAULT: iProfile = {
+        AVATAR_URL: '',
+        NAME: '',
+        EMAIL: '',
+        BIRTHDAY: '',
+        TEL: '',
+        ADDRESS: '',
+        STATE: '',
+        VERIFIED: false
+    }
+
+    PROFILE: iProfile = {
+        AVATAR_URL: '',
+        NAME: '',
+        EMAIL: '',
+        BIRTHDAY: '',
+        TEL: '',
+        ADDRESS: '',
+        STATE: '',
+        VERIFIED: false
+    }
+
+    PROFILE_OLD: iProfile = {
+        AVATAR_URL: '',
+        NAME: '',
+        EMAIL: '',
+        BIRTHDAY: '',
+        TEL: '',
+        ADDRESS: '',
+        STATE: '',
+        VERIFIED: false
+    }
 
 
     itemAction: string = 'add-new';  // add-new, item-update
@@ -329,14 +363,14 @@ export class LocalService {
                 if (SHOP_IDs.length > 0) {
                     uniquArr = this.appService.removeDuplicate(SHOP_IDs);
                     console.log(uniquArr);
-                      resolve(uniquArr);
+                    resolve(uniquArr);
                 }
             })
         })
 
     }
 
-    getORDERS_IDOfUser(USER_ID: string, DATE: string){
+    getORDERS_IDOfUser(USER_ID: string, DATE: string) {
         let URL = 'OrdersOfUser/' + USER_ID + '/' + DATE;
         return this.dbService.getListReturnPromise_ArrayOfData(URL)
         // .then((ORDERs_ID)=>{
@@ -344,7 +378,7 @@ export class LocalService {
         // })
     }
 
-    getOrderDetailFromOrderIdURL(ORDER_URL){
+    getOrderDetailFromOrderIdURL(ORDER_URL) {
         this.dbService.getOneItemReturnPromise(ORDER_URL)
         // .then((orderDetail: iOrder)=>{
         //     console.log(orderDetail);

@@ -1,0 +1,53 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>PROFILE</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <form #myForm="ngForm">
+    <div>
+      <div>
+        <ion-item *ngIf="!hasNewAvatar">
+          <ion-avatar (click)="selectPhotoByBrowser()">
+            <img src="{{PROFILE.AVATAR_URL}}" alt="" class="img">
+          </ion-avatar>
+        </ion-item>
+        <ion-item *ngIf="hasNewAvatar">
+          <ion-avatar (click)="selectPhotoByBrowser()">
+            <img src="{{base64Images[0]}}" alt="" class="img">
+          </ion-avatar>
+        </ion-item>
+      </div>
+    </div>
+    <ion-item>
+      <ion-label fixed>Name</ion-label>
+      <ion-input type="text" [(ngModel)]="PROFILE.NAME" name="NAME" required></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label fixed>Email</ion-label>
+      <ion-input type="email" [(ngModel)]="PROFILE.EMAIL" name="EMAIL" disabled></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label fixed>Birthday</ion-label>
+      <ion-input type="date" [(ngModel)]="PROFILE.BIRTHDAY" name="BIRTHDAY" required></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label fixed>Telephone</ion-label>
+      <ion-input type="text" [(ngModel)]="PROFILE.TEL" name="TEL" required></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label fixed>Address</ion-label>
+      <ion-input type="text" [(ngModel)]="PROFILE.ADDRESS" name="ADDRESS" required></ion-input>
+    </ion-item>
+
+  </form>
+  <button ion-button block (click)="onUpdateProfile(myForm)" [disabled]="!myForm.valid">Update</button>
+
+  <!--for photo by browser-->
+  <input type="file" (change)="takePictureAndResizeByBrowser($event)" id="inputFile" hidden accept="image/*">
+
+</ion-content>
