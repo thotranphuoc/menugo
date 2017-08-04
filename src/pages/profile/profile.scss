@@ -9,4 +9,8 @@ page-profile {
     ion-avatar {
         align-content: center;
     }
+
+    ion-input .ng-invalid { 
+        border-left: 2px solid red;
+    }
 }

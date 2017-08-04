@@ -6,4 +6,8 @@ page-add-new-shop-tab1 {
     ion-select {
         max-width: 100%
     }
+
+    ion-input .ng-invalid { 
+        border-left: 2px solid red;
+    }
 }

@@ -29,7 +29,7 @@
     </ion-item>
     <ion-item>
       <ion-label fixed>Email</ion-label>
-      <ion-input type="email" [(ngModel)]="PROFILE.EMAIL" name="EMAIL" disabled></ion-input>
+      <ion-input type="email" [(ngModel)]="PROFILE.EMAIL" name="EMAIL" required></ion-input>
     </ion-item>
     <ion-item>
       <ion-label fixed>Birthday</ion-label>
@@ -45,7 +45,7 @@
     </ion-item>
 
   </form>
-  <button ion-button block (click)="onUpdateProfile(myForm)" [disabled]="!myForm.valid">Update</button>
+  <button ion-button block (click)="onUpdateProfile(myForm)">Update</button>
 
   <!--for photo by browser-->
   <input type="file" (change)="takePictureAndResizeByBrowser($event)" id="inputFile" hidden accept="image/*">

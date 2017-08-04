@@ -12,6 +12,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { GmapService } from '../services/gmap.service';
 import { GchartService } from '../services/gchart.service';
+import { CrudService } from '../services/crud.service';
 import { AngularFireService } from '../services/af.service';
 import { DbService } from '../services/db.service';
 import { ImageService } from '../services/image.service';
@@ -66,7 +67,8 @@ export const firebaseConfig = {
     LocalService,
     AuthService,
     AppService,
-    StatisticService
+    StatisticService,
+    CrudService
   ]
 })
 export class AppModule {}

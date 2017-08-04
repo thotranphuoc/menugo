@@ -12,6 +12,7 @@ import { iItem } from '../interfaces/item.interface';
 import { iOrder } from '../interfaces/order.interface';
 import { iProfile } from '../interfaces/profile.interface';
 
+
 @Injectable()
 
 export class LocalService {
@@ -278,7 +279,7 @@ export class LocalService {
                         .then((resp) => {
                             console.log('Order sending success');
                             // 3. add to array of Orders of user
-                            this.dbService.insertValueIntoArray('OrdersOfUser/' + USER_ID + '/' + DATE, 'OrdersOfShop/' + SHOP_ID + '/' + DATE + '/' + ORDER_ID);
+                            this.dbService.insertElementIntoArray('OrdersOfUser/' + USER_ID + '/' + DATE, 'OrdersOfShop/' + SHOP_ID + '/' + DATE + '/' + ORDER_ID);
 
                         })
 

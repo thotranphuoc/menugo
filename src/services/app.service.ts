@@ -393,11 +393,19 @@ export class AppService {
     }
 
     ObjecthasAnyChanged(obj1: any, obj2: any) {
-    let OB1 = JSON.stringify(obj1);
-    let OB2 = JSON.stringify(obj2);
-    let changed = OB1 === OB2 ? false : true;
-    return changed;
-  }
+        let OB1 = JSON.stringify(obj1);
+        let OB2 = JSON.stringify(obj2);
+        let changed = OB1 === OB2 ? false : true;
+        return changed;
+    }
+
+    createAdmin(SHOP_ID: string, USER_ID: string, role: string) {
+        let data = {
+            UID: USER_ID,
+            ROLE: role,
+        }
+        return this.dbService.insertElementIntoArray('AdminsOfShop/'+SHOP_ID, data);
+    }
 
 
 

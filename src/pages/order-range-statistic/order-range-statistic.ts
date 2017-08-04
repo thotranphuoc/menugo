@@ -38,6 +38,7 @@ export class OrderRangeStatisticPage {
     private gchartService: GchartService,
     private appService: AppService
   ) {
+    this.SHOP_ID = this.navParams.get('SHOP_ID');
     this.DATE = this.appService.getCurrentDate();
     this.SHOP_ITEMS = this.localService.SHOP_ITEMS;
     this.SHOP_ITEMS_ID = this.localService.SHOP_ITEMS_ID;

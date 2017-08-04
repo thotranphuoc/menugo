@@ -6,8 +6,10 @@ import { AngularFireService } from '../../services/af.service';
 import { AppService } from '../../services/app.service';
 import { DbService } from '../../services/db.service';
 
+import { iItem } from '../../interfaces/item.interface';
 import { iOrder } from '../../interfaces/order.interface';
 import { iShop } from '../../interfaces/shop.interface';
+import { iOrderList } from '../../interfaces/order-list.interface';
 @IonicPage()
 @Component({
   selector: 'page-your-orders',
@@ -18,7 +20,7 @@ export class YourOrdersPage {
   selectedDate: string = null;
   SHOPs: iShop[] =[];
   USER_ID: string ;
-  SHOPS_ITEMS: any[] = [];
+  SHOPS_ITEMS: iItem[] = [];
   SHOPS_ITEMS_ID : any[]= [];
   SHOPS_ORDERS: any[] =[];
   constructor(
@@ -74,19 +76,26 @@ export class YourOrdersPage {
 
   getOrderDetail(){
     console.log('Done init');
-      this.localService.getORDERS_IDOfUser(this.USER_ID, this.DATE).then((data: any[])=>{
-        console.log(data);
+      // 1. Get array of order_url of user on one date
+      this.localService.getORDERS_IDOfUser(this.USER_ID, this.DATE).then((ORDER_URLs: any[])=>{
+        console.log(ORDER_URLs);
         this.SHOPS_ORDERS = [];
-        data.forEach(orderID => {
-          this.dbService.getOneItemReturnPromise(orderID).then((orderDetail: iOrder)=>{
-            console.log(orderDetail);
-            let ORDER_LIST_NEW = []
-            orderDetail.ORDER_LIST.forEach((item: any) =>{
-              let index = this.SHOPS_ITEMS_ID.indexOf(item.item);
-              ORDER_LIST_NEW.push({item: this.SHOPS_ITEMS[index], amount: item.amount});
+        ORDER_URLs.forEach(ORDER_URL => {
+          // 2. From order_url, get detail of order
+          this.dbService.getOneItemReturnPromise(ORDER_URL).then((ORDER_DETAIL: iOrder)=>{
+            console.log(ORDER_DETAIL);
+            let ORDER_LIST_NEW = [];
+            let TOTAL_PRICE = 0;
+            // 3. From each ORDER.ORDER_LIST, get additional to 'ORDER_LIST_NEW' and TOTAL_PRICE
+            ORDER_DETAIL.ORDER_LIST.forEach((orderList: iOrderList) =>{
+              let index = this.SHOPS_ITEMS_ID.indexOf(orderList.item);
+              ORDER_LIST_NEW.push({item: this.SHOPS_ITEMS[index], amount: orderList.amount});
+              let PRICE = orderList.amount*this.SHOPS_ITEMS[index].ITEM_PRICE;
+              TOTAL_PRICE +=PRICE;
             })
-            orderDetail['ORDER_LIST_NEW'] = ORDER_LIST_NEW;
-            this.SHOPS_ORDERS.push(orderDetail);
+            ORDER_DETAIL['ORDER_LIST_NEW'] = ORDER_LIST_NEW;
+            ORDER_DETAIL['TOTAL_PRICE'] = TOTAL_PRICE;
+            this.SHOPS_ORDERS.push(ORDER_DETAIL);
           })
         });
         console.log(this.SHOPS_ORDERS);

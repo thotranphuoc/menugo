@@ -21,28 +21,12 @@ export class AddNewShopPage {
     public navCtrl: NavController, 
     public navParams: NavParams,
     private afService: AngularFireService) {
-    // this.shop = {
-    //   id: 'shop1',
-    //   location: { lat: 0, lng: 0},
-    //   name: 'Highlands coffee',
-    //   kind: 'cafe',
-    //   address: '1 Le Duan, Q1, Saigon',
-    //   image: 'http://vincom.com.vn/sites/default/files/2016-09/HighlandsCoffee_logo_11.jpg'
-    // }
+
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad AddNewShopPage');
   }
 
-  // onAddShop(){
-  //   this.addShop(this.shop);
-  // }
-
-  // addShop(shop: iShop){
-  //   this.afService.addItem2List('Shops', shop).then((res)=>{
-  //     console.log(res);
-  //   })
-  // }
 
 }

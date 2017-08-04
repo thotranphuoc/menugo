@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage } from 'ionic-angular';
+import { IonicPage, NavParams } from 'ionic-angular';
 
 import { AppService } from '../../services/app.service';
 import { StatisticService } from '../../services/statistic.service';
@@ -29,14 +29,14 @@ export class OrderDailyStatisticPage {
   TOTAL_PRICE: number = 0;
   constructor(
     // public navCtrl: NavController,
-    // public navParams: NavParams,
+    public navParams: NavParams,
     private appService: AppService,
     // private dbService: DbService,
     private statService: StatisticService,
     private localService: LocalService,
     private gchartService: GchartService
   ) {
-
+    this.SHOP_ID = this.navParams.get('SHOP_ID');
     this.DATE = this.appService.getCurrentDate();
     this.SHOP_ITEMS = this.localService.SHOP_ITEMS;
     this.SHOP_ITEMS_ID = this.localService.SHOP_ITEMS_ID;

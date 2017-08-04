@@ -19,8 +19,8 @@ export class DbService {
     }
 
     // VERIFIED: create new key and insert object
-    insertOneNewItemReturnPromise(item, dbName) {
-        let db = firebase.database().ref(dbName);
+    insertOneNewItemReturnPromise(item, URL) {
+        let db = firebase.database().ref(URL);
         return db.push(item);
     }
 
@@ -143,8 +143,8 @@ export class DbService {
         })
     }
 
-    //VERIFIED: insert 1 value into current array
-    insertValueIntoArray(dbURL, value: any) {
+    //VERIFIED: insert 1 element into current array
+    insertElementIntoArray(dbURL, value: any) {
         return new Promise((resolve, reject) => {
             this.getListReturnPromise_ArrayOfData(dbURL).then((array: any[]) => {
                 let items = array;
@@ -162,8 +162,34 @@ export class DbService {
         })
     }
 
+    removeElementFromArray(dbURL, el: any){
+        return new Promise((resolve, reject)=>{
+            this.getListReturnPromise_ArrayOfData(dbURL).then((array: any[])=>{
+                console.log(el, array);
+                let index = array.indexOf(el);
+                if(index<0){
+                    // el not exist
+                    reject({message: 'Element not exist'});
+                }else{
+                    array.splice(index,1);
+                    firebase.database().ref(dbURL).set(array).then((res)=>{
+                        resolve(res);
+                    }).catch((err)=>{
+                        reject(err);
+                    })
+                }
+            })
+        })
+    }
+
     // VERIFIED: insert an object at specific node such as ActiveOrdersOfUser/USER_ID/ORDER_ID {}
     insertAnObjectAtNode(dbURL, value) {
+        let db = firebase.database().ref(dbURL);
+        return db.set(value);
+    }
+
+    // VERIFIED: update an object at specific node such as ActiveOrdersOfUser/USER_ID/ORDER_ID {}
+    updateAnObjectAtNode(dbURL, value) {
         let db = firebase.database().ref(dbURL);
         return db.set(value);
     }

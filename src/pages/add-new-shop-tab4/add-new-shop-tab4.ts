@@ -97,32 +97,7 @@ export class AddNewShopTab4Page {
         // ADD NEW
         if (this.action === 'add-new') {
           console.log(this.SHOP);
-          this.afService.addItem2List('Shops', this.SHOP)
-            .then((res) => {
-              console.log(res);
-              console.log(res.key);
-              this.afService.updateObjectData('Shops/' + res.key + '/SHOP_ID', res.key)
-              let name = new Date().getTime().toString();
-              this.dbService.uploadBase64Images2FBReturnPromiseWithArrayOfURL('ShopImages/' + res.key, this.SHOP_IMAGES, name)
-                .then((urls) => {
-                  this.afService.updateObjectData('Shops/' + res.key + '/SHOP_IMAGES', urls)
-                    .then(() => {
-                      this.hideLoading();
-                      this.resetShop();
-                      this.go2Page('MapPage');
-                    })
-                    .catch((err) => {
-                      console.log(err);
-                      this.appService.alertError('Error', err.toString())
-                      this.hasPosted = false;
-                    })
-                })
-                .catch((err) => {
-                      console.log(err);
-                      this.appService.alertError('Error', err.toString())
-                      this.hasPosted = false;
-                    })
-            }, (err) => { console.log(err) })
+          this.addNewShop(this.SHOP, this.SHOP_IMAGES);
         } else {
           // UPDATE
         }
@@ -131,10 +106,44 @@ export class AddNewShopTab4Page {
         this.hasPosted = false;
         this.alertMsgWithConfirmationToGoToPage();
       }
-    } else{
+    } else {
       this.appService.alertMsg('Error', 'info not full filled')
     }
   }
+
+  addNewShop(SHOP: iShop, images: string[]) {
+    // 1. Insert new SHOP
+    this.dbService.insertOneNewItemReturnPromise(SHOP, 'Shops').then((res) => {
+      console.log(res, res.key);
+      let SHOP_ID = res.key;
+      // 2. Update SHOP_ID
+      this.dbService.updateAnObjectAtNode('Shops/' + SHOP_ID + '/SHOP_ID', SHOP_ID);
+      let name = new Date().getTime().toString();
+      // 3. upload images
+      this.dbService.uploadBase64Images2FBReturnPromiseWithArrayOfURL('ShopImages/' + SHOP_ID, this.SHOP_IMAGES, name)
+        .then((urls) => {
+          // 4. update SHOP_IMAGES
+          return this.dbService.updateAnObjectAtNode('Shops/' + SHOP_ID + '/SHOP_IMAGES', urls)
+        })
+        .then(() => {
+          // 5. add administration
+          this.appService.createAdmin(SHOP_ID, this.SHOP.SHOP_OWNER , 'manager').then((res)=>{
+            console.log(res);
+          })
+          this.dbService.insertElementIntoArray('Admins/'+ this.SHOP.SHOP_OWNER, this.SHOP.SHOP_ID);
+          this.hideLoading();
+          this.resetShop();
+          this.go2Page('MapPage');
+        })
+        .catch((err) => {
+          console.log(err);
+          this.appService.alertError('Error', err.toString())
+          this.hasPosted = false;
+        })
+    })
+  }
+
+  
 
   alertMsgWithConfirmationToGoToPage() {
     this.alertCtrl.create({
@@ -152,7 +161,7 @@ export class AddNewShopTab4Page {
           handler: () => {
             console.log('go to Account page to login ');
             // this.navCtrl.popToRoot();
-            this.navCtrl.push('AccountPage', { action: 'sign-in' });
+            this.navCtrl.push('AccountPage', { action: 'request-login' });
           }
         }
       ]
@@ -170,7 +179,7 @@ export class AddNewShopTab4Page {
       console.log(this.SHOP.SHOP_ADDRESS, ' is missed');
     }
 
-    if (this.SHOP_IMAGES == null){
+    if (this.SHOP_IMAGES == null) {
       this.isInfoFullFilled = false;
       console.log(this.SHOP.SHOP_NAME, 'image is missed');
     }
@@ -204,7 +213,7 @@ export class AddNewShopTab4Page {
     root.setRoot(page);
   }
 
-  resetShop(){
+  resetShop() {
     this.localService.SHOP = this.localService.SHOP_DEFAULT;
   }
 

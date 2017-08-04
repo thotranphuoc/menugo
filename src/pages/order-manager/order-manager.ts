@@ -41,22 +41,27 @@ export class OrderManagerPage {
     private dbService: DbService,
     private localService: LocalService
   ) {
+    this.SHOP_ID = this.navParams.get('SHOP_ID');
     this.loading = this.loadingCtrl.create({
       content: 'Please wait....',
       spinner: 'crescent'
     });
 
     this.startLoading();
-    
     this.DATE = this.appService.getCurrentDate();
+    // get Shop information:
     if (this.localService.SHOP.SHOP_ID != null) {
       this.SHOP = this.localService.SHOP;
+      console.log(this.SHOP);
+      this.hideLoading()
     } else {
       this.dbService.getOneItemReturnPromise('Shops/' + this.SHOP_ID).then((data: iShop) => {
         this.SHOP = data;
         console.log(this.SHOP);
+        this.hideLoading();
       })
     }
+    // get SHOP_ITEMS & SHOP_ITEMS_ID
     this.localService.getSHOP_ITEMSnSHOP_ITEMS_ID(this.SHOP_ID).then((data: any) => {
       this.SHOP_ITEMS = data.SHOP_ITEMS;
       this.SHOP_ITEMS_ID = data.SHOP_ITEMS_ID;
