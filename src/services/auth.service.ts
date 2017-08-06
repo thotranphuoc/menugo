@@ -27,10 +27,10 @@ export class AuthService {
         return firebase.auth().sendPasswordResetEmail(email);
     }
 
-    isAdmin(userEmail: string) {
+    checkIfUserIsAdmin(userEmail: string) {
         return new Promise((resolve, reject) => {
             var isAdmin = false;
-            this.afService.getList('Admin/')
+            this.afService.getList('Admins/')
                 .subscribe((listUsers: any[]) => {
                     console.log(listUsers);
                     listUsers.forEach(user => {
@@ -47,6 +47,13 @@ export class AuthService {
                 })
         })
     }
+
+    // getUserID(EMAIL: string){
+    //     console.log('test get UID');
+    //     firebase.auth().fetchProvidersForEmail(EMAIL).then((res)=>{
+    //         console.log(res);
+    //     })
+    // }
 
     
 

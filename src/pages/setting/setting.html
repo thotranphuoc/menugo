@@ -11,7 +11,7 @@
 
 <ion-content padding id="content">
 
-  <ion-list>
+  <!-- <ion-list>
     <ion-item>
       <ion-icon name='logo-angular' item-left></ion-icon>
       <ion-label>Language</ion-label>
@@ -48,13 +48,6 @@
       </ion-label>
       <ion-toggle checked="true" [(ngModel)]="mySettings.setTakeAway"></ion-toggle>
     </ion-item>
-    <!--<ion-item>
-      <ion-icon name='ios-car-outline' item-left></ion-icon>
-      <ion-label>
-        Max
-      </ion-label>
-      <ion-toggle checked="true" [(ngModel)]="mySettings.setApartment"></ion-toggle>
-    </ion-item>-->
     <ion-item>
       <ion-toggle checked="true" [(ngModel)]="mySettings.setOther"></ion-toggle>
       <ion-label>
@@ -62,7 +55,7 @@
       </ion-label>
       <ion-icon name='body' item-left></ion-icon>
     </ion-item>
-  </ion-list>
+  </ion-list> -->
 
   <!--<ion-list>
     <ion-list-header>RANGE 
@@ -117,9 +110,9 @@
         </ion-label>
         <ion-icon name='ios-create-outline' item-left></ion-icon>
       </ion-item>
-      <ion-item (click)="go2YourSellItemPage()">
+      <ion-item (click)="go2OrdersHistory()">
         <ion-label>
-          Your Sold Items
+          Orders History
         </ion-label>
         <ion-icon name='ios-cart-outline' item-left></ion-icon>
       </ion-item>
@@ -132,55 +125,56 @@
     </div>
   </ion-list>
 
-  <ion-list>
-
-    <ion-list-header>
-      HELP & FEEDBACK
-    </ion-list-header>
-
-    <ion-item (click)="go2SupportPage()">
-      <ion-icon name='flash' item-left></ion-icon>
-      <ion-label>Contact support</ion-label>
-    </ion-item>
-    <ion-item (click)="go2SuggestionPage()">
-      <ion-icon name='ios-bulb-outline' item-left></ion-icon>
-      <ion-label>Suggest feature</ion-label>
-    </ion-item>
-    <ion-item (click)="go2MsgBoxPage()">
-      <ion-icon name='ios-mail-outline' item-left></ion-icon>
-      <ion-label>Message box</ion-label>
-    </ion-item>
-  </ion-list>
-
-  <div *ngIf="isAdmin">
+  <div *ngIf="!isAdminOfApp">
     <ion-list>
-    <ion-list-header>
-      ADMIN
-    </ion-list-header>
+      <ion-list-header>
+        HELP & FEEDBACK
+      </ion-list-header>
+      <ion-item (click)="go2SupportPage()">
+        <ion-icon name='flash' item-left></ion-icon>
+        <ion-label>Contact support</ion-label>
+      </ion-item>
+      <ion-item (click)="go2SuggestionPage()">
+        <ion-icon name='ios-bulb-outline' item-left></ion-icon>
+        <ion-label>Suggest feature</ion-label>
+      </ion-item>
+      <ion-item (click)="go2MsgBoxPage()">
+        <ion-icon name='ios-mail-outline' item-left></ion-icon>
+        <ion-label>Message box</ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
 
-    <ion-item (click)="go2UserManagement()">
-      <ion-icon name='flash' item-left></ion-icon>
-      <ion-label>Users Management</ion-label>
-    </ion-item>
-    <ion-item (click)="go2ItemManagement()">
-      <ion-icon name='ios-bulb-outline' item-left></ion-icon>
-      <ion-label>Items Management</ion-label>
-    </ion-item>
-    <ion-item (click)="go2FeedbackManagement()">
-      <ion-icon name='ios-bulb-outline' item-left></ion-icon>
-      <ion-label>Feedback Management</ion-label>
-    </ion-item>
-    
-    <!--<ion-item (click)="go2SuggestionManager()">
+
+  <div *ngIf="isAdminOfApp">
+    <ion-list>
+      <ion-list-header>
+        ADMIN OF APP
+      </ion-list-header>
+
+      <ion-item (click)="go2UserManagement()">
+        <ion-icon name='flash' item-left></ion-icon>
+        <ion-label>Users Management</ion-label>
+      </ion-item>
+      <ion-item (click)="go2ItemManagement()">
+        <ion-icon name='ios-bulb-outline' item-left></ion-icon>
+        <ion-label>Items Management</ion-label>
+      </ion-item>
+      <ion-item (click)="go2FeedbackManagement()">
+        <ion-icon name='ios-bulb-outline' item-left></ion-icon>
+        <ion-label>Feedback Management</ion-label>
+      </ion-item>
+
+      <!--<ion-item (click)="go2SuggestionManager()">
       <ion-icon name='ios-bulb-outline' item-left></ion-icon>
       <ion-label>Suggestion Manager</ion-label>
     </ion-item>-->
 
-    <ion-item (click)="go2SupportManager()">
-      <ion-icon name='ios-bulb-outline' item-left></ion-icon>
-      <ion-label>Support Manager</ion-label>
-    </ion-item>
-  </ion-list>
+      <ion-item (click)="go2SupportManager()">
+        <ion-icon name='ios-bulb-outline' item-left></ion-icon>
+        <ion-label>Support Manager</ion-label>
+      </ion-item>
+    </ion-list>
   </div>
 
 </ion-content>

@@ -23,6 +23,7 @@
     </form>
     <button ion-button block (click)="onSignIn(myForm)" [disabled]="!myForm.valid">Sign In</button>
     <p (click)="go2SignUp()">Don't have account? Register <span style="color:blue">HERE</span></p>
+    <p (click)="go2ResetPassword()">Forgot your password? Reset account <span style="color:orange">HERE</span></p>
   </div>
   <div *ngIf="action==='request-login'">
     <form #myForm="ngForm">

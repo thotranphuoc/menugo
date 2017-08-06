@@ -27,7 +27,8 @@
     {{SHOP.SHOP_NAME}}
   </ion-card> -->
 
-  <ion-card *ngFor="let order of SHOPS_ORDERS; let ind = index" (click)="go2OrderDetail(order,ind)">
+  <div *ngIf="SHOPS_ORDERS.length>0">
+    <ion-card *ngFor="let order of SHOPS_ORDERS; let ind = index" (click)="go2OrderDetail(order,ind)">
 
     <!-- <ion-grid *ngIf="order.ORDER_STATUS !=='CLOSED'"> -->
     <ion-grid>
@@ -68,6 +69,11 @@
       </ion-row>
     </ion-grid>
   </ion-card>
+  </div>
+
+  <div *ngIf="SHOPS_ORDERS.length==0" padding>
+    <p>There is no records on {{selectedDate}}</p>
+  </div>
 
   <!-- <hr>
   <div style="padding: 12px; text-align: center">

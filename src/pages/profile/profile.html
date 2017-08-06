@@ -13,7 +13,7 @@
       <div>
         <ion-item *ngIf="!hasNewAvatar">
           <ion-avatar (click)="selectPhotoByBrowser()">
-            <img src="{{PROFILE.AVATAR_URL}}" alt="" class="img">
+            <img src="{{PROFILE.PROFILE_AVATAR_URL}}" alt="" class="img">
           </ion-avatar>
         </ion-item>
         <ion-item *ngIf="hasNewAvatar">
@@ -25,23 +25,23 @@
     </div>
     <ion-item>
       <ion-label fixed>Name</ion-label>
-      <ion-input type="text" [(ngModel)]="PROFILE.NAME" name="NAME" required></ion-input>
+      <ion-input type="text" [(ngModel)]="PROFILE.PROFILE_NAME" name="PROFILE_NAME" required></ion-input>
     </ion-item>
     <ion-item>
       <ion-label fixed>Email</ion-label>
-      <ion-input type="email" [(ngModel)]="PROFILE.EMAIL" name="EMAIL" required></ion-input>
+      <ion-input type="email" [(ngModel)]="PROFILE.PROFILE_EMAIL" name="PROFILE_EMAIL" required></ion-input>
     </ion-item>
     <ion-item>
       <ion-label fixed>Birthday</ion-label>
-      <ion-input type="date" [(ngModel)]="PROFILE.BIRTHDAY" name="BIRTHDAY" required></ion-input>
+      <ion-input type="date" [(ngModel)]="PROFILE.PROFILE_BIRTHDAY" name="PROFILE_BIRTHDAY" required></ion-input>
     </ion-item>
     <ion-item>
       <ion-label fixed>Telephone</ion-label>
-      <ion-input type="text" [(ngModel)]="PROFILE.TEL" name="TEL" required></ion-input>
+      <ion-input type="text" [(ngModel)]="PROFILE.PROFILE_TEL" name="PROFILE_TEL" required></ion-input>
     </ion-item>
     <ion-item>
       <ion-label fixed>Address</ion-label>
-      <ion-input type="text" [(ngModel)]="PROFILE.ADDRESS" name="ADDRESS" required></ion-input>
+      <ion-input type="text" [(ngModel)]="PROFILE.PROFILE_ADDRESS" name="PROFILE_ADDRESS" required></ion-input>
     </ion-item>
 
   </form>

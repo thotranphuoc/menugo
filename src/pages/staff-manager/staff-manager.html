@@ -9,7 +9,7 @@
 
 <ion-content>
   <div padding>
-    <div>Hello, <span *ngIf="PROFILE">{{PROFILE.NAME}}</span> </div>
+    <div>Hello, <span *ngIf="PROFILE">{{PROFILE.PROFILE_NAME}}</span> </div>
     <div>Shop: <span *ngIf="SHOP">{{SHOP.SHOP_NAME}}</span> </div>
   </div>
   <hr>
@@ -18,10 +18,10 @@
     <ion-item-sliding *ngFor="let PROFILE of PROFILES; let i = index">
       <ion-item>
         <ion-avatar item-start>
-          <img src="{{PROFILE.profile.AVATAR_URL}}" alt="">
+          <img src="{{PROFILE.profile.PROFILE_AVATAR_URL}}" alt="">
         </ion-avatar>
-        <h2>{{PROFILE.profile.NAME}}</h2>
-        <p>{{PROFILE.role}} | {{PROFILE.profile.EMAIL}}</p>
+        <h2>{{PROFILE.profile.PROFILE_NAME}}</h2>
+        <p>{{PROFILE.role}} | {{PROFILE.profile.PROFILE_EMAIL}}</p>
       </ion-item>
       <ion-item-options *ngIf="isManager">
         <button ion-button color="danger" ion-start (click)="deleteStaff(PROFILE, i)">

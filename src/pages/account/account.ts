@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { AuthService } from '../../services/auth.service';
 import { AppService } from '../../services/app.service';
+import { CrudService } from '../../services/crud.service';
 @IonicPage()
 @Component({
   selector: 'page-account',
@@ -17,7 +18,9 @@ export class AccountPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     private authService: AuthService,
+    private crudService: CrudService,
     private appService: AppService) {
+
     let Act = this.navParams.get('action');
     if (typeof (Act) != 'undefined') {
       this.action = Act;
@@ -38,7 +41,7 @@ export class AccountPage {
       })
       .catch((err) => {
         console.log('Error when loggin');
-        this.appService.alertError('Error',err.message)
+        this.appService.alertError('Error', err.message)
       })
   }
 
@@ -51,25 +54,24 @@ export class AccountPage {
       })
       .catch((err) => {
         console.log('Error when loggin');
-        this.appService.alertError('Error',err.message)
+        this.appService.alertError('Error', err.message)
       })
   }
 
   onSignUp(form) {
     console.log(form.value);
-    if (this.signUp.password1 === this.signUp.password2){
-      this.authService.signUp(this.signUp.email, this.signUp.password1)
+    if (this.signUp.password1 === this.signUp.password2) {
+      this.crudService.accountSignUp(this.signUp.email, this.signUp.password1)
         .then((res) => {
           console.log(res);
-          console.log('account registered successfully');
-          this.appService.alertMsg('Success', 'account created successfully');
-          this.navCtrl.setRoot('MapPage');
+          this.appService.alertMsg('Success', 'Account created successfully. Please sign in');
+          this.navCtrl.pop();
         })
         .catch((err) => {
-          console.log('account registered failed', err);
-          this.appService.alertMsg('Fail', err.message);
+          console.log(err);
+          this.appService.alertMsg('Fail', 'message:' + err.message);
         })
-    }else{
+    } else {
       this.appService.alertMsg('Fail', 'password not matched')
     }
   }
@@ -93,6 +95,10 @@ export class AccountPage {
 
   go2SignUp() {
     this.action = 'sign-up';
+  }
+
+  go2ResetPassword(){
+    this.action = 'reset-account';
   }
 
 

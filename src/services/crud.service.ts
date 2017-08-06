@@ -10,6 +10,7 @@ import { AngularFireService } from './af.service';
 import { iOrder } from '../interfaces/order.interface';
 import { iItem } from '../interfaces/item.interface';
 import { iProfile } from '../interfaces/profile.interface';
+import { iAccount } from '../interfaces/account.interface';
 
 @Injectable()
 
@@ -23,6 +24,45 @@ export class CrudService {
         private authService: AuthService,
         private afService: AngularFireService
     ) { }
+
+    // CRUD account to use app
+    // 1. Create account
+    accountSignUp(EMAIL: string, PASSWORD: string) {
+        return new Promise((resolve, reject) => {
+            this.authService.signUp(EMAIL, PASSWORD).then((res) => {
+                // update to DB Accounts
+                let USER_ID = res.uid;
+                let PROFILE: iProfile = {
+                    PROFILE_AVATAR_URL: '',
+                    PROFILE_NAME: 'No Name',
+                    PROFILE_EMAIL: EMAIL,
+                    PROFILE_BIRTHDAY: '',
+                    PROFILE_TEL: '',
+                    PROFILE_ADDRESS: '',
+                    PROFILE_STATE: '',
+                    PROFILE_VERIFIED: false,
+                    PROFILE_UID: USER_ID,
+                    PROFILE_PROVIDER: 'Email',
+                    PROFILE_IDENTIFIER: '',
+                    PROFILE_CREATED: Date.now().toString(),
+                    PROFILE_OTHERS: null
+                }
+                console.log(res, PROFILE);
+                this.dbService.insertAnObjectAtNode('UserProfiles/' + USER_ID, PROFILE).then(() => {
+                    resolve({ PROFILE: PROFILE, message: 'Success' });
+                })
+                .catch((err)=>{
+                    reject(err);
+                })
+            })
+        })
+    }
+    // 2. Read Account
+
+    // 3. Update Account
+
+    // 4. delete Account
+
 
     // create manager/staff account
     createAdminWithNewAccount(EMAIL: string, PASS: string, NAME: string, SHOP_ID: string, role: string) {
@@ -54,14 +94,19 @@ export class CrudService {
                 // 4. update Profile
                 let URL = 'UserProfiles/' + USER_ID;
                 let data1: iProfile = {
-                    AVATAR_URL: '',
-                    NAME: NAME,
-                    EMAIL: EMAIL,
-                    BIRTHDAY: '',
-                    TEL: '',
-                    ADDRESS: '',
-                    STATE: '',
-                    VERIFIED: false
+                    PROFILE_AVATAR_URL: '',
+                    PROFILE_NAME: NAME,
+                    PROFILE_EMAIL: EMAIL,
+                    PROFILE_BIRTHDAY: '',
+                    PROFILE_TEL: '',
+                    PROFILE_ADDRESS: '',
+                    PROFILE_STATE: '',
+                    PROFILE_VERIFIED: false,
+                    PROFILE_UID: '',
+                    PROFILE_PROVIDER: '',
+                    PROFILE_IDENTIFIER: '',
+                    PROFILE_CREATED: Date.now().toString(),
+                    PROFILE_OTHERS: null
                 }
                 let promise3 = this.dbService.insertAnObjectAtNode(URL, data1)
                 promises.push(promise1);
@@ -76,7 +121,7 @@ export class CrudService {
     createAdminWithExistingAccount(EMAIL: string, ROLE: string, SHOP_ID: string) {
         console.log(EMAIL, ROLE, SHOP_ID);
         return new Promise((resolve, reject) => {
-            this.afService.getListWithCondition('UserProfiles/', 'EMAIL', EMAIL, 1).subscribe((data: any) => {
+            this.afService.getListWithCondition('UserProfiles/', 'PROFILE_EMAIL', EMAIL, 1).subscribe((data: any) => {
                 console.log(data);
                 if (data.length > 0) {
                     // 1. get USER_ID from email
@@ -114,7 +159,7 @@ export class CrudService {
                         }
                     })
                 } else {
-                    reject({ message: 'email is not registered yet' })
+                    reject({ message: 'email is not registered yet, or profile not updated yet' })
                 }
             })
         })
@@ -132,30 +177,30 @@ export class CrudService {
                 } else {
                     admins.splice(index, 1);
                     console.log(admins);
-                    this.dbService.insertAnObjectAtNode('AdminsOfShop/' + SHOP_ID,admins)
+                    this.dbService.insertAnObjectAtNode('AdminsOfShop/' + SHOP_ID, admins)
                 }
             })
-            .then(()=>{
-                this.dbService.getListReturnPromise_ArrayOfData('Admins/' + USER_ID).then((shop_list: any[])=>{
-                    console.log(shop_list);
-                    let index = shop_list.indexOf(SHOP_ID);
-                    if(index<0){
-                        // not exist
-                        console.log('item not found');
-                        resolve();
-                    }else{
-                        shop_list.splice(index,1);
-                        this.dbService.insertAnObjectAtNode('Admins/' + USER_ID,shop_list).then(()=>{
-                            console.log('Admins/' + USER_ID, 'updated');
+                .then(() => {
+                    this.dbService.getListReturnPromise_ArrayOfData('Admins/' + USER_ID).then((shop_list: any[]) => {
+                        console.log(shop_list);
+                        let index = shop_list.indexOf(SHOP_ID);
+                        if (index < 0) {
+                            // not exist
+                            console.log('item not found');
                             resolve();
-                        })
-                        
-                    }
+                        } else {
+                            shop_list.splice(index, 1);
+                            this.dbService.insertAnObjectAtNode('Admins/' + USER_ID, shop_list).then(() => {
+                                console.log('Admins/' + USER_ID, 'updated');
+                                resolve();
+                            })
+
+                        }
+                    })
                 })
-            })
-            .catch((err)=>{
-                reject(err);
-            })
+                .catch((err) => {
+                    reject(err);
+                })
 
 
             // // remove from AdminsOfShop
@@ -177,4 +222,7 @@ export class CrudService {
 
 
     }
+
+
+
 }

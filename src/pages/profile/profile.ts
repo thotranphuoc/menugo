@@ -15,14 +15,19 @@ import { iProfile } from '../../interfaces/profile.interface';
 export class ProfilePage {
   PROFILE_OLD: any;
   PROFILE: iProfile = {
-    AVATAR_URL: '',
-    NAME: '',
-    EMAIL: '',
-    BIRTHDAY: '',
-    TEL: '',
-    ADDRESS: '',
-    STATE: '',
-    VERIFIED: false
+    PROFILE_AVATAR_URL: '',
+    PROFILE_NAME: '',
+    PROFILE_EMAIL: '',
+    PROFILE_BIRTHDAY: '',
+    PROFILE_TEL: '',
+    PROFILE_ADDRESS: '',
+    PROFILE_STATE: '',
+    PROFILE_VERIFIED: false,
+    PROFILE_UID: '',
+    PROFILE_PROVIDER: '',
+    PROFILE_IDENTIFIER: '',
+    PROFILE_CREATED: '',
+    PROFILE_OTHERS: null
   }
   USER: any;
   USER_ID: string = null;
@@ -52,7 +57,7 @@ export class ProfilePage {
         this.USER_ID = this.USER.uid;
         this.USER_EMAIL = this.USER.email;
         this.getProfile(this.USER_ID);
-        this.PROFILE.EMAIL = this.USER_EMAIL;
+        this.PROFILE.PROFILE_EMAIL = this.USER_EMAIL;
       }
     } else {
       // edited by admin
@@ -82,7 +87,7 @@ export class ProfilePage {
     if (this.USER_ID) {
       if (this.hasNewAvatar) {
         this.uploadImages(this.base64Images).then((res: string[]) => {
-          this.PROFILE.AVATAR_URL = res[0];
+          this.PROFILE.PROFILE_AVATAR_URL = res[0];
           console.log(this.PROFILE);
           this.dbService.insertAnObjectAtNode('UserProfiles/' + this.USER_ID, this.PROFILE).then((res) => {
             console.log(res);

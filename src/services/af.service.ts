@@ -27,7 +27,6 @@ export class AngularFireService {
         private afAuth: AngularFireAuth) {
 
         this.user = this.afAuth.authState;
-
     }
 
     getAuth() {

@@ -18,6 +18,38 @@ export class DbService {
         private afAuth: AngularFireAuth) {
     }
 
+    checkIfUserIsAdminOfApp(USER_ID: string){
+        return new Promise((resolve, reject)=>{
+            this.getOneItemReturnPromise('AdminsOfApp/'+ USER_ID).then((res)=>{
+                console.log(res);
+                if(res !=null){
+                    resolve(true);
+                }else{
+                    resolve(false);
+                }
+            })
+            .catch((err)=>{
+                reject(err);
+            })
+        })
+    }
+
+    checkIfUserIsAdmin(USER_ID: string){
+        return new Promise((resolve, reject)=>{
+            this.getOneItemReturnPromise('Admins/'+ USER_ID).then((res)=>{
+                console.log(res);
+                if(res !=null){
+                    resolve(true);
+                }else{
+                    resolve(false);
+                }
+            })
+            .catch((err)=>{
+                reject(err);
+            })
+        })
+    }
+
     // VERIFIED: create new key and insert object
     insertOneNewItemReturnPromise(item, URL) {
         let db = firebase.database().ref(URL);

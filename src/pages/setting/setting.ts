@@ -18,7 +18,7 @@ export class SettingPage {
 
   mySettings: iSetting;
   isSigned;
-  isAdmin: boolean = false;
+  isAdminOfApp: boolean = false;
   
   constructor(
     public navCtrl: NavController,
@@ -33,9 +33,8 @@ export class SettingPage {
     console.log('constructor inside')
     this.isSigned = this.afAuth.auth.currentUser;
     if (this.isSigned) {
-      this.authService.isAdmin(this.afAuth.auth.currentUser.email).then((res: boolean) => {
-        console.log(res);
-        this.isAdmin = res;
+      this.dbService.checkIfUserIsAdminOfApp(this.isSigned.uid).then((res: boolean)=>{
+        this.isAdminOfApp = res;
       })
     }
     console.log(this.isSigned);
@@ -54,7 +53,8 @@ export class SettingPage {
     this.afAuth.auth.signOut()
       .then(() => {
         console.log('user logged out!');
-        this.localService.isProfileLoaded = false;
+        this.localService.PROFILE = this.localService.PROFILE_DEFAULT;
+        this.localService.PROFILE_OLD = this.localService.PROFILE_DEFAULT;
       })
     this.navCtrl.setRoot('MapPage');
   }
@@ -64,8 +64,8 @@ export class SettingPage {
     this.navCtrl.push('ProfilePage');
   }
 
-  go2YourSellItemPage() {
-    this.navCtrl.push('YourSellItemPage', this.afAuth.auth.currentUser.uid);
+  go2OrdersHistory() {
+    this.navCtrl.push('YourOrdersPage', this.afAuth.auth.currentUser.uid);
   }
 
   go2FavoriteViewPage() {

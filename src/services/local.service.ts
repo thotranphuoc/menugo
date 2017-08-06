@@ -119,36 +119,51 @@ export class LocalService {
     SHOP_ITEMS_INDEX = [];
 
     PROFILE_DEFAULT: iProfile = {
-        AVATAR_URL: '',
-        NAME: '',
-        EMAIL: '',
-        BIRTHDAY: '',
-        TEL: '',
-        ADDRESS: '',
-        STATE: '',
-        VERIFIED: false
+        PROFILE_AVATAR_URL: '',
+        PROFILE_NAME: '',
+        PROFILE_EMAIL: '',
+        PROFILE_BIRTHDAY: '',
+        PROFILE_TEL: '',
+        PROFILE_ADDRESS: '',
+        PROFILE_STATE: '',
+        PROFILE_VERIFIED: false,
+        PROFILE_UID: '',
+        PROFILE_PROVIDER: '',
+        PROFILE_IDENTIFIER: '',
+        PROFILE_CREATED: '',
+        PROFILE_OTHERS: null
     }
 
     PROFILE: iProfile = {
-        AVATAR_URL: '',
-        NAME: '',
-        EMAIL: '',
-        BIRTHDAY: '',
-        TEL: '',
-        ADDRESS: '',
-        STATE: '',
-        VERIFIED: false
+        PROFILE_AVATAR_URL: '',
+        PROFILE_NAME: '',
+        PROFILE_EMAIL: '',
+        PROFILE_BIRTHDAY: '',
+        PROFILE_TEL: '',
+        PROFILE_ADDRESS: '',
+        PROFILE_STATE: '',
+        PROFILE_VERIFIED: false,
+        PROFILE_UID: '',
+        PROFILE_PROVIDER: '',
+        PROFILE_IDENTIFIER: '',
+        PROFILE_CREATED: '',
+        PROFILE_OTHERS: null
     }
 
     PROFILE_OLD: iProfile = {
-        AVATAR_URL: '',
-        NAME: '',
-        EMAIL: '',
-        BIRTHDAY: '',
-        TEL: '',
-        ADDRESS: '',
-        STATE: '',
-        VERIFIED: false
+        PROFILE_AVATAR_URL: '',
+        PROFILE_NAME: '',
+        PROFILE_EMAIL: '',
+        PROFILE_BIRTHDAY: '',
+        PROFILE_TEL: '',
+        PROFILE_ADDRESS: '',
+        PROFILE_STATE: '',
+        PROFILE_VERIFIED: false,
+        PROFILE_UID: '',
+        PROFILE_PROVIDER: '',
+        PROFILE_IDENTIFIER: '',
+        PROFILE_CREATED: '',
+        PROFILE_OTHERS: null
     }
 
 
@@ -160,7 +175,7 @@ export class LocalService {
     isUserChosenPositionSet: boolean = false;
     existingSoldItemID: string = null;
 
-    NO_AVATAR: string = 'https://firebasestorage.googleapis.com/v0/b/auth-38cb7.appspot.com/o/App_images%2Favatar.png?alt=media&token=27b34944-943d-49f8-a204-419980813db4';
+    // NO_AVATAR: string = 'https://firebasestorage.googleapis.com/v0/b/auth-38cb7.appspot.com/o/App_images%2Favatar.png?alt=media&token=27b34944-943d-49f8-a204-419980813db4';
     USER_AVATAR: string = null;
     USER_ID: string = null;
     isProfileLoaded: boolean = false;
@@ -365,6 +380,8 @@ export class LocalService {
                     uniquArr = this.appService.removeDuplicate(SHOP_IDs);
                     console.log(uniquArr);
                     resolve(uniquArr);
+                }else{
+                    reject({message: 'there is no record', result: []});
                 }
             })
         })
