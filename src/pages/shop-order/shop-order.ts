@@ -39,15 +39,13 @@ export class ShopOrderPage {
   ) {
     this.SHOP = this.localService.SHOP;
     this.USER_ID = this.localService.USER_ID;
-    if(this.USER_ID == null) {
-      if(this.afService.getAuth().auth.currentUser){
+    if (this.USER_ID == null) {
+      if (this.afService.getAuth().auth.currentUser) {
         this.USER_ID = this.afService.getAuth().auth.currentUser.uid;
-      } else{
+      } else {
         this.showConfirm();
       }
     }
-
-
     // 1. getShopITEMS. If ITEM already get, go ahead. If not, start getting
     this.getShopITEMS();
     if (this.SHOP_ITEMS.length < 0) {
@@ -73,7 +71,7 @@ export class ShopOrderPage {
   }
 
   ionViewWillLeave() {
-    
+
   }
 
   checkItemNEWorUPDATE() {
@@ -86,7 +84,6 @@ export class ShopOrderPage {
     } else if (count > 0 && this.isItemUPDATE) {
       this.isItemNEW = false;
     }
-
     console.log(this.isItemNEW, this.isItemUPDATE);
   }
 
@@ -112,7 +109,7 @@ export class ShopOrderPage {
     });
     console.log(ORDER_LIST);
     let SHOP_ID = this.SHOP_ITEMS[0].ITEM_SHOP_ID;
-    let USER_ID = this.afService.getAuth().auth.currentUser.uid;
+    let USER_ID = this.afService.getAuth().auth.currentUser != null ? this.afService.getAuth().auth.currentUser.uid : null;
     let DATETIME = this.appService.getCurrentDataAndTime();
     let TABLE = 'T01';
     let ORDER: iOrder = {
@@ -127,10 +124,13 @@ export class ShopOrderPage {
       ORDER_LIST: ORDER_LIST,
     };
     let DATE = this.appService.getCurrentDate();
-    this.localService.sendNewOrder(ORDER, SHOP_ID, USER_ID, DATE);
-    this.Order2Update = ORDER;
-    
-    this.resetIndex();
+    if (USER_ID) {
+      this.localService.sendNewOrder(ORDER, SHOP_ID, USER_ID, DATE);
+      this.Order2Update = ORDER;
+      this.resetIndex();
+    } else {
+      alert('Please sign in to continue');
+    }
   }
 
   updateORDER() {
@@ -147,7 +147,6 @@ export class ShopOrderPage {
 
     this.resetIndex();
   }
-
 
   resetIndex() {
     this.SHOP_ITEMS_INDEX.forEach(item => {
@@ -188,7 +187,7 @@ export class ShopOrderPage {
             ORDER['ORDER_LIST_NEW'] = ORDER_LIST_NEW;
             ORDER['TOTAL_PRICE'] = TOTAL_PRICE;
             this.ORDERs_NEW.push(ORDER);
-          }, 1000)
+          },20)
         })
       }
     })
@@ -242,29 +241,16 @@ export class ShopOrderPage {
       default:
         break;
     }
-
     console.log(this.isItemNEW, this.isItemUPDATE);
   }
 
   showConfirm() {
-    let confirm = this.alertCtrl.create({
-      title: 'Alert!',
-      message: 'Please login to use this feature',
-      buttons: [
-        {
-          text: 'Cancel',
-          handler: () => {
-            console.log('Disagree clicked');
-          }
-        },
-        {
-          text: 'OK',
-          handler: () => {
-            this.navCtrl.push('AccountPage', {action: 'request-login'});
-          }
-        }
-      ]
-    });
-    confirm.present();
+    let HANDLER1 = ()=>{
+      console.log('Cancel clicked');
+    }
+    let HANDLER2 = ()=>{
+      this.navCtrl.push('AccountPage', { action: 'request-login' });
+    }
+    this.appService.showConfirmationWith2Button('Alert', 'Please login to continue...', 'Cancel', HANDLER1, 'OK', HANDLER2);
   }
 }

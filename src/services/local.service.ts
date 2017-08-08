@@ -103,17 +103,10 @@ export class LocalService {
     }
 
     SHOP_IMAGE: string;
-
     SHOP_IMAGES_DEFAULT: string[] = [];
     SHOP_IMAGES: string[] = [];
 
     //ShopMenuPage, ShopOrderPage
-    ITEM_INDEX_DEFAULT: any = [];
-    ITEM_INDEX: any = [];
-
-    ITEMS_DEFAULT: iItem[] = [];
-    ITEMS: iItem[] = [];
-
     SHOP_ITEMS = [];
     SHOP_ITEMS_ID = [];
     SHOP_ITEMS_INDEX = [];
@@ -175,7 +168,6 @@ export class LocalService {
     isUserChosenPositionSet: boolean = false;
     existingSoldItemID: string = null;
 
-    // NO_AVATAR: string = 'https://firebasestorage.googleapis.com/v0/b/auth-38cb7.appspot.com/o/App_images%2Favatar.png?alt=media&token=27b34944-943d-49f8-a204-419980813db4';
     USER_AVATAR: string = null;
     USER_ID: string = null;
     isProfileLoaded: boolean = false;

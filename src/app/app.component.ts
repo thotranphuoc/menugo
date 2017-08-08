@@ -61,23 +61,6 @@ export class MyApp {
 
   ionOpen() {
     console.log('Menu is opened')
-    // this.PROFILE = null;
-    // if (!this.localService.isProfileLoaded) {
-    //   this.localService.initUserInfo()
-    //     .then((profile: iProfile) => {
-    //       console.log(profile)
-    //       this.profile = profile;
-    //       this.userAvatar = this.profile.AVATAR_URL;
-    //       this.userName = this.profile.NAME;
-    //       this.localService.isProfileLoaded = true;
-    //     })
-    //     .catch((err)=>{
-    //       console.log(err);
-    //       this.userAvatar = null;
-    //       this.userName = null;
-    //       this.profile = null;
-    //     })
-    // }
     let USER = this.afService.getAuth().auth.currentUser;
         if(USER){
           let USER_ID = USER.uid;

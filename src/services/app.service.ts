@@ -1,23 +1,15 @@
 import { Injectable } from '@angular/core';
-import { AlertController, ToastController, LoadingController, NavController } from 'ionic-angular';
+import { AlertController, ToastController, LoadingController } from 'ionic-angular';
 
 // import { iSetting } from '../interfaces/setting.interface';
 // import { iSoldItem } from '../interfaces/sold-item.interface';
-import { iShop } from '../interfaces/shop.interface';
+// import { iShop } from '../interfaces/shop.interface';
 
 import { AngularFireService } from './af.service';
 import { DbService } from './db.service';
 
 @Injectable()
 export class AppService {
-    // SETTINGS: iSetting = {
-    //     setHouse: true,
-    //     setApartment: true,
-    //     setLand: true,
-    //     setOther: true,
-    //     language: 'English',
-    //     numOfItems: 50
-    // }
     loadCtrl: any;
 
     constructor(
@@ -75,14 +67,6 @@ export class AppService {
         // console.log(finalConvertedN);
         return finalConvertedN;
     }
-
-    // getSetting() {
-    //     return this.SETTINGS;
-    // }
-
-    // updateSetting(settings: iSetting) {
-    //     this.SETTINGS = settings;
-    // }
 
     startLoadingCtrl() {
         this.loadCtrl = this.loadingCtrl.create({
@@ -158,29 +142,6 @@ export class AppService {
                 return 'Khác';
         };
     }
-
-    // alertMsgWithConfirmationToGoToPage(page) {
-    //     return this.alertCtrl.create({
-    //         title: 'Not Signed',
-    //         message: 'Plz login to continue',
-    //         buttons: [
-    //             {
-    //                 text: 'Cancel',
-    //                 handler: () => {
-
-    //                 }
-    //             },
-    //             {
-    //                 text: 'OK',
-    //                 handler: () => {
-    //                     console.log('go to page: ', page);
-    //                     // this.navCtrl.popToRoot();
-    //                     this.navCtrl.push(page);
-    //                 }
-    //             }
-    //         ]
-    //     })
-    // }
 
     getObjectInfoForPopover() {
         let infoObject = {
@@ -388,7 +349,7 @@ export class AppService {
 
 
     covertObjectArray2ArrayArray(arr1: any[]) {
-        let arr2: any[] = [];
+        // let arr2: any[] = [];
 
     }
 
@@ -407,9 +368,21 @@ export class AppService {
         return this.dbService.insertElementIntoArray('AdminsOfShop/'+SHOP_ID, data);
     }
 
-
-
-
-
-
+    showConfirmationWith2Button(TITLE: string, MESSAGE: string, Btn1TEXT: string, Btn1Handler: any, Btn2TEXT: string, Btn2Handler: any ){
+        let confirm = this.alertCtrl.create({
+            title: TITLE,
+            message: MESSAGE,
+            buttons: [
+                {
+                    text: Btn1TEXT,
+                    handler: Btn1Handler
+                },
+                {
+                    text: Btn2TEXT,
+                    handler: Btn2Handler
+                }
+            ]
+        });
+        confirm.present();
+    }
 }
