@@ -70,10 +70,12 @@ export class MapPage {
           .then((position: iPosition) => {
             console.log(position);
             this.showMap(position, mapElement)
+            this.gmapService.setUserCurrentPosition(position);
           }, err => {
             console.log(err);
             alert('No gps signal. Your location cannot be detected now.');
             let pos: iPosition = { lat: 10.778168043677463, lng: 106.69638633728027};
+            this.gmapService.setUserCurrentPosition(pos);
             this.showMap(pos,mapElement);
           })
       })
