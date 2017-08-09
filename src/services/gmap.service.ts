@@ -65,6 +65,7 @@ export class GmapService {
         this.afService.updateObjectData('UserPosition/' + this.afService.getAuth().auth.currentUser.uid, { LAST_POSITION: position, TIME: DATE });
     }
 
+
     getCurrentPosition() {
         return this.geolocation.getCurrentPosition();
     }
