@@ -3,7 +3,7 @@ import { NavController, NavParams, PopoverController } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 
 // import { DbService } from './db.service';
-// import { AppService } from './app.service';
+import { AppService } from './app.service';
 import { AngularFireService } from "./af.service";
 // import { PopoverInfoPage } from '../pages/popover-info/popover-info';
 // import { iSoldItem } from '../interfaces/sold-item.interface';
@@ -19,7 +19,7 @@ export class GmapService {
     markers: any[] = [];
     constructor(
         // private dbService: DbService,
-        // private appService: AppService,
+        private appService: AppService,
         private afService: AngularFireService,
         private popoverCtrl: PopoverController,
         private geolocation: Geolocation) { }
@@ -59,18 +59,19 @@ export class GmapService {
         return map.getBounds().contains(pos);
     }
 
-    // setUserCurrentPosition(position: iPosition) {
-    //     this.currentUserPosition = position;
-    //     this.afService.updateObjectData('UserPosition/' + this.afService.getAuth().auth.currentUser.uid, { LAST_POSITION: position });
-    // }
+    setUserCurrentPosition(position: iPosition) {
+        this.currentUserPosition = position;
+        let DATE = this.appService.getCurrentDataAndTime();
+        this.afService.updateObjectData('UserPosition/' + this.afService.getAuth().auth.currentUser.uid, { LAST_POSITION: position, TIME: DATE });
+    }
 
     getCurrentPosition() {
         return this.geolocation.getCurrentPosition();
     }
 
-    // getDistanceFromCurrent(lat1, lng1) {
-    //     return this.getDistanceFrom2Point(this.currentUserPosition.lat, this.currentUserPosition.lng, lat1, lng1);
-    // }
+    getDistanceFromCurrent(lat1, lng1) {
+        return this.getDistanceFrom2Point(this.currentUserPosition.lat, this.currentUserPosition.lng, lat1, lng1);
+    }
 
     getDistanceFrom2Point(lat1, lng1, lat2, lng2) {
         let R = 6371; // Raidus of the earth in km ;

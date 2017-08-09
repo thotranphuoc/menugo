@@ -62,7 +62,7 @@ export class MapPage {
       .then((position) => {
         let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
         let pos: iPosition = { lat: position.coords.latitude, lng: position.coords.longitude }
-        // this.gmapService.setUserCurrentPosition(pos);
+        this.gmapService.setUserCurrentPosition(pos);
         this.showMap(pos, mapElement)
       })
       .catch((err) => {
