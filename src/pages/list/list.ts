@@ -13,17 +13,21 @@ import { iShop } from '../../interfaces/shop.interface';
 export class ListPage {
 
   shop: iShop;
-  shopList: iShop[];
+  shopList: iShop[] = [];
+  isBackable: boolean = false;
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
     private dbService: DbService,
     private afService: AngularFireService) {
-      // this.shopList = this.afService.getList('Shops');
-      // console.log(this.shopList)
-      this.dbService.getListReturnPromise_ArrayOfData('Shops').then((res: iShop[])=>{
-        this.shopList = res;
-      })
+      this.shopList = this.navParams.get('shops');
+      if(typeof(this.shopList) !='undefined'){
+        this.isBackable = true;
+        console.log(this.shopList);
+      }else{
+        this.isBackable = false;
+        this.shopList = [];
+      }
   }
 
   ionViewDidLoad() {
@@ -32,6 +36,14 @@ export class ListPage {
 
   go2Shop(shop: iShop){
     this.navCtrl.setRoot('ShopPage', shop);
+  }
+
+  go2Map(){
+    if(this.isBackable){
+      this.navCtrl.pop();
+    }else{
+      this.navCtrl.setRoot('MapPage');
+    }
   }
 
 }

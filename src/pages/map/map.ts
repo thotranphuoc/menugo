@@ -20,9 +20,9 @@ export class MapPage {
   mapEl: any;
   map: any;
   loading: any;
-
   shops: iShop[] = [];
   shopsO: FirebaseListObservable<iShop[]>;;
+  insideMapShops: iShop[] =[];
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -87,7 +87,10 @@ export class MapPage {
     let mapOptions = {
       center: latLng,
       zoom: 15,
-      mapTypeId: google.maps.MapTypeId.ROADMAP
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+      mapTypeControl: false,
+      zoomControl: false,
+      fullscreenControl: false
     }
 
     console.log(mapElement, mapOptions);
@@ -110,10 +113,11 @@ export class MapPage {
   loadShops(){
     // remove existing marker first. then load new markers later to sure that new INVISIBLE markers will be removed
     this.gmapService.removeMarkersFromMap(this.gmapService.getMarkers());
-
+    this.insideMapShops = [];
     this.shops.forEach(shop=>{
       if(this.gmapService.isPositionInsideMap(shop.SHOP_LOCATION,this.map)){
         this.gmapService.addMarkerToMapWithIDReturnPromiseWithMarker(this.map,shop.SHOP_LOCATION, shop);
+        this.insideMapShops.push(shop);
       }
     })
   }
@@ -132,7 +136,7 @@ export class MapPage {
 
   go2List() {
     console.log('go2ListPage');
-    this.navCtrl.push('ListPage');
+    this.navCtrl.push('ListPage', {shops: this.insideMapShops});
   }
 
   go2AddNewShop(){
