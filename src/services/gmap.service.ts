@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { NavController, NavParams, PopoverController } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 
-// import { DbService } from './db.service';
+import { DbService } from './db.service';
 import { AppService } from './app.service';
 import { AngularFireService } from "./af.service";
 // import { PopoverInfoPage } from '../pages/popover-info/popover-info';
@@ -18,7 +18,7 @@ export class GmapService {
     currentUserPosition: iPosition = null;
     markers: any[] = [];
     constructor(
-        // private dbService: DbService,
+        private dbService: DbService,
         private appService: AppService,
         private afService: AngularFireService,
         private popoverCtrl: PopoverController,
@@ -39,8 +39,9 @@ export class GmapService {
                 position = this.currentUserPosition;
                 resolve(position);
             } else {
-                this.afService.getObject('UserPosition/' + this.afService.getAuth().auth.currentUser.uid + '/LAST_POSITION')
-                    .subscribe((res) => {
+                if(this.afService.getAuth().auth.currentUser){
+                    this.dbService.getOneItemReturnPromise('UserPosition/' + this.afService.getAuth().auth.currentUser.uid + '/LAST_POSITION')
+                    .then((res: any) => {
                         let pos = {
                             lat: res.lat,
                             lng: res.lng
@@ -49,6 +50,13 @@ export class GmapService {
                         position = pos;
                         resolve(position);
                     })
+                    .catch(err=>{
+                        reject('Location not detected')
+                    })
+                }else{
+                    let pos: iPosition = { lat: 10.778168043677463, lng: 106.69638633728027};
+                    resolve(pos)
+                }
             }
 
         })
@@ -62,7 +70,9 @@ export class GmapService {
     setUserCurrentPosition(position: iPosition) {
         this.currentUserPosition = position;
         let DATE = this.appService.getCurrentDataAndTime();
-        this.afService.updateObjectData('UserPosition/' + this.afService.getAuth().auth.currentUser.uid, { LAST_POSITION: position, TIME: DATE });
+        if(this.afService.getAuth().auth.currentUser){
+            this.afService.updateObjectData('UserPosition/' + this.afService.getAuth().auth.currentUser.uid, { LAST_POSITION: position, TIME: DATE });
+        }
     }
 
 
@@ -236,15 +246,15 @@ export class GmapService {
     //   }
 
 
-    addMarkerToMapWithIDReturnPromiseWithMarker(map, position: iPosition, data){
-        return new Promise((resolve, reject)=>{
+    addMarkerToMapWithIDReturnPromiseWithMarker(map, position: iPosition, data) {
+        return new Promise((resolve, reject) => {
             let pos = new google.maps.LatLng(position.lat, position.lng);
             let marker = new google.maps.Marker({
                 position: pos,
                 map: map
             })
 
-            marker.addListener('click',()=>{
+            marker.addListener('click', () => {
                 console.log(data);
                 let popover = this.popoverCtrl.create('PopOverPage', data).present()
             })
