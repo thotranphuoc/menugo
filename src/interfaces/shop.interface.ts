@@ -14,6 +14,8 @@ export interface iShop {
     SHOP_isMOTO_PARK_FREE: boolean,
     SHOP_isCAR_PARK_FREE: boolean,
     SHOP_isMEMBERSHIP: boolean,
-    SHOP_isVISIBLE: boolean
+    SHOP_isVISIBLE: boolean,
+    SHOP_CURRENCY: string,
+    SHOP_OTHER: any
 
 }

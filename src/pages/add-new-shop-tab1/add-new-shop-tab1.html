@@ -1,4 +1,3 @@
-
 <ion-header>
 
   <ion-navbar>
@@ -16,7 +15,7 @@
     <ion-icon name="md-restaurant"></ion-icon>
     <ion-item>
       <!--<ion-label stacked>Shop Name:</ion-label>-->
-      
+
       <ion-input required [(ngModel)]="SHOP.SHOP_NAME" name="SHOP_NAME" type="text" id="name" placeholder="Enter the name of shop"></ion-input>
     </ion-item>
     <ion-icon name="ios-call-outline"></ion-icon>
@@ -38,8 +37,12 @@
     <ion-icon name="ios-home-outline"></ion-icon>
     <ion-item>
       <!--<ion-label stacked>Address:</ion-label>-->
-      <ion-icon name="home"></ion-icon>
+      <!-- <ion-icon name="home"></ion-icon> -->
       <ion-input required [(ngModel)]="SHOP.SHOP_ADDRESS" name="SHOP_ADDRESS" type="text" placeholder="Enter address"></ion-input>
+    </ion-item>
+    <ion-icon name="logo-usd"></ion-icon>
+    <ion-item>
+      <ion-input required [(ngModel)]="SHOP.SHOP_CURRENCY" name="SHOP_CURRENCY" type="text" placeholder="Example USD or KVND"></ion-input>
     </ion-item>
   </form>
 </ion-content>

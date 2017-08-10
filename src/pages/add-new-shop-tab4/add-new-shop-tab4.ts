@@ -54,7 +54,8 @@ export class AddNewShopTab4Page {
 
   ionViewWillEnter() {
     this.SHOP_IMAGES = this.localService.SHOP_IMAGES;
-    this.SHOP = this.localService.getShop();
+    // this.SHOP = this.localService.getShop();
+    this.SHOP = this.localService.SHOP;
     console.log(this.localService.SHOP.SHOP_LOCATION);
 
     setTimeout(() => {

@@ -31,7 +31,9 @@ export class LocalService {
         SHOP_isMOTO_PARK_FREE: false,
         SHOP_isCAR_PARK_FREE: false,
         SHOP_isMEMBERSHIP: false,
-        SHOP_isVISIBLE: true
+        SHOP_isVISIBLE: true,
+        SHOP_CURRENCY: 'USD',
+        SHOP_OTHER: null
     }
 
     SHOP: iShop = {
@@ -48,7 +50,9 @@ export class LocalService {
         SHOP_isMOTO_PARK_FREE: false,
         SHOP_isCAR_PARK_FREE: false,
         SHOP_isMEMBERSHIP: false,
-        SHOP_isVISIBLE: true
+        SHOP_isVISIBLE: true,
+        SHOP_CURRENCY: null,
+        SHOP_OTHER: null
     }
 
     ITEM_DEFAULT: iItem = {
