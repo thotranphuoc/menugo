@@ -34,6 +34,7 @@ export class MyApp {
       // { title: 'List', component: 'ListPage', icon:'list-box' },
       { title: 'Setting', component: 'SettingPage', icon:'cog' },
       { title: 'About', component: 'AboutPage', icon:'information-circle' },
+      { title: 'Search', component: 'SearchPage', icon:'information-circle' },
       // { title: 'AngularFire2', component: 'Angularfire2Page' },
     ];
 

@@ -30,6 +30,7 @@ export class ShopMenuPage {
     this.localService.getSHOP_ITEMSnSHOP_ITEMS_ID(this.shop.SHOP_ID).then((res: any)=>{
       this.SHOP_ITEMS = res.SHOP_ITEMS;
       this.SHOP_ITEMS_ID = res.SHOP_ITEMS_ID;
+      this.SHOP_ITEMS_INDEX =[];
       let l = this.SHOP_ITEMS_ID.length
       for (let index = 0; index < l; index++) {
         this.SHOP_ITEMS_INDEX.push({count: 0});

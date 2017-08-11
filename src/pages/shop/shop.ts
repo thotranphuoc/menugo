@@ -14,8 +14,6 @@ import { LocalService } from '../../services/local.service';
 })
 export class ShopPage {
   shop: iShop = null;
-  // items: iItem[];
-  // SHOP_ID: string;
   SHOP_ITEMS: any[] =[];
   SHOP_ITEMS_ID: any[] =[];
 
@@ -32,13 +30,6 @@ export class ShopPage {
     this.shop = navParams.data;
     console.log(this.shop);
     this.localService.SHOP = this.shop;
-    // this.SHOP_ID = navParams.data.$key;
-    // this.getShopItems().then(()=>{
-    //   this.localService.SHOP_ITEMS = this.SHOP_ITEMS;
-    //   this.localService.SHOP_ITEMS_ID = this.SHOP_ITEMS_ID;
-    // })
-
-
   }
 
   ionViewDidLoad() {
@@ -69,32 +60,4 @@ export class ShopPage {
         })
     })
   }
-
-  // ngOnInit(){
-  //   this.navCtrl.push('ShopMenuPage', this.shop)
-  // }
-
-  // ionViewWillEnter(){
-  //   this.dbService.getListReturnPromise_ArrayOfData('Shop_Items/'+this.SHOP_ID)
-  //   .then((items_key: string[])=>{
-  //     console.log(items_key);
-  //     this.items = [];
-  //     items_key.forEach(key=>{
-  //       this.dbService.getOneItemReturnPromise('Items/'+key)
-  //       .then((item: iItem)=>{
-  //         console.log(item);
-  //         this.items.push(item);
-  //       })
-  //     })
-  //   })
-
-  // }
-
-  // go2MenuItemAdd(){
-  //   console.log(this.SHOP_ID);
-  //   this.navCtrl.push('MenuItemAddPage',{ SHOP_ID: this.SHOP_ID});
-  // }
-
-
-
 }
