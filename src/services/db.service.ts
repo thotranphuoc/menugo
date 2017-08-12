@@ -214,6 +214,26 @@ export class DbService {
         })
     }
 
+    //VERIFIED: insert 1 array ofelement into current array
+    insertArrayOfElementIntoArray(dbURL, values: any[]) {
+        return new Promise((resolve, reject) => {
+            this.getListReturnPromise_ArrayOfData(dbURL).then((array: any[]) => {
+                let items = array;
+                items = items.concat(values);
+                console.log(items);
+                firebase.database().ref(dbURL).set(items)
+                    .then((res) => {
+                        console.log('insert success');
+                        resolve(res);
+                    })
+                    .catch((err) => {
+                        console.log('Error:', err)
+                        reject(err);
+                    })
+            })
+        })
+    }
+
     // VERIFIED: insert an object at specific node such as ActiveOrdersOfUser/USER_ID/ORDER_ID {}
     insertAnObjectAtNode(dbURL, value) {
         let db = firebase.database().ref(dbURL);

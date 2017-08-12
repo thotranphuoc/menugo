@@ -69,7 +69,7 @@ export class SettingPage {
   }
 
   go2FavoriteViewPage() {
-    this.navCtrl.push('FavoriteViewPage', this.afAuth.auth.currentUser.uid);
+    this.navCtrl.push('FavoritesPage', this.afAuth.auth.currentUser.uid);
   }
 
   go2SuggestionPage(){

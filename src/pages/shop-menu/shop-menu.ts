@@ -52,6 +52,11 @@ export class ShopMenuPage {
     this.app.getRootNav().push('MenuItemAddPage', { SHOP_ID: this.shop.SHOP_ID });
   }
 
+  go2AddFavorite(){
+    console.log('add favroite clicked');
+    this.app.getRootNav().push('FavoriteAddPage', { SHOP_ITEMS: this.SHOP_ITEMS, SHOP_ITEMS_ID: this.SHOP_ITEMS_ID, SHOP: this.shop})
+  }
+
   selectITEM(i) {
     console.log(i);
     this.SHOP_ITEMS_INDEX[i].count++;
