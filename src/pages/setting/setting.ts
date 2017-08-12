@@ -65,7 +65,7 @@ export class SettingPage {
   }
 
   go2OrdersHistory() {
-    this.navCtrl.push('YourOrdersPage', this.afAuth.auth.currentUser.uid);
+    this.navCtrl.push('HistoryPage', this.afAuth.auth.currentUser.uid);
   }
 
   go2FavoriteViewPage() {

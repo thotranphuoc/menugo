@@ -45,7 +45,7 @@ export class ListPage {
   }
 
   go2Shop(shop: iShop) {
-    this.navCtrl.setRoot('ShopPage', shop);
+    this.navCtrl.setRoot('ShopPage', { shop: shop });
   }
 
   go2Map() {

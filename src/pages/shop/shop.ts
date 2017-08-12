@@ -14,12 +14,13 @@ import { LocalService } from '../../services/local.service';
 })
 export class ShopPage {
   shop: iShop = null;
-  SHOP_ITEMS: any[] =[];
-  SHOP_ITEMS_ID: any[] =[];
+  SHOP_ITEMS: any[] = [];
+  SHOP_ITEMS_ID: any[] = [];
 
   tab1Root = 'ShopMenuPage';
   tab2Root = 'ShopOrderPage';
   tab3Root = 'ShopBillPage';
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -27,7 +28,7 @@ export class ShopPage {
     private localService: LocalService,
     // private afService: AngularFireService
   ) {
-    this.shop = navParams.data;
+    this.shop = navParams.data.shop;
     console.log(this.shop);
     this.localService.SHOP = this.shop;
   }

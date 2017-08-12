@@ -12,10 +12,11 @@ import { iShop } from '../../interfaces/shop.interface';
 import { iOrderList } from '../../interfaces/order-list.interface';
 @IonicPage()
 @Component({
-  selector: 'page-your-orders',
-  templateUrl: 'your-orders.html',
+  selector: 'page-history',
+  templateUrl: 'history.html',
 })
-export class YourOrdersPage {
+export class HistoryPage {
+
   DATE: any = '2017/07/23';
   selectedDate: string = null;
   SHOPs: iShop[] = [];

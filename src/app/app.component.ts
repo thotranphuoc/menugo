@@ -16,9 +16,11 @@ export class MyApp {
 
   rootPage: string = 'MapPage';
   pages: Array<{title: string, component: string, icon: string}>;
+  pages1: Array<{title: string, component: string, icon: string}>;
   pages2: Array<{title: string, component: string, icon: string}>;
   isAdminOfApp: boolean = false;
   PROFILE: iProfile;
+  USER = null;
   constructor(
     public platform: Platform, 
     public statusBar: StatusBar, 
@@ -33,10 +35,14 @@ export class MyApp {
       { title: 'Home', component: 'MapPage', icon:'home' },
       // { title: 'List', component: 'ListPage', icon:'list-box' },
       { title: 'Setting', component: 'SettingPage', icon:'cog' },
+      { title: 'Search', component: 'SearchPage', icon:'search' },
       { title: 'About', component: 'AboutPage', icon:'information-circle' },
-      { title: 'Search', component: 'SearchPage', icon:'information-circle' },
       // { title: 'AngularFire2', component: 'Angularfire2Page' },
     ];
+
+    this.pages1 = [
+      { title: 'Order', component: 'OrderPage', icon:'cart' },
+    ]
 
     this.pages2 = [
       { title: 'Admin', component: 'AdminPage', icon:'paw' },
@@ -62,9 +68,9 @@ export class MyApp {
 
   ionOpen() {
     console.log('Menu is opened')
-    let USER = this.afService.getAuth().auth.currentUser;
-        if(USER){
-          let USER_ID = USER.uid;
+    this.USER = this.afService.getAuth().auth.currentUser;
+        if(this.USER){
+          let USER_ID = this.USER.uid;
           this.dbService.getOneItemReturnPromise('UserProfiles/'+USER_ID).then((profile: iProfile)=>{
             this.PROFILE = profile;
             this.localService.PROFILE = profile;

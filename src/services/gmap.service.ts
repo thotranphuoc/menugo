@@ -81,7 +81,11 @@ export class GmapService {
     }
 
     getDistanceFromCurrent(lat1, lng1) {
-        return this.getDistanceFrom2Point(this.currentUserPosition.lat, this.currentUserPosition.lng, lat1, lng1);
+        if(this.currentUserPosition){
+            return this.getDistanceFrom2Point(this.currentUserPosition.lat, this.currentUserPosition.lng, lat1, lng1);
+        }else{
+            return {distance: 0, disStr: '0 m'};
+        }
     }
 
     getDistanceFrom2Point(lat1, lng1, lat2, lng2) {

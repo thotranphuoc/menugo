@@ -268,9 +268,13 @@ export class LocalService {
 
     setNewStatusForOrder(SHOP_ID, USER_ID, NEW_STATUS, ORDER_ID, DATE) {
         if (NEW_STATUS === 'CLOSED') {
-            this.dbService.removeAnObjectAtNode('ActiveOrdersOfUser/' + USER_ID + '/' + SHOP_ID + '/' + ORDER_ID);
             // update OrdersOfShop
             this.afService.updateObjectData('OrdersOfShop/' + SHOP_ID + '/' + DATE + '/' + ORDER_ID + '/ORDER_STATUS', NEW_STATUS);
+            this.dbService.copyObjectFromURL2URL('OrdersOfShop/' + SHOP_ID + '/' + DATE, 'ActiveOrdersOfUser/' + USER_ID + '/' + SHOP_ID, ORDER_ID)
+
+            setTimeout(()=>{
+                this.dbService.removeAnObjectAtNode('ActiveOrdersOfUser/' + USER_ID + '/' + SHOP_ID + '/' + ORDER_ID);
+            },3000);
         } else {
             // update OrdersOfShop
             this.afService.updateObjectData('OrdersOfShop/' + SHOP_ID + '/' + DATE + '/' + ORDER_ID + '/ORDER_STATUS', NEW_STATUS);
