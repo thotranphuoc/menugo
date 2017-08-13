@@ -25,29 +25,34 @@ export class AdminBoardPage {
     console.log('ionViewDidLoad AdminBoardPage');
   }
 
-  go2OrderManager(){
-    this.navCtrl.push('OrderManagerPage',{SHOP_ID: this.SHOP.SHOP_ID});
+  go2OrderManager() {
+    this.navCtrl.push('OrderManagerPage', { SHOP_ID: this.SHOP.SHOP_ID });
   }
 
-  go2Statistic(){
-    this.navCtrl.push('OrderStatisticPage',{SHOP_ID: this.SHOP.SHOP_ID});
+  go2Statistic() {
+    this.navCtrl.push('OrderStatisticPage', { SHOP_ID: this.SHOP.SHOP_ID });
   }
 
-  go2DailyStatistic(){
-    this.navCtrl.push('OrderDailyStatisticPage',{SHOP_ID: this.SHOP.SHOP_ID})
+  go2DailyStatistic() {
+    this.navCtrl.push('OrderDailyStatisticPage', { SHOP_ID: this.SHOP.SHOP_ID })
   }
 
-  go2RangeStatistic(){
-    this.navCtrl.push('OrderRangeStatisticPage',{SHOP_ID: this.SHOP.SHOP_ID});
+  go2RangeStatistic() {
+    this.navCtrl.push('OrderRangeStatisticPage', { SHOP_ID: this.SHOP.SHOP_ID });
   }
 
-  go2StaffManager(){
-    this.navCtrl.push('StaffManagerPage',this.data);
+  go2StaffManager() {
+    this.navCtrl.push('StaffManagerPage', this.data);
   }
 
-  go2UpdateInfo(){
-    console.log('Update informatio');
-    this.navCtrl.push('UpdateInfoPage', {SHOP: this.SHOP, USER_ID: this.USER_ID, PROFILE: this.PROFILE});
+  go2UpdateShop() {
+    console.log('Update Shop information');
+    this.navCtrl.push('UpdateShopPage', { SHOP: this.SHOP, USER_ID: this.USER_ID, PROFILE: this.PROFILE });
+  }
+
+  go2UpdateItems() {
+    console.log('Update Items Information');
+    this.navCtrl.push('UpdateItemsPage', { SHOP: this.SHOP, USER_ID: this.USER_ID, PROFILE: this.PROFILE })
   }
 
 }

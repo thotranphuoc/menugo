@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ActionSheetController, ModalController, ViewController } from 'ionic-angular';
 
+import { AppService } from '../../services/app.service';
 import { ImageService } from '../../services/image.service';
 import { DbService } from '../../services/db.service';
 import { iShop } from '../../interfaces/shop.interface';
@@ -8,10 +9,10 @@ import { iProfile } from '../../interfaces/profile.interface';
 
 @IonicPage()
 @Component({
-  selector: 'page-update-info',
-  templateUrl: 'update-info.html',
+  selector: 'page-update-shop',
+  templateUrl: 'update-shop.html',
 })
-export class UpdateInfoPage {
+export class UpdateShopPage {
   data: any;
   SHOP: iShop = null;
   PROFILE: iProfile;
@@ -23,7 +24,8 @@ export class UpdateInfoPage {
     private modalCtrl: ModalController,
     private viewCtrl: ViewController,
     private imageService: ImageService,
-    private dbService: DbService
+    private dbService: DbService,
+    private appService: AppService
   ) {
     this.data = this.navParams.data;
     this.SHOP = this.data.SHOP;
@@ -104,7 +106,13 @@ export class UpdateInfoPage {
 
   update(){
     console.log('update');
-    this.dbService.updateAnObjectAtNode('Shops/' + this.SHOP.SHOP_ID , this.SHOP);
+    this.dbService.updateAnObjectAtNode('Shops/' + this.SHOP.SHOP_ID , this.SHOP)
+    .then((res)=>{
+      this.appService.toastMsg('Update successfully', 3000);
+    })
+    .catch((err)=>{
+      this.appService.toastMsg('Error occur', 3000);
+    })
   }
 
   updateLocation(){

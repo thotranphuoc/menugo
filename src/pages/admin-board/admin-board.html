@@ -22,7 +22,10 @@
         <div class="icon-name">Order Manager</div>
         <!-- <button ion-button (click)="go2OrderManager()">Order Manager</button> -->
       </ion-col>
-      
+      <ion-col>
+        <ion-icon class="icon-big" name="contacts" (click)="go2StaffManager()"></ion-icon>
+        <div class="icon-name">Staff Manager</div>
+      </ion-col>
     </ion-row>
     
     <ion-row style="padding-top: 40px">
@@ -40,12 +43,12 @@
     <ion-row style="padding-top: 40px">
       <ion-col>
         <!-- <button ion-button (click)="go2DailyStatistic()"> Daily Statistic</button> -->
-        <ion-icon class="icon-big" name="create" (click)="go2UpdateInfo()"></ion-icon>
-        <div class="icon-name">Update Info</div>
+        <ion-icon class="icon-big" name="create" (click)="go2UpdateShop()"></ion-icon>
+        <div class="icon-name">Update Shop</div>
       </ion-col>
       <ion-col>
-        <ion-icon class="icon-big" name="contacts" (click)="go2StaffManager()"></ion-icon>
-        <div class="icon-name">Staff Manager</div>
+        <ion-icon class="icon-big" name="ios-construct-outline" (click)="go2UpdateItems()"></ion-icon>
+        <div class="icon-name">Update Items</div>
       </ion-col>
     </ion-row>
   </ion-grid>
