@@ -50,7 +50,7 @@ export class FavoritesPage {
 
   go2Shop(shop: iShop) {
     console.log(shop);
-    this.navCtrl.push('ShopPage', shop)
+    this.navCtrl.push('ShopPage', {shop: shop})
   }
 
 }

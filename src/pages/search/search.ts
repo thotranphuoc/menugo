@@ -79,7 +79,7 @@ export class SearchPage {
     console.log(item);
     this.afDB.object('Shops/' + item.ITEM_SHOP_ID).forEach((shop) => {
       console.log(shop);
-      this.navCtrl.push('ShopPage', shop);
+      this.navCtrl.push('ShopPage', {shop: shop});
     })
   }
 
