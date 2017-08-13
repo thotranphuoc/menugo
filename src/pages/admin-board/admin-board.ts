@@ -45,4 +45,9 @@ export class AdminBoardPage {
     this.navCtrl.push('StaffManagerPage',this.data);
   }
 
+  go2UpdateInfo(){
+    console.log('Update informatio');
+    this.navCtrl.push('UpdateInfoPage', {SHOP: this.SHOP, USER_ID: this.USER_ID, PROFILE: this.PROFILE});
+  }
+
 }

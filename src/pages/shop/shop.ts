@@ -20,7 +20,6 @@ export class ShopPage {
   tab1Root = 'ShopMenuPage';
   tab2Root = 'ShopOrderPage';
   tab3Root = 'ShopBillPage';
-
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,

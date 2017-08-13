@@ -86,6 +86,18 @@ export class DbService {
         })
     }
 
+    deleteFileFromFireStorageWithURL(url: string) {
+        let storageRef = firebase.storage().ref(url);
+        return storageRef.delete()
+    }
+
+    // VERIFIED: Delete file from storage with httpsURL
+    // such as: storage.refFromURL('https://firebasestorage.googleapis.com/b/bucket/o/images%20stars.jpg');
+    deleteFileFromFireStorageWithHttpsURL(httpsURL: string) {
+        let storage = firebase.storage().refFromURL(httpsURL);
+        return storage.delete();
+    }
+
     // VERIFIED
     getListReturnPromise_ArrayOfData(dbURL) {
         return new Promise((resolve, reject) => {
