@@ -3,7 +3,7 @@ import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-an
 
 import { Geolocation } from '@ionic-native/geolocation';
 import { GmapService } from '../../services/gmap.service';
-import { LocalService } from '../../services/local.service';
+// import { DbService } from '../../services/db.service';
 import { AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2/database';
 
 import { iPosition } from '../../interfaces/position.interface';
@@ -22,36 +22,24 @@ export class MapPage {
   loading: any;
   shops: iShop[] = [];
   shopsO: FirebaseListObservable<iShop[]>;;
-  insideMapShops: iShop[] = [];
-  SHOPs_LOC: any[] = [];
+  insideMapShops: iShop[] =[];
+  shopsLoaded: boolean = false;
+  SHOPs_LOC: any[] =[];
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     private loadingCtrl: LoadingController,
     private geolocation: Geolocation,
     private gmapService: GmapService,
-    private localService: LocalService,
     private afDB: AngularFireDatabase
   ) {
-    if (this.localService.shopsLoaded) {
-      this.SHOPs_LOC = this.localService.SHOPs_LOCATION;
-    } else {
-      this.afDB.list('ShopsLOCATION').forEach((shops_loc: any[]) => {
-        this.localService.SHOPs_LOCATION = shops_loc;
-        this.SHOPs_LOC = shops_loc;
-        // this.shopsLoaded = true;
-        this.localService.shopsLoaded = true;
-        console.log(this.SHOPs_LOC);
-      })
-    }
-
     this.loading = this.loadingCtrl.create({
       content: 'Please wait....',
       spinner: 'crescent'
     });
   }
 
-  ionViewWillEnter() {
+  ionViewWillEnter(){
     console.log('ionViewWillEnter ...');
   }
 
@@ -82,15 +70,15 @@ export class MapPage {
           }, err => {
             console.log(err);
             alert('No gps signal. Your location cannot be detected now.');
-            let pos: iPosition = { lat: 10.778168043677463, lng: 106.69638633728027 };
+            let pos: iPosition = { lat: 10.778168043677463, lng: 106.69638633728027};
             this.gmapService.setUserCurrentPosition(pos);
-            this.showMap(pos, mapElement);
+            this.showMap(pos,mapElement);
           })
       })
 
   }
 
-
+  
 
   showMap(position: iPosition, mapElement) {
     let latLng = new google.maps.LatLng(position.lat, position.lng);
@@ -113,32 +101,31 @@ export class MapPage {
           console.log('map was loaded fully');
           this.hideLoading();
           this.loadShops();
+          // let bound = this.map.getBounds();
+          // console.log(bound);
+
         })
       })
   }
 
-  loadShops() {
-    if (!this.localService.shopsLoaded) {
+  loadShops(){
+    if(!this.shopsLoaded){
       this.shops = [];
-      this.afDB.list('Shops_LOC').forEach((shops_loc: any[]) => {
-        console.log(shops_loc);
-        this.SHOPs_LOC = shops_loc;
-        this.localService.shopsLoaded = true;
+      this.afDB.list('Shops').forEach((shops: iShop[])=>{
+        console.log(shops);
+        this.shops = shops;
+        this.shopsLoaded = true;
       })
     }
-    this.checkAndLoadMarker(this.SHOPs_LOC);
+    this.checkAndLoadMarker(this.shops);
   }
 
-  checkAndLoadMarker(shops) {
+  checkAndLoadMarker(shops){
     this.insideMapShops = [];
-    shops.forEach(shop => {
-      if (this.gmapService.isPositionInsideMap(shop.LOC, this.map)) {
-        this.afDB.object('Shops/' + shop.ID).subscribe((shopData: iShop) => {
-          // console.log(shopData);
-          this.gmapService.addMarkerToMapWithIDReturnPromiseWithMarker(this.map, shop.LOC, shopData);
-          this.insideMapShops.push(shopData);
-        })
-
+    shops.forEach(shop=>{
+      if(this.gmapService.isPositionInsideMap(shop.SHOP_LOCATION,this.map)){
+        this.gmapService.addMarkerToMapWithIDReturnPromiseWithMarker(this.map,shop.SHOP_LOCATION, shop);
+        this.insideMapShops.push(shop);
       }
     })
   }
@@ -160,10 +147,10 @@ export class MapPage {
 
   go2List() {
     console.log('go2ListPage');
-    this.navCtrl.push('ListPage', { shops: this.insideMapShops });
+    this.navCtrl.push('ListPage', {shops: this.insideMapShops});
   }
 
-  go2AddNewShop() {
+  go2AddNewShop(){
     this.navCtrl.push('AddNewShopPage');
   }
 

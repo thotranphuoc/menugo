@@ -16,7 +16,8 @@ import { iProfile } from '../interfaces/profile.interface';
 @Injectable()
 
 export class LocalService {
-
+    SHOPs_LOCATION: any[] = [];
+    shopsLoaded: boolean = false;
     SHOP_DEFAULT: iShop = {
         SHOP_ID: null,
         SHOP_OWNER: null,
@@ -32,7 +33,7 @@ export class LocalService {
         SHOP_isCAR_PARK_FREE: false,
         SHOP_isMEMBERSHIP: false,
         SHOP_isVISIBLE: true,
-        SHOP_CURRENCY: 'USD',
+        SHOP_CURRENCY: null,
         SHOP_OTHER: null
     }
 
@@ -272,9 +273,9 @@ export class LocalService {
             this.afService.updateObjectData('OrdersOfShop/' + SHOP_ID + '/' + DATE + '/' + ORDER_ID + '/ORDER_STATUS', NEW_STATUS);
             this.dbService.copyObjectFromURL2URL('OrdersOfShop/' + SHOP_ID + '/' + DATE, 'ActiveOrdersOfUser/' + USER_ID + '/' + SHOP_ID, ORDER_ID)
 
-            setTimeout(()=>{
+            setTimeout(() => {
                 this.dbService.removeAnObjectAtNode('ActiveOrdersOfUser/' + USER_ID + '/' + SHOP_ID + '/' + ORDER_ID);
-            },3000);
+            }, 3000);
         } else {
             // update OrdersOfShop
             this.afService.updateObjectData('OrdersOfShop/' + SHOP_ID + '/' + DATE + '/' + ORDER_ID + '/ORDER_STATUS', NEW_STATUS);
@@ -380,8 +381,8 @@ export class LocalService {
                     uniquArr = this.appService.removeDuplicate(SHOP_IDs);
                     console.log(uniquArr);
                     resolve(uniquArr);
-                }else{
-                    reject({message: 'there is no record', result: []});
+                } else {
+                    reject({ message: 'there is no record', result: [] });
                 }
             })
         })
