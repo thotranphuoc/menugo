@@ -36,15 +36,16 @@ export class MapPage {
       content: 'Please wait....',
       spinner: 'crescent'
     });
+    console.log('constructor');
   }
 
   ionViewWillEnter(){
     console.log('ionViewWillEnter ...');
-    this.shopsO = this.afDB.list('Shops');
-    this.shopsO.subscribe((shops)=>{
-      console.log(shops);
-      this.shops = shops;
-    })
+    // this.shopsO = this.afDB.list('Shops');
+    // this.shopsO.subscribe((shops)=>{
+    //   console.log(shops);
+    //   this.shops = shops;
+    // })
   }
 
   ionViewDidLoad() {
@@ -60,6 +61,7 @@ export class MapPage {
     // this.gmapService.getCurrentPosition()
     this.geolocation.getCurrentPosition()
       .then((position) => {
+        console.log(position);
         let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
         let pos: iPosition = { lat: position.coords.latitude, lng: position.coords.longitude }
         this.gmapService.setUserCurrentPosition(pos);
@@ -114,14 +116,23 @@ export class MapPage {
 
   loadShops(){
     // remove existing marker first. then load new markers later to sure that new INVISIBLE markers will be removed
-    this.gmapService.removeMarkersFromMap(this.gmapService.getMarkers());
+    // this.gmapService.removeMarkersFromMap(this.gmapService.getMarkers());
     this.insideMapShops = [];
-    this.shops.forEach(shop=>{
-      if(this.gmapService.isPositionInsideMap(shop.SHOP_LOCATION,this.map)){
-        this.gmapService.addMarkerToMapWithIDReturnPromiseWithMarker(this.map,shop.SHOP_LOCATION, shop);
-        this.insideMapShops.push(shop);
-      }
+    let shops = this.afDB.list('Shops').forEach((shops: iShop[])=>{
+      console.log(shops);
+      shops.forEach(shop=>{
+        if(this.gmapService.isPositionInsideMap(shop.SHOP_LOCATION,this.map)){
+          this.gmapService.addMarkerToMapWithIDReturnPromiseWithMarker(this.map,shop.SHOP_LOCATION, shop);
+          this.insideMapShops.push(shop);
+        }
+      })
     })
+    // this.shops.forEach(shop=>{
+    //   if(this.gmapService.isPositionInsideMap(shop.SHOP_LOCATION,this.map)){
+    //     this.gmapService.addMarkerToMapWithIDReturnPromiseWithMarker(this.map,shop.SHOP_LOCATION, shop);
+    //     this.insideMapShops.push(shop);
+    //   }
+    // })
   }
 
   private startLoading() {
