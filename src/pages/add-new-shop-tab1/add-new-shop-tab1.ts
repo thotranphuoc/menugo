@@ -15,7 +15,6 @@ export class AddNewShopTab1Page {
     public navCtrl: NavController, 
     public navParams: NavParams,
     private localService: LocalService) {
-    // this.SHOP = this.localService.getShop();
     this.SHOP = this.localService.SHOP;
     console.log(this.SHOP);
   }

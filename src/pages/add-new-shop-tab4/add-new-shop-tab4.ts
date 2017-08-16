@@ -23,8 +23,6 @@ export class AddNewShopTab4Page {
   mapreview: any;
   mapElement: any;
   loading: any;
-  action: string = 'add-new';
-
 
   // Review & post
   isInfoFullFilled: boolean = true;
@@ -41,7 +39,7 @@ export class AddNewShopTab4Page {
     private gmapService: GmapService,
     private localService: LocalService,
     private dbService: DbService) {
-    this.SHOP = this.localService.getShop();
+    this.SHOP = this.localService.SHOP;
     this.loading = this.loadingCtrl.create({
       content: 'Please wait....',
       spinner: 'crescent'
@@ -54,7 +52,6 @@ export class AddNewShopTab4Page {
 
   ionViewWillEnter() {
     this.SHOP_IMAGES = this.localService.SHOP_IMAGES;
-    // this.SHOP = this.localService.getShop();
     this.SHOP = this.localService.SHOP;
     console.log(this.localService.SHOP.SHOP_LOCATION);
 
@@ -79,7 +76,6 @@ export class AddNewShopTab4Page {
       .then((map) => {
         this.mapreview = map;
         this.gmapService.addMarkerToMap(this.mapreview, position).then((marker) => {
-          // this.userMarker = marker;
         })
       })
   }
@@ -91,17 +87,10 @@ export class AddNewShopTab4Page {
     if (this.isInfoFullFilled) {
       if (this.afService.getAuth().auth.currentUser) {
         // user signed in
-        // this.startLoading();
         this.SHOP.SHOP_OWNER = this.afService.getAuth().auth.currentUser.uid;
         this.SHOP.SHOP_DATE_CREATE = this.appService.getCurrentDataAndTime().toString();
         console.log(this.SHOP);
-        // ADD NEW
-        if (this.action === 'add-new') {
-          console.log(this.SHOP);
-          this.addNewShop(this.SHOP, this.SHOP_IMAGES);
-        } else {
-          // UPDATE
-        }
+        this.addNewShop(this.SHOP, this.SHOP_IMAGES);
       } else {
         // user not signed in yet
         this.hasPosted = false;
@@ -113,38 +102,19 @@ export class AddNewShopTab4Page {
   }
 
   addNewShop(SHOP: iShop, images: string[]) {
-    // 1. Insert new SHOP
-    this.dbService.insertOneNewItemReturnPromise(SHOP, 'Shops').then((res) => {
-      console.log(res, res.key);
-      let SHOP_ID = res.key;
-      // 2. Update SHOP_ID
-      this.dbService.updateAnObjectAtNode('Shops/' + SHOP_ID + '/SHOP_ID', SHOP_ID);
-      let name = new Date().getTime().toString();
-      // 3. upload images
-      this.dbService.uploadBase64Images2FBReturnPromiseWithArrayOfURL('ShopImages/' + SHOP_ID, this.SHOP_IMAGES, name)
-        .then((urls) => {
-          // 4. update SHOP_IMAGES
-          return this.dbService.updateAnObjectAtNode('Shops/' + SHOP_ID + '/SHOP_IMAGES', urls)
-        })
-        .then(() => {
-          // 5. add administration
-          this.appService.createAdmin(SHOP_ID, this.SHOP.SHOP_OWNER , 'manager').then((res)=>{
-            console.log(res);
-          })
-          this.dbService.insertElementIntoArray('Admins/'+ this.SHOP.SHOP_OWNER, this.SHOP.SHOP_ID);
-          this.hideLoading();
-          this.resetShop();
-          this.go2Page('MapPage');
-        })
-        .catch((err) => {
-          console.log(err);
-          this.appService.alertError('Error', err.toString())
-          this.hasPosted = false;
-        })
-    })
+    this.localService.addNewShop(SHOP, images)
+      .then((res) => {
+        console.log(res);
+        this.hideLoading();
+        this.resetShop();
+        this.go2Page('MapPage');
+      })
+      .catch((err) => {
+        console.log(err);
+        this.appService.alertError('Error', err.toString())
+        this.hasPosted = false;
+      })
   }
-
-  
 
   alertMsgWithConfirmationToGoToPage() {
     this.alertCtrl.create({

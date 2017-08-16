@@ -1,11 +1,8 @@
 import { Injectable } from '@angular/core';
-// import { AlertController, ToastController } from 'ionic-angular';
-// import { Camera, CameraOptions } from '@ionic-native/camera';
 import { AngularFireService } from './af.service';
 import { DbService } from './db.service';
 import { AppService } from './app.service';
 
-// import { iProfile } from '../interfaces/profile.interface';
 import { iShop } from '../interfaces/shop.interface';
 import { iSetting } from '../interfaces/setting.interface';
 import { iItem } from '../interfaces/item.interface';
@@ -183,10 +180,6 @@ export class LocalService {
         private appService: AppService
     ) { }
 
-    getShop() {
-        return this.SHOP;
-    }
-
     getImages() {
         return this.images;
     }
@@ -266,6 +259,60 @@ export class LocalService {
     //         }
     //     })
     // }
+
+    addNewShop(SHOP: iShop, images: string[]) {
+        return new Promise((resolve, reject) => {
+            //1. Insert new Shop
+            this.dbService.insertOneNewItemReturnPromise(SHOP, 'Shops')
+                .then((res) => {
+                    console.log('1. Insert new shop')
+                    console.log(res, res.key);
+                    let SHOP_ID = res.key;
+                    // 2. Update SHOP_ID
+                    let pro1 = this.dbService.updateAnObjectAtNode('Shops/' + SHOP_ID + '/SHOP_ID', SHOP_ID)
+                        .then(() => { '2. Update SHOP_ID' });
+
+                    // 3. upload images
+                    let name = new Date().getTime().toString();
+                    let pro2 = this.dbService.uploadBase64Images2FBReturnPromiseWithArrayOfURL('ShopImages/' + SHOP_ID, this.SHOP_IMAGES, name)
+                        .then((urls) => {
+                            console.log('3. upload images');
+
+                            // 4. update SHOP_IMAGES
+                            return this.dbService.updateAnObjectAtNode('Shops/' + SHOP_ID + '/SHOP_IMAGES', urls)
+                        })
+                        .then(() => { console.log('4. update SHOP_IMAGES') });
+
+                    // 5. add manager role to creater
+                    let pro3 = this.appService.createAdmin(SHOP_ID, this.SHOP.SHOP_OWNER, 'manager')
+                        .then(() => { console.log('5. add manager role to creater') });
+
+                    // 6. add admin right to user
+                    let pro4 = this.dbService.insertElementIntoArray('Admins/' + this.SHOP.SHOP_OWNER, SHOP_ID)
+                        .then(() => { console.log('6. add admin right to user') });
+
+                    // 7. add ShopsLOCATION
+                    let DATA = {
+                        ID: SHOP_ID,
+                        LOC: SHOP.SHOP_LOCATION
+                    }
+                    let pro5 = this.dbService.insertAnObjectAtNode('ShopsLOCATION/' + SHOP_ID, DATA)
+                        .then(() => { console.log('7. add ShopsLOCATION') });
+
+                    Promise.all([pro1, pro2, pro3, pro4, pro5])
+                        .then(() => {
+                            resolve({ message: 'add new shop successfull' });
+                        })
+                        .catch((err) => {
+                            reject(err);
+                        })
+                })
+                .catch((err) => {
+                    reject(err);
+                })
+
+        })
+    }
 
     setNewStatusForOrder(SHOP_ID, USER_ID, NEW_STATUS, ORDER_ID, DATE) {
         if (NEW_STATUS === 'CLOSED') {
