@@ -39,12 +39,11 @@ export class ShopOrderPage {
   ) {
     this.SHOP = this.localService.SHOP;
     this.USER_ID = this.localService.USER_ID;
-    if (this.USER_ID == null) {
-      if (this.afService.getAuth().auth.currentUser) {
-        this.USER_ID = this.afService.getAuth().auth.currentUser.uid;
-      } else {
-        this.showConfirm();
-      }
+
+    if (this.afService.getAuth().auth.currentUser) {
+      this.USER_ID = this.afService.getAuth().auth.currentUser.uid;
+    } else {
+      this.showConfirm();
     }
     // 1. getShopITEMS. If ITEM already get, go ahead. If not, start getting
     this.getShopITEMS();
@@ -57,7 +56,9 @@ export class ShopOrderPage {
     }
 
     // 2. getActiveOrderAsync();
-    this.getActiveOrderAsync();
+    if(typeof(this.SHOP) !=='undefined' && this.USER_ID){
+      this.getActiveOrderAsync(this.USER_ID, this.SHOP.SHOP_ID);
+    }
   }
 
   ionViewDidLoad() {
@@ -164,9 +165,7 @@ export class ShopOrderPage {
   }
 
   // VERIFIED: get Active orders of user
-  getActiveOrderAsync() {
-    let USER_ID = this.USER_ID;
-    let SHOP_ID = this.SHOP.SHOP_ID;
+  getActiveOrderAsync(USER_ID, SHOP_ID) {
     let URL = 'ActiveOrdersOfUser/' + USER_ID + '/' + SHOP_ID;
     this.subscription = this.afService.getList(URL).subscribe((ORDERS: iOrder[]) => {
       console.log(ORDERS);

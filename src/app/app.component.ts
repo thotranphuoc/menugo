@@ -33,7 +33,6 @@ export class MyApp {
     // used for an example of ngFor and navigation
     this.pages = [
       { title: 'Home', component: 'MapPage', icon:'home' },
-      // { title: 'List', component: 'ListPage', icon:'list-box' },
       { title: 'Setting', component: 'SettingPage', icon:'cog' },
       { title: 'Search', component: 'SearchPage', icon:'search' },
       { title: 'About', component: 'AboutPage', icon:'information-circle' },

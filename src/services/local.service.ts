@@ -398,13 +398,17 @@ export class LocalService {
         return new Promise((resolve, reject) => {
             this.getShopItems_ID(SHOP_ID).then((ITEMs_ID: string[]) => {
                 console.log(ITEMs_ID);
-                this.getItemDataFromListOfItems_ID(ITEMs_ID).then((data: any) => {
-                    // console.log(data);
-                    // console.log(data.SHOP_ITEMS);
-                    // console.log(data.SHOP_ITEMS_ID);
-                    resolve(data);
-                })
-            })
+                if(ITEMs_ID.length>0){
+                    this.getItemDataFromListOfItems_ID(ITEMs_ID).then((data: any) => {
+                        // console.log(data);
+                        // console.log(data.SHOP_ITEMS);
+                        // console.log(data.SHOP_ITEMS_ID);
+                        resolve(data);
+                    }).catch((err)=>{ reject(err)})
+                }else{
+                    reject({data: null});
+                }
+            }).catch((err)=>{ reject(err)})
         })
     }
 
